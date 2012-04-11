@@ -1,2 +1,9 @@
 *~
 *.swp
+
+# lein {
+
+/.lein-deps-sum
+/lib/
+
+# } lein
