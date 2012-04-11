@@ -1,0 +1,3 @@
+(*def hello (*fn [x] (console.log (*op + "Hello, " x))))
+
+(hello "World")
