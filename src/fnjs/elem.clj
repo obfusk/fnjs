@@ -1,6 +1,6 @@
 ; --                                                            ; {{{1
 ;
-; File        : fnjs/elem.cljs
+; File        : fnjs/elem.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
 ; Date        : 2012-04-12
 ;
