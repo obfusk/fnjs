@@ -1,0 +1,6 @@
+#!/bin/bash
+
+lein uberjar
+mv *.jar jar/
+
+# --

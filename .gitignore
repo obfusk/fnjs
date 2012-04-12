@@ -1,9 +1,12 @@
 *~
 *.swp
 
+/jar/
+
 # lein {
 
 /.lein-deps-sum
+/classes/
 /lib/
 
 # } lein

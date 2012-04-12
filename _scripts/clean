@@ -1,6 +1,6 @@
 #!/bin/bash
 
 rm .lein-deps-sum
-rm -r classes/ lib/
+rm -r classes/ lib/ jar/
 
 # --

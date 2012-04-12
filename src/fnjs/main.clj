@@ -22,7 +22,7 @@
 ; --
 
 (defn -main [& args]
-  (printn "..."))
+  (println "..."))
 
 ; --
 
