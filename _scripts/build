@@ -1,6 +1,6 @@
 #!/bin/bash
 
 lein uberjar
-mv *.jar jar/
+mkdir -p jar && mv -v *.jar jar/
 
 # --
