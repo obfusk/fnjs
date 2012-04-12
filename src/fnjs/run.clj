@@ -29,6 +29,7 @@
 ; --
 
 (defn uglify! [x] (sh "uglifyjs" "-b" "-i" "2" "-nm" :in x))
+(defn node!   [x] (sh "node" :in x))
 
 ; --
 

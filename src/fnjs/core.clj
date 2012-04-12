@@ -15,11 +15,12 @@
 ; --                                                            ; }}}1
 
 (ns fnjs.core
-  (:use [ fnjs.dsl :as _d ]) )
+  (:use [ fnjs.dsl  :as _d ]
+        [ fnjs.elem :as _e ] ))
 
 ; --
 
-(defn fnjs [body] (apply _d/*do body))
+(defn fnjs [body] (_e/build (_d/tr `(~'*do ~@body))))
 (defmacro fnjs* [& body] (fnjs body))
 
 ; --

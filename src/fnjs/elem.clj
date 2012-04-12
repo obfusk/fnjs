@@ -34,7 +34,8 @@
 (defn return    [x] [ "return" x ])
 (defn statement [x] [ x ";" ])
 
-(defn statements [xs] (map statement xs))
+(defn statements  [xs]      (map statement xs))
+(defn operator    [o args]  (interpose o args))
 
 (defn array [& xs]    [ "[" (list_ xs) "]" ])
 (defn var_  [k v]     [ "var" k "=" v ] )

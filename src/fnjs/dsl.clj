@@ -28,20 +28,25 @@
 
 ; --
 
+(declare tr)
 (declare tr-list)
+
+(defn mtr [xs] (map tr xs))
 
 ; --
 
-(defn *js [& xs] xs)
-(defn *do [& body] (_e/do_ body))
-(defn *fn [args & body] (_e/function args))
+(defn *js   [& xs] xs)
+(defn *op   [o & args] (_e/operator o (mtr args)))
+(defn *def  [k v] (_e/var_ k (tr v)))                           ; TODO
+(defn *do   [& body] (_e/do_ (mtr body)))
+(defn *fn   [args & body] (_e/function args (mtr body)))
 
 (defn *let [vars & body]
   (let [ vs (map #(apply var_ %1) (partition 2 vars)) ]         ; TODO
-    (_e/do_ (concat vs)) ))
+    (_e/do_ (concat vs (mtr body))) ))
 
-(defn *if       [c a b] (_e/if-expr c a b))
-(defn *if-stmt  [c a b] (_e/if-stmt c a b))
+(defn *if       [c a b] (apply _e/if-expr (mtr [c a b])))
+(defn *if-stmt  [c a b] (apply _e/if-stmt (mtr [c a b])))
 
 ; --
 
@@ -57,16 +62,17 @@
 ; --
 
 (defn tr-sym  [x] (_s/replace x sym-rx #(str (sym-map %1))))
-(defn tr-str  [x] x)                                            ; TODO
+(defn tr-str  [x] (pr-str x))                                   ; TODO
 (defn tr-num  [x] x)                                            ; TODO
 
 (defn tr [x]                                                    ; {{{1
+; (println (str " --> tr " (pr-str x) " -- (" (type x) ")"))
   (cond
-    (list?    x)  (tr-list x)
-    (symbol?  x)  (tr-sym  x)
-    (string?  x)  (tr-str  x)
-    (number?  x)  (tr-num  x)
-    :else         (die "oops: unknown type") ))                 ; TODO
+    (and (seq? x) (not (vector? x)))  (tr-list x)
+    (symbol?  x)                      (tr-sym  x)
+    (string?  x)                      (tr-str  x)
+    (number?  x)                      (tr-num  x)
+    :else (die "oops: unknown type") ))                         ; TODO
                                                                 ; }}}1
 
 ; --
@@ -85,11 +91,11 @@
 
 (defn tr-list [xs]                                              ; {{{1
   (if (seq xs)
-    (let [  x   (first xs)
-            xt  (map tr (rest xs))  ]
-      (if (and (symbol? x) (re-matches func-rx))
+    (let [  x   (first  xs)
+            xt  (rest   xs) ]
+      (if (and (symbol? x) (re-matches func-rx (str x)))
         (apply (pub-map x) xt)
-        (_e/call (tr x) xt) ))
+        (_e/call (tr x) (map tr xt)) ))
     (die "oops: empty list") ))                                 ; TODO
                                                                 ; }}}1
 
