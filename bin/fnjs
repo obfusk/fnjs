@@ -1,5 +1,5 @@
 #!/bin/bash
 
-java -jar jar/fnjs-0.0.0-dev-standalone.jar
+java -jar jar/fnjs-0.0.0-dev-standalone.jar "$@"
 
 # --
