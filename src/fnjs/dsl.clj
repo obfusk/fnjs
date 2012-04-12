@@ -33,7 +33,8 @@
 ; --
 
 (defn *js [& xs] xs)
-(defn *fn [args & body] (_e/function args ))
+(defn *do [& body] (_e/do_ body))
+(defn *fn [args & body] (_e/function args))
 
 (defn *let [vars & body]
   (let [ vs (map #(apply var_ %1) (partition 2 vars)) ]         ; TODO
