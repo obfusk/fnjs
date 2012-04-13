@@ -37,6 +37,9 @@
 (defn statements  [xs]      (map statement xs))
 (defn operator    [o args]  (interpose o args))
 
+(defn object [& xs]
+  [ "{" (list_ (for [ [k v] xs ] [ k ":" v ])) "}" ] )
+
 (defn array [& xs]    [ "[" (list_ xs) "]" ])
 (defn var_  [k v]     [ "var" k "=" v ] )
 (defn call  [f args]  [ f (group (list_ args)) ])

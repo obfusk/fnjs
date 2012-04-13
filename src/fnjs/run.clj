@@ -19,15 +19,6 @@
 
 ; --
 
-; MOVE {
-
-(defn safe-read [x] (binding [ *read-eval* false ] (read-string x)))
-(defn read-file [f] (safe-read (str "(" (slurp f) "\n)")))
-
-; } MOVE
-
-; --
-
 (defn uglify! [x] (sh "uglifyjs" "-b" "-i" "2" "-nm" :in x))
 (defn node!   [x] (sh "node" :in x))
 

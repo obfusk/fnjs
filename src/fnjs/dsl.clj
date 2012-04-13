@@ -16,15 +16,8 @@
 
 (ns fnjs.dsl
   (:use [ clojure.string :only [ join ] :as _s ]
-        [ fnjs.elem                     :as _e ] ))
-
-; --
-
-; MOVE {
-
-(defn die [x] (throw (Exception. x)))
-
-; } MOVE
+        [ fnjs.elem                     :as _e ]
+        [ fnjs.misc                     :as _m ] ))
 
 ; --
 
@@ -53,7 +46,7 @@
 (def sym-map {                                                  ; {{{1
   "!" "_BNG_"   "%" "_PCT_"   "&" "_AMP_"   "*" "_STR_"   "-" "_MIN_"
   "+" "_PLS_"   "=" "_EQS_"   "|" "_BAR_"   "<" "_LTS_"   ">" "_GTS_"
-  "?" "_QMK_"   })
+  "?" "_QMK_" })
                                                                 ; }}}1
 
 (def syms (join (keys sym-map)))
@@ -72,7 +65,7 @@
     (symbol?  x)                      (tr-sym  x)
     (string?  x)                      (tr-str  x)
     (number?  x)                      (tr-num  x)
-    :else (die "oops: unknown type") ))                         ; TODO
+    :else (_m/die "oops: unknown type") ))                      ; TODO
                                                                 ; }}}1
 
 ; --
@@ -96,7 +89,7 @@
       (if (and (symbol? x) (re-matches func-rx (str x)))
         (apply (pub-map x) xt)
         (_e/call (tr x) (map tr xt)) ))
-    (die "oops: empty list") ))                                 ; TODO
+    (_m/die "oops: empty list") ))                              ; TODO
                                                                 ; }}}1
 
 ; --
