@@ -1,7 +1,12 @@
 ; --                                                            ; {{{1
 ;
 ; File        : examples/overview.fnjs
+; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
 ; Date        : 2012-04-13
+;
+; Copyright   : Copyright (C) 2012  Felix C. Stegerman
+; Licence     : GPLv2 or EPLv1
+;
 ; Description : Overview of current (165f35c) features.
 ;
 ; --
