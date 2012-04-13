@@ -67,7 +67,9 @@
 (*def foo (*fn [x y z]                ; function
   (*op * x (*op + PI y z)) ))         ; operator
 
-(*def show (*fn [] (console.log arguments)))
+(*def show (*fn []
+  (console.log.apply console
+    (Array.prototype.slice.call arguments) )))
 
 (show (foo 1 2 3))
 
@@ -85,7 +87,7 @@
   y (*obj d 5, f (*fn [x] (*op + x 1)) )))
 
 (show (. my-obj-2 x a)                ; property access
-      (.d my-obj-2.x)
+      (.c my-obj-2.x)
       (.! my-obj-2.y f 99)            ; property call
       (.!f my-obj-2.y 512) )
 

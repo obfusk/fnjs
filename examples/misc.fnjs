@@ -2,24 +2,24 @@
 ; Date        : 2012-04-13
 ; Description : Testing ground.
 
-(*def PI 3.14159265)
+(*def PI+ 3.14159265)
 
-(console.log (*obj foo 99, "bar" -1 baz "!"))
-(console.log (*ary PI 42 37 "hi!"))
+(console.log (*obj foo- 99, "bar" -1 baz "!"))
+(console.log (*ary PI+ 42 37 "hi!"))
 (console.log (*if (*op === 1 1) "foo" "bar"))
-(console.log (*let [ n 10, m 2 ] (*op + m n PI)))
+(console.log (*let [ n+ 10, m (*op * 3 3) ] (*op + m n+ PI+)))
 
-(*def obj (*obj
-  foo (*ary 1 (*obj a (*obj d 42), b (*obj c 37)))
-  bar (*fn [a b c] (*op + PI a b c)) ))
+(*def obj- (*obj
+  foo (*ary 1 (*obj a- (*obj d 42), b (*obj c- 37)))
+  bar- (*fn [a b- c] (*op + PI+ a b- c)) ))
 
-(*let [ obj 0xDEADBEEF ] (console.log obj))
+(*let [ my-obj 0xDEADBEEF ] (console.log my-obj))
 
-(console.log (.a (*get obj "foo" 1) d))
-(console.log (. (*get obj "foo" 1) b c))
+(console.log (.a- (*get obj- "foo" 1) d))
+(console.log (. (*get obj- "foo" 1) b c-))
 
-(console.log (.!bar obj 1 2 3))
-(console.log (.! obj bar 4 5 6))
+(console.log (.!bar- obj- 1 2 3))
+(console.log (.! obj- bar- 4 5 6))
 
-(*for-ary [ x (*ary 1 2 3), y (*ary "foo" "bar") ]
-  (console.log "..." x y))
+(*for-ary [ x- (*ary 1 2 3), y- (*ary "foo" "bar") ]
+  (console.log "..." x- y-))
