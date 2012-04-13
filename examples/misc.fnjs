@@ -1,0 +1,11 @@
+(*def PI 3.14159265)
+
+(console.log (*obj foo 99, "bar" -1 baz "!"))
+(console.log (*ary PI 42 37 "hi!"))
+(console.log (*if (*op === 1 1) "foo" "bar"))
+(console.log (*let [ n 10 ] (*op + 1 n PI)))
+
+(*let [ PI 0xDEADBEEF ] (console.log PI))
+
+(*def obj (*obj foo (*ary 1 (*obj bar 42))))
+(console.log (.bar (*get obj "foo" 1)))

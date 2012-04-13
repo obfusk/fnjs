@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/misc.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-04-12
+; Date        : 2012-04-13
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1

@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/dsl.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-04-12
+; Date        : 2012-04-13
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -21,6 +21,10 @@
 
 ; --
 
+; coco: (x!)@(y!) --> (_r = x())[_k = y()] || (_r[_k] = {})
+
+; --
+
 (declare tr)
 (declare tr-list)
 
@@ -28,14 +32,14 @@
 
 ; --
 
-(defn *js   [& xs] xs)
+(defn *js   [& xs] (for [x xs] (if (string? x) x (tr x))))
 (defn *op   [o & args] (_e/operator o (mtr args)))
 (defn *def  [k v] (_e/var_ k (tr v)))                           ; TODO
 (defn *do   [& body] (_e/do_ (mtr body)))
 (defn *fn   [args & body] (_e/function args (mtr body)))
 
 (defn *let [vars & body]
-  (let [ vs (map #(apply var_ %1) (partition 2 vars)) ]         ; TODO
+  (let [ vs (for [ x (partition 2 vars) ] (apply var_ x)) ]     ; TODO
     (_e/do_ (concat vs (mtr body))) ))
 
 (defn *if       [c a b] (apply _e/if-expr (mtr [c a b])))
@@ -43,6 +47,8 @@
 
 (defn *ary [& xs] (apply _e/array (mtr xs)))
 (defn *obj [& xs] (apply _e/object (partition 2 (mtr xs))))     ; TODO
+
+(defn *get [x & ys] (_e/get_ x (mtr ys)))
 
 ; --
 
@@ -64,11 +70,11 @@
 (defn tr [x]                                                    ; {{{1
 ; (println (str " --> tr " (pr-str x) " -- (" (type x) ")"))
   (cond
-    (and (seq? x) (not (vector? x)))  (tr-list x)
+    (and (seq? x) (not (vector? x)))  (tr-list x)               ; TODO
     (symbol?  x)                      (tr-sym  x)
     (string?  x)                      (tr-str  x)
     (number?  x)                      (tr-num  x)
-    :else (_m/die "oops: unknown type") ))                      ; TODO
+    :else (_m/die (str "oops: unknown type " (type x))) ))      ; TODO
                                                                 ; }}}1
 
 ; --
@@ -76,22 +82,24 @@
 ; NB: order matters here !!!
 
 (def pub-map (ns-publics *ns*))
-
-(def funcs
-  (filter #(.startsWith (str %1) "*") (keys pub-map)) )
+(def funcs (filter #(.startsWith (str %1) "*") (keys pub-map)))
 
 (def func-rx
-  (re-pattern (join "|" (map #(str "\\Q" %1 "\\E") funcs))) )
+  (re-pattern (join "|" (for [x funcs] (str "\\Q" x "\\E")))) )
 
 ; --
 
 (defn tr-list [xs]                                              ; {{{1
   (if (seq xs)
-    (let [  x   (first  xs)
-            xt  (rest   xs) ]
-      (if (and (symbol? x) (re-matches func-rx (str x)))
-        (apply (pub-map x) xt)
-        (_e/call (tr x) (map tr xt)) ))
+    (let [  x (first xs), xt (rest xs)
+            f #(_e/call (tr x) (map tr xt)) ]
+      (if (symbol? x)
+        (let [ s (str x) ]
+          (cond
+            (re-matches func-rx s)  (apply (pub-map x) xt)
+            (.startsWith s ".")     [ (_e/group (map tr xt)) s ]
+            :else                   (f) ))
+        (f) ))
     (_m/die "oops: empty list") ))                              ; TODO
                                                                 ; }}}1
 
