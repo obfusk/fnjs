@@ -15,11 +15,14 @@
 ; --                                                            ; }}}1
 
 (ns fnjs.run
-  (:use [ clojure.java.shell :only [ sh ] ]) )
+  (:use [ clojure.java.shell  :only [ sh    ] ]
+        [ clojure.string      :only [ split ] ] ))
 
 ; --
 
-(defn uglify! [x] (sh "uglifyjs" "-b" "-i" "2" "-nm" :in x))
+(def uglify-cmd (split "uglifyjs -b -i 2 -nm -ns" #"\s+"))
+
+(defn uglify! [x] (apply sh (concat uglify-cmd [:in x])))
 (defn node!   [x] (sh "node" :in x))
 
 ; --

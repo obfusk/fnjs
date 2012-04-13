@@ -1,0 +1,14 @@
+; borrowed from coffeescript examples
+
+(*def http (require "http"))
+
+(*def server
+  (http.createServer
+    (*fn [ req res ]
+      (res.writeHeader 200 (*obj "Content-Type" "text/plain"))
+      (res.write "Hello, World!")
+      (res.end) )))
+
+(server.listen 3000)
+
+(console.log "Server running at http://localhost:3000/")

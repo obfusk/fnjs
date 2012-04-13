@@ -41,6 +41,9 @@
 (defn *if       [c a b] (apply _e/if-expr (mtr [c a b])))
 (defn *if-stmt  [c a b] (apply _e/if-stmt (mtr [c a b])))
 
+(defn *ary [& xs] (apply _e/array (mtr xs)))
+(defn *obj [& xs] (apply _e/object (partition 2 (mtr xs))))     ; TODO
+
 ; --
 
 (def sym-map {                                                  ; {{{1

@@ -20,8 +20,9 @@
 
 ; --
 
-(defn fnjs [body] (_e/build (_d/tr `(~'*do ~@body))))
-(defmacro fnjs* [& body] (fnjs body))
+(defn fnjs-nowrap [x]       (_e/build (_d/tr x)))
+(defn fnjs        [body]    (fnjs-nowrap `(~'*do ~@body)))
+(defmacro fnjs*   [& body]  (fnjs body))
 
 ; --
 
