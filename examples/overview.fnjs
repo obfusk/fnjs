@@ -1,0 +1,96 @@
+; --                                                            ; {{{1
+;
+; File        : examples/overview.fnjs
+; Date        : 2012-04-13
+; Description : Overview of (current) features.
+;
+; --
+;
+; This documentation is based on commit bb13371.
+;
+;
+; === Syntax ===
+;
+;   fnjs syntax is similar to clojure
+;
+;
+; === The most important differences ===
+;
+;   fnjs is not clojure! -- just nicer syntax for javascript.
+;   It also has no macros, only built-in forms like *fn, *let, ...
+;
+;
+; === Also ===
+;
+;   Extensibility of built-ins is planned for a later version.
+;   You can do compile-time metaprogramming if you use the fnjs
+;   library from a clojure program.
+;
+;
+; === The basics ===
+;
+;   As expected, code consists of lists.
+;   Most symbols simply map to indentifiers; foo.bar.baz works fine.
+;   Special chars in symbols are replaced; e.g. x-y becomes x_MIN_y;
+;   see src/dsl.clj for the mapping.
+;
+;   NB: numbers and strings currently output as they would in clojure.
+;   This could cause problems with differences between clojure and
+;   javascript in extended number formats and strings with special
+;   characters.  This needs to be investigated.  Simple numbers and
+;   strings should be fine.
+;
+;   NB: *def just maps to var and is therefore lexically scoped.
+;
+;   There is also syntax to access and call properties -- unlike
+;   foo.bar.baz (which is an identifier), these work with expressions:
+;     (. obj p1 p2 p3)  --->  obj.p1.p2.p3
+;     (.p obj)          --->  obj.p
+;     (.! obj p a b c)  --->  (obj.p a b c)
+;     (.!p obj ...)     --->  (obj.p ..c)
+;
+;   Examples follow.
+;
+; --                                                            ; }}}1
+
+(console.log "Hello, World")          ; call, symbol, string
+
+(*def PI 3.14159265)                  ; var; lexical scope
+
+(*def foo (*fn [x y z]                ; function
+  (console.log x (*op + PI y z))) )   ; operator
+
+(*def show (*fn [] (console.log arguments)))
+
+(show (*op + 1 2 3)                   ; javascript operators (!)
+      (*op === 1 1) )
+
+(*def my-ary (*ary 2 3 5 7 11 "...")) ; array
+(*def my-obj (*obj x 1, y 2, z 3))    ; object
+
+(*def my-obj-2 (*obj
+  x (*obj a 1, b (*ary 2 3), c 4)
+  y (*obj d 5, f (*fn [x] (*op + x 1)) )))
+
+(show (. my-obj-2 x a)                ; property access
+      (.d my-obj-2.x)
+      (.! my-obj-2.y f 99)            ; property call
+      (.!f my-obj-2.y 512) )
+
+(show (*get my-obj-2.x "b" 1))        ; indexing
+
+(*for-ary [ x (*ary 1 2 3)            ; for/map
+            y (*ary "foo" "bar") ]
+  (show "x=" x "y=" y))
+
+(*do  (show my-ary)                   ; do block; lexical scope;
+      (show my-obj) )                 ; files are wrapped in these
+
+(*let [ PI 42, x 37 ]                 ; let; lexical scope
+  (show PI x) )
+
+(show (*if (*op === 1 1) "eq" "ne"))  ; if/else
+
+(*js "console.log (\"Hello!\");")     ; javascript passthrough
+
+; --
