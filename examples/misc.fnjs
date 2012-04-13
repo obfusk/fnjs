@@ -1,3 +1,7 @@
+; File        : examples/misc.fnjs
+; Date        : 2012-04-13
+; Description : Testing ground.
+
 (*def PI 3.14159265)
 
 (console.log (*obj foo 99, "bar" -1 baz "!"))

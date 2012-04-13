@@ -1,12 +1,15 @@
-; adapted from coffeescript examples
+; File        : examples/webserver.fnjs
+; Date        : 2012-04-13
+; Description :
+;   Hello World web server; adapted from coffeescript examples;
+;   requires node.
 
 (*def http (require "http"))
-(*def server
-  (http.createServer
-    (*fn [ req res ]
-      (res.writeHeader 200 (*obj "Content-Type" "text/plain"))
-      (res.write "Hello, World!\nI'm fnjs.\n")
-      (res.end) )))
+(*def server (http.createServer
+  (*fn [ req res ]
+    (res.writeHeader 200 (*obj "Content-Type" "text/plain"))
+    (res.write "Hello, World!\nI'm fnjs.\n")
+    (res.end) )))
 
 (server.listen 3000)
-(console.log "server @ http://localhost:3000/ ...")
+(console.log "web server @ http://localhost:3000/ ...")

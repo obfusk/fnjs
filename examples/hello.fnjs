@@ -1,3 +1,7 @@
+; File        : examples/hello.fnjs
+; Date        : 2012-04-13
+; Description : Hello World in fnjs.
+
 (*def hello (*fn [x]
   (console.log (*op + "Hello, " x)) ))
 
