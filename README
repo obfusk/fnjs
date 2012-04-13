@@ -49,6 +49,12 @@ Version     : v0.0.0-dev
   it to point to (a copy of) jar/fnjs-x.y.z-dev-standalone.jar.
                                                                   }}}1
 
+=== Editing ===                                                   {{{1
+
+  I use vimclojure with this in my ~/.vimrc:
+  au BufNewFile,BufRead *.fnjs set filetype=clojure
+                                                                  }}}1
+
 === TODO ===                                                      {{{1
 
   * v0.1.0 - the basics
