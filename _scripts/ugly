@@ -1,0 +1,6 @@
+#!/bin/bash
+
+uglifyjs -b -i 2 -nm -ns "$@"
+echo
+
+# --
