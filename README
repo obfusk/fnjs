@@ -2,7 +2,7 @@
 
 File        : README
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-04-12
+Date        : 2012-04-13
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 Version     : v0.0.0-dev
@@ -27,8 +27,23 @@ Version     : v0.0.0-dev
 === Depends ===                                                   {{{1
 
   * leiningen   (build)
-  * uglify-js   (pretty)
+  * uglify-js   (prettify)
   * node        (run)
+                                                                  }}}1
+
+=== Usage ===                                                     {{{1
+
+  Get it at https://github.com/obfusk/fnjs.
+
+  $ ./_scripts/run file...                # compile to js on stdout
+  $ ./_scripts/run ... | ./_scripts/ugly  # make output pretty
+  $ ./_scripts/run ... | node             # run
+
+  $ ./_scripts/build                      # build jar
+  $ ./bin/fnjs file...                    # like run; uses jar
+
+  To install (of sorts), put bin/fnjs somewhere on your PATH and edit
+  it to point to (a copy of) jar/fnjs-x.y.z-dev-standalone.jar.
                                                                   }}}1
 
 === TODO ===                                                      {{{1
