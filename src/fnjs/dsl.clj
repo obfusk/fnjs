@@ -25,6 +25,15 @@
 
 ; --
 
+; (def DEBUG
+;   (set (filter (complement empty?)
+;     (_s/split (or (get (System/getenv) "DEBUG") "") #"\s+") )))
+;
+; (when-not (empty? DEBUG)
+;   (.println *err* (str "DEBUG: " (pr-str DEBUG))) )
+
+; --
+
 (declare tr)
 (declare tr-list)
 
@@ -52,6 +61,20 @@
 
 ; --
 
+(defn dot       [x & ys] (interpose "." (cons x ys)))
+(defn dot-bang  [x y & ys] (_e/call (group (dot x y)) ys))
+
+(defn for-ary [vs body]                                         ; {{{1
+  (if (seq vs)
+    (let [ [v e] (first vs), b (for-ary (rest vs) body) ]
+      (dot-bang (tr e) 'map (_e/function [v] b)) )
+    (mtr body) ))
+                                                                ; }}}1
+
+(defn *for-ary [vars & body] (for-ary (partition 2 vars) body))
+
+; --
+
 (def sym-map {                                                  ; {{{1
   "!" "_BNG_"   "%" "_PCT_"   "&" "_AMP_"   "*" "_STR_"   "-" "_MIN_"
   "+" "_PLS_"   "=" "_EQS_"   "|" "_BAR_"   "<" "_LTS_"   ">" "_GTS_"
@@ -68,7 +91,8 @@
 (defn tr-num  [x] x)                                            ; TODO
 
 (defn tr [x]                                                    ; {{{1
-; (println (str " --> tr " (pr-str x) " -- (" (type x) ")"))
+; (when (DEBUG "tr")
+;   (.println *err* (str "--> [tr] " (pr-str x) " -- " (type x))) )
   (cond
     (and (seq? x) (not (vector? x)))  (tr-list x)               ; TODO
     (symbol?  x)                      (tr-sym  x)
@@ -89,17 +113,27 @@
 
 ; --
 
+(defn swap-1-2 [xs] (let [ [x y & yt] xs ] (concat [y x] yt)))
+(defn sym-rest [n s] (symbol (.substring s n)))
+(defn ssr      [n s xt] (swap-1-2 (cons (sym-rest n s) xt)))
+
+(defn tr-special [x xt s f]                                     ; {{{1
+  (cond
+    (= x '.!)               (apply dot-bang (mtr xt))
+    (= x '.)                (apply dot      (mtr xt))
+    (.startsWith s ".!")    (apply dot-bang (mtr (ssr 2 s xt)))
+    (.startsWith s ".")     (apply dot      (mtr (ssr 1 s xt)))
+    (re-matches func-rx s)  (apply (pub-map x) xt)
+    :else                   (f) ))
+                                                                ; }}}1
+
 (defn tr-list [xs]                                              ; {{{1
+; (when (DEBUG "tr-list")
+;   (.println *err* (str "--> [tr-list ]" (pr-str xs))) )
   (if (seq xs)
     (let [  x (first xs), xt (rest xs)
-            f #(_e/call (tr x) (map tr xt)) ]
-      (if (symbol? x)
-        (let [ s (str x) ]
-          (cond
-            (re-matches func-rx s)  (apply (pub-map x) xt)
-            (.startsWith s ".")     [ (_e/group (map tr xt)) s ]
-            :else                   (f) ))
-        (f) ))
+            f #(_e/call (tr x) (mtr xt)) ]
+      (if (symbol? x) (tr-special x xt (str x) f) (f)) )
     (_m/die "oops: empty list") ))                              ; TODO
                                                                 ; }}}1
 

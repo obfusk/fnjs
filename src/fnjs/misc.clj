@@ -20,8 +20,6 @@
 
 (defn die [x] (throw (Exception. x)))
 
-(defn err-println [& xs] (binding [ *out* *err* ] (apply println xs)))
-
 (defn safe-read [x] (binding [ *read-eval* false ] (read-string x)))
 (defn read-file [f] (safe-read (str "(" (slurp f) "\n)")))
 

@@ -46,13 +46,10 @@
 
 (defn array [& xs]    [ "[" (list_ xs) "]" ])
 (defn var_  [k v]     [ "var" k "=" v ] )
-(defn call  [f args]  [ f (group (list_ args)) ])
+(defn call  [f args]  [ (group f (group (list_ args))) ])
 (defn get_  [x ys]    [ x (map index ys) ])
 
-(defn if-expr [c a b]
-  (let [ [c_ a_ b_] (map group [c a b]) ]
-    [ c_ "?" a_ ":" b_ ] ))
-
+(defn if-expr [c a b] [ c "?" a ":" b ])
 (defn if-stmt [c a b] [ "if" (group c) (block a) "else" (block b) ])
 
 (defn do-body [xs]

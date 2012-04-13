@@ -1,11 +1,11 @@
-; borrowed from coffeescript examples
+; adapted from coffeescript examples
 
 (*def http (require "http"))
 (*def server
   (http.createServer
     (*fn [ req res ]
       (res.writeHeader 200 (*obj "Content-Type" "text/plain"))
-      (res.write "Hello, fnjs!\n")
+      (res.write "Hello, World!\nI'm fnjs.\n")
       (res.end) )))
 
 (server.listen 3000)
