@@ -20,14 +20,10 @@
 
 (defn die [x] (throw (Exception. x)))
 
-(defn safe-read [x] (binding [ *read-eval* false ] (read-string x)))
-(defn read-file [f] (safe-read (str "(" (slurp f) "\n)")))
-
 (defn err-println [& xs] (binding [ *out* *err* ] (apply println xs)))
 
-(defn out-or-err [x f g]
-  (let [ o (:out x), e (:err x) ]
-    (if (empty? e) (f o) (g e o)) ))
+(defn safe-read [x] (binding [ *read-eval* false ] (read-string x)))
+(defn read-file [f] (safe-read (str "(" (slurp f) "\n)")))
 
 ; --
 
