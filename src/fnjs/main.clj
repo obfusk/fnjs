@@ -33,7 +33,7 @@
   (try
     (compile-files args)
   (catch Exception e
-    (do (_m/err-println "fnjs:" (.getMessage e)))
+    (do (.println *err* (str "fnjs: " (.getMessage e))))
         (System/exit 1) )))
                                                                 ; }}}1
 
