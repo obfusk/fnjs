@@ -15,9 +15,9 @@
 ; --                                                            ; }}}1
 
 (ns fnjs.dsl
-  (:use [ clojure.string :only [ join ] :as _s ]
-        [ fnjs.elem                     :as _e ]
-        [ fnjs.misc                     :as _m ] ))
+  (:use     [ clojure.string :only [ join ] :as _s ])
+  (:require [ fnjs.elem                     :as _e ]
+            [ fnjs.misc                     :as _m ] ))
 
 ; --
 
@@ -43,12 +43,12 @@
 
 (defn *js   [& xs] (for [x xs] (if (string? x) x (tr x))))
 (defn *op   [o & args] (_e/operator o (mtr args)))
-(defn *def  [k v] (_e/var_ k (tr v)))                           ; TODO
+(defn *def  [k v] (apply _e/var_ (mtr [k v])))                  ; TODO
 (defn *do   [& body] (_e/do_ (mtr body)))
-(defn *fn   [args & body] (_e/function args (mtr body)))
+(defn *fn   [args & body] (_e/function (mtr args) (mtr body)))
 
-(defn *let [vars & body]
-  (let [ vs (for [ x (partition 2 vars) ] (apply var_ x)) ]     ; TODO
+(defn *let [vars & body]                                        ; TODO
+  (let [ vs (for [ x (partition 2 vars) ] (apply _e/var_ (mtr x))) ]
     (_e/do_ (concat vs (mtr body))) ))
 
 (defn *if       [c a b] (apply _e/if-expr (mtr [c a b])))
@@ -57,17 +57,17 @@
 (defn *ary [& xs] (apply _e/array (mtr xs)))
 (defn *obj [& xs] (apply _e/object (partition 2 (mtr xs))))     ; TODO
 
-(defn *get [x & ys] (_e/get_ x (mtr ys)))
+(defn *get [x & ys] (_e/get_ (tr x) (mtr ys)))
 
 ; --
 
 (defn dot       [x & ys] (interpose "." (cons x ys)))
-(defn dot-bang  [x y & ys] (_e/call (group (dot x y)) ys))
+(defn dot-bang  [x y & ys] (_e/call (_e/group (dot x y)) ys))
 
 (defn for-ary [vs body]                                         ; {{{1
   (if (seq vs)
     (let [ [v e] (first vs), b (for-ary (rest vs) body) ]
-      (dot-bang (tr e) 'map (_e/function [v] b)) )
+      (dot-bang (tr e) 'map (_e/function [(tr v)] b)) )
     (mtr body) ))
                                                                 ; }}}1
 

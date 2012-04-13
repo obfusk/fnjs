@@ -16,9 +16,9 @@
 
 (ns fnjs.main
   (:gen-class)
-  (:use [ fnjs.core :as _c ]
-        [ fnjs.elem :as _e ]
-        [ fnjs.misc :as _m ] ))
+  (:require [ fnjs.core :as _c ]
+            [ fnjs.elem :as _e ]
+            [ fnjs.misc :as _m ] ))
 
 ; --
 

@@ -15,8 +15,8 @@
 ; --                                                            ; }}}1
 
 (ns fnjs.core
-  (:use [ fnjs.dsl  :as _d ]
-        [ fnjs.elem :as _e ] ))
+  (:require [ fnjs.dsl  :as _d ]
+            [ fnjs.elem :as _e ] ))
 
 ; --
 
