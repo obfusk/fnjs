@@ -17,6 +17,9 @@ Version     : v0.0.0-dev
   clojure DSL that produces javascript.  It's not a platform like
   clojurescript, but simply a nicer way to write javascript -- with
   clojure syntax.
+
+  See examples/overview.fnjs for an annotated example of the current
+  implementation.
                                                                   }}}1
 
 === License ===                                                   {{{1
