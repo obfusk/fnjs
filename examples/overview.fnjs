@@ -2,29 +2,36 @@
 ;
 ; File        : examples/overview.fnjs
 ; Date        : 2012-04-13
-; Description : Overview of current (bb13371) features.
+; Description : Overview of current (165f35c) features.
 ;
 ; --
 ;
-; === Syntax ===
+; To view the javascript generated from this file and/or run it:
+;
+;   $ ./_scripts/run examples/overview.fnjs | ./_scripts/ugly   # view
+;   $ ./_scripts/run examples/overview.fnjs | node              # run
+;
+; --
+;
+; === Syntax ===                                                  {{{2
 ;
 ;   fnjs syntax is similar to clojure.
+;                                                                 }}}2
 ;
-;
-; === The most important differences ===
+; === Differences ===                                             {{{2
 ;
 ;   fnjs is not clojure! -- just nicer syntax for javascript.
 ;   It also has no macros, only built-in forms like *fn, *let, ...
+;                                                                 }}}2
 ;
-;
-; === Also ===
+; === Also ===                                                    {{{2
 ;
 ;   Extensibility of built-ins is planned for a later version.
 ;   You can do compile-time metaprogramming if you use the fnjs
 ;   library from a clojure program.
+;                                                                 }}}2
 ;
-;
-; === The basics ===
+; === The basics ===                                              {{{2
 ;
 ;   Most symbols simply map to indentifiers; foo.bar.baz works fine.
 ;   Special chars in symbols are replaced; e.g. x-y becomes x_MIN_y;
@@ -44,8 +51,7 @@
 ;     (.p obj)          --->  obj.p
 ;     (.! obj p a b c)  --->  (obj.p a b c)
 ;     (.!p obj ...)     --->  (obj.p ..c)
-;
-;   Examples follow.
+;                                                                 }}}2
 ;
 ; --                                                            ; }}}1
 
