@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/core.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-04-13
+; Date        : 2012-05-07
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -21,8 +21,8 @@
 ; --
 
 (defn fnjs-nowrap [x]       (_e/build (_e/statement (_d/tr x)))) ; ???
-(defn fnjs        [body]    (fnjs-nowrap `(~'*do ~@body)))
-(defmacro fnjs*   [& body]  (fnjs body))
+(defn fnjs        [body]    (fnjs-nowrap `(~'do ~@body)))
+(defmacro fnjm    [& body]  (fnjs body))
 
 ; --
 
