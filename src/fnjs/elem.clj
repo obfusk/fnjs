@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/elem.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-04-13
+; Date        : 2012-05-07
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -20,9 +20,8 @@
 ; --
 
 (defn build [xs] (join " " (filter identity (flatten xs))))
-(defn list_ [xs] (interpose "," xs))
 
-; --
+(defn list_ [xs] (interpose "," xs))
 
 (def null   "null")
 (def true_  "true")
@@ -39,7 +38,7 @@
 (defn statement [x] [ x ";" ])
 
 (defn statements  [xs]      (map statement xs))
-(defn operator    [o args]  (group (interpose o args)))
+(defn binop       [o args]  (group (interpose o args)))
 
 (defn object [& xs]
   [ "{" (list_ (for [ [k v] xs ] [ k ":" v ])) "}" ] )
