@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/dsl.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-04-13
+; Date        : 2012-05-07
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -14,14 +14,16 @@
 ;
 ; --                                                            ; }}}1
 
+; === Notes ===                                                 ; {{{1
+;
+; coco: (x!)@(y!) --> (_r = x())[_k = y()] || (_r[_k] = {})
+;
+; --                                                            ; }}}1
+
 (ns fnjs.dsl
   (:use     [ clojure.string :only [ join ] :as _s ])
   (:require [ fnjs.elem                     :as _e ]
             [ fnjs.misc                     :as _m ] ))
-
-; --
-
-; coco: (x!)@(y!) --> (_r = x())[_k = y()] || (_r[_k] = {})
 
 ; --
 
@@ -34,6 +36,11 @@
 
 ; --
 
+(def _meta_ (atom {}))
+(defmacro defnjm [k v] `(swap! _meta_ #(assoc %1 '~k ~v)))
+
+; --
+
 (declare tr)
 (declare tr-list)
 
@@ -41,23 +48,23 @@
 
 ; --
 
-(defn *js   [& xs] (for [x xs] (if (string? x) x (tr x))))
-(defn *op   [o & args] (_e/operator o (mtr args)))
-(defn *def  [k v] (apply _e/var_ (mtr [k v])))                  ; TODO
-(defn *do   [& body] (_e/do_ (mtr body)))
-(defn *fn   [args & body] (_e/function (mtr args) (mtr body)))
+(defn tr_js   [& xs] (for [x xs] (if (string? x) x (tr x))))
+(defn tr_jop  [o & args] (_e/binop o (mtr args)))
+(defn tr_def  [k v] (apply _e/var_ (mtr [k v])))                ; TODO
+(defn tr_do   [& body] (_e/do_ (mtr body)))
+(defn tr_fn   [args & body] (_e/function (mtr args) (mtr body)))
 
-(defn *let [vars & body]                                        ; TODO
-  (let [ vs (for [ x (partition 2 vars) ] (apply _e/var_ (mtr x))) ]
+(defn tr_let [vars & body]                                      ; TODO
+  (let [ vs (for [ x (partition 2 vars) ] (apply tr_def mtr x)) ]
     (_e/do_ (concat vs (mtr body))) ))
 
-(defn *if       [c a b] (apply _e/if-expr (mtr [c a b])))
-(defn *if-stmt  [c a b] (apply _e/if-stmt (mtr [c a b])))
+(defn tr_if       [c a b] (apply _e/if-expr (mtr [c a b])))
+(defn tr_if-stmt  [c a b] (apply _e/if-stmt (mtr [c a b])))
 
-(defn *ary [& xs] (apply _e/array (mtr xs)))
-(defn *obj [& xs] (apply _e/object (partition 2 (mtr xs))))     ; TODO
+(defn tr_jary [& xs] (apply _e/array (mtr xs)))
+(defn tr_jobj [& xs] (apply _e/object (partition 2 (mtr xs))))  ; TODO
 
-(defn *get [x & ys] (_e/get_ (tr x) (mtr ys)))
+(defn tr_jget [x & ys] (_e/get_ (tr x) (mtr ys)))
 
 ; --
 
@@ -65,13 +72,31 @@
 (defn dot-bang  [x y & ys] (_e/call (_e/group (dot x y)) ys))
 
 (defn for-ary [vs body]                                         ; {{{1
-  (if (seq vs)
+  (if (seq vs)                                                  ; TODO
     (let [ [v e] (first vs), b (for-ary (rest vs) body) ]
       (dot-bang (tr e) 'map (_e/function [(tr v)] b)) )
     (mtr body) ))
                                                                 ; }}}1
 
-(defn *for-ary [vars & body] (for-ary (partition 2 vars) body))
+(defn tr_jfor [vars & body] (for-ary (partition 2 vars) body))
+
+; --
+
+; defnjm {                                                      ; {{{1
+
+(defnjm def   tr_def  )
+(defnjm do    tr_do   )
+(defnjm fn    tr_fn   )
+(defnjm if    tr_if   )
+(defnjm jary  tr_jary )
+(defnjm jary  tr_jary )
+(defnjm jget  tr_jget )
+(defnjm jobj  tr_jobj )
+(defnjm jop   tr_jop  )
+(defnjm js    tr_js   )
+(defnjm let   tr_let  )
+
+; } defnjm                                                      ; }}}1
 
 ; --
 
@@ -81,14 +106,13 @@
   "?" "_QMK_" })
                                                                 ; }}}1
 
-(def syms (join (keys sym-map)))
-(def sym-rx (re-pattern (str "[\\Q" syms "\\E]")))
+(def sym-rx (re-pattern (str "[\\Q" (join (keys sym-map)) "\\E]")))
 
-; --
-
-(defn tr-sym  [x] (_s/replace x sym-rx #(str (sym-map %1))))
+(defn tr-sym  [x] (_s/replace x sym-rx #(sym-map %1)))
 (defn tr-str  [x] (pr-str x))                                   ; TODO
 (defn tr-num  [x] x)                                            ; TODO
+
+; --
 
 (defn tr [x]                                                    ; {{{1
 ; (when (DEBUG "tr")
@@ -103,37 +127,28 @@
 
 ; --
 
-; NB: order matters here !!!
-
-(def pub-map (ns-publics *ns*))
-(def funcs (filter #(.startsWith (str %1) "*") (keys pub-map)))
-
-(def func-rx
-  (re-pattern (join "|" (for [x funcs] (str "\\Q" x "\\E")))) )
-
-; --
-
 (defn swap-1-2 [xs] (let [ [x y & yt] xs ] (concat [y x] yt)))
 (defn sym-rest [n s] (symbol (.substring s n)))
 (defn ssr      [n s xt] (swap-1-2 (cons (sym-rest n s) xt)))
 
-(defn tr-special [x xt s f]                                     ; {{{1
+(defn tr-special [x xt s call]                                  ; {{{1
   (cond
-    (= x '.!)               (apply dot-bang (mtr xt))
-    (= x '.)                (apply dot      (mtr xt))
-    (.startsWith s ".!")    (apply dot-bang (mtr (ssr 2 s xt)))
-    (.startsWith s ".")     (apply dot      (mtr (ssr 1 s xt)))
-    (re-matches func-rx s)  (apply (pub-map x) xt)
-    :else                   (f) ))
+    (= x '.!)             (apply dot-bang (mtr xt))
+    (= x '.)              (apply dot      (mtr xt))
+    (.startsWith s ".!")  (apply dot-bang (mtr (ssr 2 s xt)))
+    (.startsWith s ".")   (apply dot      (mtr (ssr 1 s xt)))
+    :else (if-let [ g (@_meta_ x) ] (apply g xt) (call)) ))
                                                                 ; }}}1
+
+; --
 
 (defn tr-list [xs]                                              ; {{{1
 ; (when (DEBUG "tr-list")
 ;   (.println *err* (str "--> [tr-list ]" (pr-str xs))) )
   (if (seq xs)
-    (let [  x (first xs), xt (rest xs)
-            f #(_e/call (tr x) (mtr xt)) ]
-      (if (symbol? x) (tr-special x xt (str x) f) (f)) )
+    (let [  x     (first xs), xt (rest xs)
+            call  #(_e/call (tr x) (mtr xt)) ]
+      (if (symbol? x) (tr-special x xt (str x) call) (call)) )
     (_m/die "oops: empty list") ))                              ; TODO
                                                                 ; }}}1
 
