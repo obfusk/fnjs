@@ -1,25 +1,25 @@
 ; File        : examples/misc.fnjs
-; Date        : 2012-04-13
+; Date        : 2012-05-07
 ; Description : Testing ground.
 
-(*def PI+ 3.14159265)
+(def PI+ 3.14159265)
 
-(console.log (*obj foo- 99, "bar" -1 baz "!"))
-(console.log (*ary PI+ 42 37 "hi!"))
-(console.log (*if (*op === 1 1) "foo" "bar"))
-(console.log (*let [ n+ 10, m (*op * 3 3) ] (*op + m n+ PI+)))
+(console.log (jobj foo- 99, "bar" -1 baz "!"))
+(console.log (jary PI+ 42 37 "hi!"))
+(console.log (if (jbop === 1 1) "foo" "bar"))
+(console.log (let [ n+ 10, m (jbop * 3 3) ] (jbop + m n+ PI+)))
 
-(*def obj- (*obj
-  foo (*ary 1 (*obj a- (*obj d 42), b (*obj c- 37)))
-  bar- (*fn [a b- c] (*op + PI+ a b- c)) ))
+(def obj- (jobj
+  foo (jary 1 (jobj a- (jobj d 42), b (jobj c- 37)))
+  bar- (fn [a b- c] (jbop + PI+ a b- c)) ))
 
-(*let [ my-obj 0xDEADBEEF ] (console.log my-obj))
+(let [ my-obj 0xDEADBEEF ] (console.log my-obj))
 
-(console.log (.a- (*get obj- "foo" 1) d))
-(console.log (. (*get obj- "foo" 1) b c-))
+(console.log (.a- (jget obj- "foo" 1) d))
+(console.log (. (jget obj- "foo" 1) b c-))
 
 (console.log (.!bar- obj- 1 2 3))
 (console.log (.! obj- bar- 4 5 6))
 
-(*for-ary [ x- (*ary 1 2 3), y- (*ary "foo" "bar") ]
+(jfor [ x- (jary 1 2 3), y- (jary "foo" "bar") ]
   (console.log "..." x- y-))

@@ -2,12 +2,12 @@
 ;
 ; File        : examples/overview.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-04-13
+; Date        : 2012-05-07
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
 ;
-; Description : Overview of current (165f35c) features.
+; Description : Overview of current (d81133b) features.
 ;
 ; --
 ;
@@ -26,14 +26,13 @@
 ; === Differences ===                                             {{{2
 ;
 ;   fnjs is not clojure! -- just nicer syntax for javascript.
-;   It also has no macros, only built-in forms like *fn, *let, ...
+;   It also has no macros, only built-in forms like fn, let, ...
 ;                                                                 }}}2
 ;
 ; === Also ===                                                    {{{2
 ;
-;   Extensibility of built-ins is planned for a later version.
 ;   You can do compile-time metaprogramming if you use the fnjs
-;   library from a clojure program.
+;   library from a clojure program; either via fnj[sm] or defnjm.
 ;                                                                 }}}2
 ;
 ; === The basics ===                                              {{{2
@@ -48,7 +47,7 @@
 ;   characters.  This needs to be investigated.  Simple numbers and
 ;   strings should be fine.
 ;
-;   NB: *def just maps to var and is therefore lexically scoped.
+;   NB: def just maps to var and is therefore lexically scoped.
 ;
 ;   There is also syntax to access and call properties -- unlike
 ;   foo.bar.baz (which is an identifier), these work with expressions:
@@ -62,46 +61,46 @@
 
 (console.log "Hello, World")          ; call, symbol, string
 
-(*def PI 3.14159265)                  ; var; lexical scope
+(def PI 3.14159265)                   ; var; lexical scope
 
-(*def foo (*fn [x y z]                ; function
-  (*op * x (*op + PI y z)) ))         ; operator
+(def foo (fn [x y z]                  ; function
+  (jbop * x (jbop + PI y z)) ))       ; binary operator
 
-(*def show (*fn []
+(def show (fn []
   (console.log.apply console
     (Array.prototype.slice.call arguments) )))
 
 (show (foo 1 2 3))
 
-(show (*op + 1 2 3)                   ; javascript operators (!)
-      (*op === 1 1) )
+(show (jbop + 1 2 3)                  ; javascript operators (!)
+      (jbop === 1 1) )
 
-(*def my-ary (*ary 2 3 5 7 11 "...")) ; array
-(*def my-obj (*obj x 1, y 2, z 3))    ; object
+(def my-ary (jary 2 3 5 7 11 "..."))  ; array
+(def my-obj (jobj x 1, y 2, z 3))     ; object
 
-(*do  (show my-ary)                   ; do block; lexical scope;
-      (show my-obj) )                 ; files are wrapped in these
+(do (show my-ary)                     ; do block; lexical scope;
+    (show my-obj) )                   ; files are wrapped in these
 
-(*def my-obj-2 (*obj
-  x (*obj a 1, b (*ary 2 3), c 4)
-  y (*obj d 5, f (*fn [x] (*op + x 1)) )))
+(def my-obj-2 (jobj
+  x (jobj a 1, b (jary 2 3), c 4)
+  y (jobj d 5, f (fn [x] (jbop + x 1)) )))
 
 (show (. my-obj-2 x a)                ; property access
       (.c my-obj-2.x)
       (.! my-obj-2.y f 99)            ; property call
       (.!f my-obj-2.y 512) )
 
-(show (*get my-obj-2.x "b" 1))        ; indexing
+(show (jget my-obj-2.x "b" 1))        ; indexing
 
-(*for-ary [ x (*ary 1 2 3)            ; for/map
-            y (*ary "foo" "bar") ]
+(jfor [ x (jary 1 2 3)                ; for/map
+        y (jary "foo" "bar") ]
   (show "x=" x "y=" y))
 
-(*let [ PI 42, x 37 ]                 ; let; lexical scope
+(let [ PI 42, x 37 ]                  ; let; lexical scope
   (show PI x) )
 
-(show (*if (*op === 1 1) "eq" "ne"))  ; if/else
+(show (if (jbop === 1 1) "eq" "ne"))  ; if/else
 
-(*js "console.log (\"JS!\")")         ; javascript passthrough
+(js "console.log (\"JS!\")")          ; javascript passthrough
 
 ; --
