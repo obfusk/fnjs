@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/main.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-04-13
+; Date        : 2012-05-07
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -17,7 +17,7 @@
 (ns fnjs.main
   (:gen-class)
   (:require [ fnjs.core :as _c ]
-            [ fnjs.elem :as _e ]
+;           [ fnjs.elem :as _e ]
             [ fnjs.misc :as _m ] ))
 
 ; --
