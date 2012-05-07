@@ -49,13 +49,13 @@
 ; --
 
 (defn tr_js   [& xs] (for [x xs] (if (string? x) x (tr x))))
-(defn tr_jop  [o & args] (_e/binop o (mtr args)))
+(defn tr_jbop [o & args] (_e/binop o (mtr args)))
 (defn tr_def  [k v] (apply _e/var_ (mtr [k v])))                ; TODO
 (defn tr_do   [& body] (_e/do_ (mtr body)))
 (defn tr_fn   [args & body] (_e/function (mtr args) (mtr body)))
 
 (defn tr_let [vars & body]                                      ; TODO
-  (let [ vs (for [ x (partition 2 vars) ] (apply tr_def mtr x)) ]
+  (let [ vs (for [ x (partition 2 vars) ] (apply tr_def x)) ]
     (_e/do_ (concat vs (mtr body))) ))
 
 (defn tr_if       [c a b] (apply _e/if-expr (mtr [c a b])))
@@ -89,10 +89,10 @@
 (defnjm fn    tr_fn   )
 (defnjm if    tr_if   )
 (defnjm jary  tr_jary )
-(defnjm jary  tr_jary )
+(defnjm jbop  tr_jbop )
+(defnjm jfor  tr_jfor )
 (defnjm jget  tr_jget )
 (defnjm jobj  tr_jobj )
-(defnjm jop   tr_jop  )
 (defnjm js    tr_js   )
 (defnjm let   tr_let  )
 
@@ -122,7 +122,8 @@
     (symbol?  x)                      (tr-sym  x)
     (string?  x)                      (tr-str  x)
     (number?  x)                      (tr-num  x)
-    :else (_m/die (str "oops: unknown type " (type x))) ))      ; TODO
+    :else (_m/die (str  "oops: unknown type " (type x)
+                        " -- " (pr-str x) ))))                  ; TODO
                                                                 ; }}}1
 
 ; --
@@ -144,7 +145,7 @@
 
 (defn tr-list [xs]                                              ; {{{1
 ; (when (DEBUG "tr-list")
-;   (.println *err* (str "--> [tr-list ]" (pr-str xs))) )
+;   (.println *err* (str "--> [tr-list] " (pr-str xs))) )
   (if (seq xs)
     (let [  x     (first xs), xt (rest xs)
             call  #(_e/call (tr x) (mtr xt)) ]
