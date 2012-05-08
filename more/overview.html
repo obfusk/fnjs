@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <title>examples/overview.fnjs</title>
+
+    <link rel="stylesheet" href="cm/codemirror.css">
+    <script src="cm/codemirror.js"></script>
+    <script src="cm/runmode.js"></script>
+    <script src="cm/clojure.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+    <style>
+      #output { background-color: #eee; }
+    </style>
+    <script>
+      $(function () {
+        var url = "https://raw.github.com/obfusk/fnjs/master/examples/overview.fnjs";
+        $.get (url, function (data) {
+          CodeMirror.runMode (
+            data, "text/x-clojure", $('#output')[0]
+          );
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <pre id="output" class="cm-s-default"></pre>
+  </body>
+</html>
