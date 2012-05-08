@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/elem.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-05-07
+; Date        : 2012-05-08
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -51,15 +51,19 @@
 (defn if-expr [c a b] [ c "?" a ":" b ])
 (defn if-stmt [c a b] [ "if" (group c) (block a) "else" (block b) ])
 
-(defn do-body [xs]
+(defn do-body [xs ret?]
   (let [  ys  (statements (or (seq xs) [ null ]))
           yi  (butlast ys), y (last ys) ]
-    [ yi (return y) ] ))
+    [ yi (if ret? (return y) y) ] ))
 
-(defn function [args body]
-  (group "function" (group (list_ args)) (block (do-body body))) )
+(defn function
+  ([args body]      (function args body true))
+  ([args body ret?] (group "function" (group (list_ args))
+                      (block (do-body body ret?)) )))
 
-(defn do_ [xs] (call (function [] xs) []) )
+(defn do_
+  ([xs]       (do_ xs true))
+  ([xs ret?]  (call (function [] xs ret?) [])) )
 
 ; --
 
