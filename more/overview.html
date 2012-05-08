@@ -14,10 +14,14 @@
     </style>
     <script>
       $(function () {
-        var url = "https://raw.github.com/obfusk/fnjs/master/examples/overview.fnjs";
+        var url   = 'overview-7fedf88.fnjs';
+        var link  = 'https://github.com/obfusk/fnjs/blob/master/examples/overview.fnjs';
+        var hdr   = '; NB: this file may be outdated; the latest ' +
+                    'version can be found at\n; ' + link + '.\n';
+
         $.get (url, function (data) {
           CodeMirror.runMode (
-            data, "text/x-clojure", $('#output')[0]
+            hdr + '\n' + data, "text/x-clojure", $('#output')[0]
           );
         });
       });
