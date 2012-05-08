@@ -2,12 +2,12 @@
 ;
 ; File        : examples/overview.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-05-07
+; Date        : 2012-05-08
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
 ;
-; Description : Overview of current (d81133b) features.
+; Description : Overview of current (TODO) features.
 ;
 ; --
 ;
@@ -48,6 +48,9 @@
 ;   strings should be fine.
 ;
 ;   NB: def just maps to var and is therefore lexically scoped.
+;   NB: this also means a def is not allowed at the end of a fn or do,
+;   because it is not an expression and cannot be used in a return
+;   statement (and fn/do return their last expression).
 ;
 ;   There is also syntax to access and call properties -- unlike
 ;   foo.bar.baz (which is an identifier), these work with expressions:
@@ -66,9 +69,9 @@
 (def foo (fn [x y z]                  ; function
   (jbop * x (jbop + PI y z)) ))       ; binary operator
 
-(def show (fn []
+(defn show []                         ; defn
   (console.log.apply console
-    (Array.prototype.slice.call arguments) )))
+    (Array.prototype.slice.call arguments) ))
 
 (show (foo 1 2 3))
 
