@@ -5,29 +5,43 @@
 
     <link rel="stylesheet" href="cm/codemirror.css">
     <script src="cm/codemirror.js"></script>
-    <script src="cm/runmode.js"></script>
     <script src="cm/clojure.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
     <style>
-      #output { background-color: #eee; }
+      #output {
+        background-color: #eee;
+      }
+      .CodeMirror-scroll {
+        height      : auto;
+        overflow-y  : hidden;
+        overflow-x  : auto;
+        width       : 100%
+      }
     </style>
     <script>
       $(function () {
         var url   = 'overview-7fedf88.fnjs';
         var link  = 'https://github.com/obfusk/fnjs/blob/master/examples/overview.fnjs';
-        var hdr   = '; NB: this file may be outdated; the latest ' +
-                    'version can be found at\n; ' + link + '.\n';
+
+        $('#link').attr ('href', link).text (link);
 
         $.get (url, function (data) {
-          CodeMirror.runMode (
-            hdr + '\n' + data, "text/x-clojure", $('#output')[0]
+          CodeMirror (
+            $('#output')[0], {
+              value: data, mode: 'clojure',
+              lineNumbers: true, readOnly: 'nocursor'
+            }
           );
         });
       });
     </script>
   </head>
   <body>
-    <pre id="output" class="cm-s-default"></pre>
+    <p>
+      NB: this file may be outdated; the latest version can be found
+      at <a id="link"></a>.
+    </p>
+    <div id="output"></div>
   </body>
 </html>
