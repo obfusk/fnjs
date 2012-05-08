@@ -1,5 +1,5 @@
 ; File        : examples/misc.fnjs
-; Date        : 2012-05-07
+; Date        : 2012-05-08
 ; Description : Testing ground.
 
 (def PI+ 3.14159265)
@@ -23,3 +23,12 @@
 
 (jfor [ x- (jary 1 2 3), y- (jary "foo" "bar") ]
   (console.log "..." x- y-))
+
+(defn foo [x y] (console.log "x=" x "y=" y))
+
+(foo "hi" 1337)
+
+(if-let [ x (jbop * 1 10) ] (console.log "x=" x)
+                            (console.log "false") )
+
+(def x nil)
