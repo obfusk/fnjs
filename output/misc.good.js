@@ -38,15 +38,15 @@
       return console.log("...", x_MIN_, y_MIN_);
     });
   });
-  var foo = function(x, y) {
-    return console.log("x=", x, "y=", y);
+  var foo_STR_ = function(x, y_PLS_) {
+    return console.log("x=", x, "y=", y_PLS_);
   };
-  foo("hi", 1337);
+  foo_STR_("hi", 1337);
   (function() {
     var temp__191__auto__ = 1 * 10;
     return temp__191__auto__ ? function() {
-      var x = temp__191__auto__;
-      return console.log("x=", x);
+      var z_MIN_ = temp__191__auto__;
+      return console.log("z=", z_MIN_);
     }() : console.log("false");
   })();
   var x = null;
