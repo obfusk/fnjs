@@ -1,12 +1,12 @@
 #!/bin/bash
 
-d="$( date +'%Y%m%dT%H%M%S' )"
+e=out."$( date +'%Y%m%dT%H%M%S' )"
 
 for x in examples/*.fnjs; do
-  e=.out."$d"
+  b="$( basename "$x" .fnjs )"
 
-  ./_scripts/urun "$x" > output/"$x$e"
-  diff -Naur output/"$x"{.good,"$e"}
+  ./_scripts/urun "$x" > output/"$b.$e"
+  diff -Naur output/"$b".{good,"$e"}
 done
 
 # --
