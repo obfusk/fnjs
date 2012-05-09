@@ -1,13 +1,13 @@
 #!/bin/bash
 
-e=out."$( date +'%Y%m%dT%H%M%S' )"
+e=test."$( date +'%Y%m%dT%H%M%S' )".js
 
 for x in examples/*.fnjs; do
   b="$( basename "$x" .fnjs )"
 
   echo "processing $x ..." >&2
   ./_scripts/urun "$x" > output/"$b.$e"
-  diff -Naur output/"$b".{good,"$e"}
+  diff -Naur output/"$b".{good.js,"$e"}
 done
 
 # --
