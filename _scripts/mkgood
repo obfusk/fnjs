@@ -3,6 +3,7 @@
 for x in examples/*.fnjs; do
   b="$( basename "$x" .fnjs )"
 
+  echo "processing $x ..."
   ./_scripts/urun "$x" > output/"$b".good
 done
 
