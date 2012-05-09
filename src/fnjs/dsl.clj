@@ -14,12 +14,6 @@
 ;
 ; --                                                            ; }}}1
 
-; === Notes ===                                                 ; {{{1
-;
-; coco: (x!)@(y!) --> (_r = x())[_k = y()] || (_r[_k] = {})
-;
-; --                                                            ; }}}1
-
 (ns fnjs.dsl
   (:use     [ clojure.string :only [ join ] :as _s ])
   (:require [ fnjs.elem                     :as _e ]
@@ -62,18 +56,12 @@
 (defn tr_do   [& body] (_e/do_ (mtr body)))
 (defn tr_fn   [args & body] (_e/function (mtr args) (mtr body)))
 
-(defn tr_defn [k args & body]
-  (_e/var_ (tr k) (apply tr_fn args body)) )
-
 (defn tr_let [vars & body]                                      ; TODO
   (let [ vs (for [ x (partition 2 vars) ] (apply tr_def x)) ]
     (_e/do_ (concat vs (mtr body))) ))
 
 (defn tr_if       [c a b] (apply _e/if-expr (mtr [c a b])))
 (defn tr_if-stmt  [c a b] (apply _e/if-stmt (mtr [c a b])))
-
-(defn tr_if-let [[k e] t f]
-  (tr `(~'let [temp# ~e] (~'if temp# (~'let [~k temp#] ~t) ~f))) )
 
 (defn tr_jary [& xs] (apply _e/array (mtr xs)))
 (defn tr_jobj [& xs] (apply _e/object (partition 2 (mtr xs))))  ; TODO
@@ -99,11 +87,9 @@
 ; defnjm {                                                      ; {{{1
 
 (defnjm def     tr_def    )
-(defnjm defn    tr_defn   )
 (defnjm do      tr_do     )
 (defnjm fn      tr_fn     )
 (defnjm if      tr_if     )
-(defnjm if-let  tr_if-let )
 (defnjm jary    tr_jary   )
 (defnjm jbop    tr_jbop   )
 (defnjm jfor    tr_jfor   )
@@ -111,7 +97,6 @@
 (defnjm jobj    tr_jobj   )
 (defnjm js      tr_js     )
 (defnjm let     tr_let    )
-
 
 ; } defnjm                                                      ; }}}1
 
