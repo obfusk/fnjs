@@ -107,3 +107,12 @@
 (js "console.log (\"JS!\")")          ; javascript passthrough
 
 ; --
+
+(show nil)                            ; nil is null
+
+(if-let [ x (jbop * PI PI) ]          ; if-let
+  (show "x=" x) (show "false"))
+
+; ...
+
+; --
