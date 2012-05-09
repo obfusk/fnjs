@@ -2,6 +2,7 @@
 *.swp
 
 /jar/
+/output/*.out.[0-9]*
 
 # lein {
 
