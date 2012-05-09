@@ -1,5 +1,5 @@
 #!/bin/bash
 
-./_scripts/run "$@" | ./_scripts/ugly
+./bin/fnjs "$@" | ./_scripts/ugly
 
 # --
