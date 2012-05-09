@@ -21,8 +21,8 @@
 ; --                                                            ; }}}1
 
 (ns fnjs.more
-  (:require [ fnjs.dsl  :only [ defnjm tr mtr ] :as _d ]
-            [ fnjs.elem                         :as _e ] ))
+  (:use     [ fnjs.dsl  :only [ defnjm tr mtr ] :as _d ])
+  (:require [ fnjs.elem                         :as _e ]) )
 
 ; --
 

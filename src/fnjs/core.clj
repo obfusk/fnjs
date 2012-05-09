@@ -16,7 +16,8 @@
 
 (ns fnjs.core
   (:require [ fnjs.dsl  :as _d ]
-            [ fnjs.elem :as _e ] ))
+            [ fnjs.elem :as _e ]
+            [ fnjs.more :as _m ] ))
 
 ; --
 
