@@ -1,0 +1,18 @@
+Hello, World
+8.14159265
+6 true
+[ 2, 3, 5, 7, 11, '...' ]
+{ x: 1, y: 2, z: 3 }
+1 4 100 513
+3
+x= 1 y= foo
+x= 1 y= bar
+x= 2 y= foo
+x= 2 y= bar
+x= 3 y= foo
+x= 3 y= bar
+42 37
+eq
+JS!
+null
+x= 9.869604378534024
