@@ -24,11 +24,11 @@
 (jfor [ x- (jary 1 2 3), y- (jary "foo" "bar") ]
   (console.log "..." x- y-))
 
-(defn foo [x y] (console.log "x=" x "y=" y))
+(defn foo* [x y+] (console.log "x=" x "y=" y+))
 
-(foo "hi" 1337)
+(foo* "hi" 1337)
 
-(if-let [ x (jbop * 1 10) ] (console.log "x=" x)
-                            (console.log "false") )
+(if-let [ z- (jbop * 1 10) ]  (console.log "z=" z-)
+                              (console.log "false") )
 
 (def x nil)
