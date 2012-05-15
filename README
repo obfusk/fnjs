@@ -2,10 +2,10 @@
 
 File        : README
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-05-07
+Date        : 2012-05-15
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
-Version     : v0.1.1
+Version     : v0.1.2
 
 --                                                                }}}1
 
@@ -22,6 +22,48 @@ Version     : v0.1.1
   implementation.
                                                                   }}}1
 
+=== Roadmap ===                                                   {{{1
+
+  v0.[1-8].X will probably see many changes.  I'll try to keep the
+  apis stable, but no promises.  Things may change; and break existing
+  code.  Starting with v0.9.0, point releases should always be
+  backward-compatible; and hopefully things will have stabilised to
+  the extent that no major backward-incompatible changes will occur at
+  all, only incremental improvements.
+
+
+  === Branches ===                                                {{{2
+
+    master  stable version
+    next    working dev version; will be next master
+    dev     dev version -- may be broken; will be next dev
+                                                                  }}}2
+
+  === v0.1.X ===                                                  {{{2
+
+    [X] most of the basics
+
+    [X] v0.1.0  the basics
+    [X] v0.1.1  a small fix
+    [X] v0.1.2  roadmap
+                                                                  }}}2
+
+  === v0.2.X - v0.8.X ===                                         {{{2
+
+    [ ] more features
+    [ ] libraries
+    [ ] test everything
+    [ ] improve things
+                                                                  }}}2
+
+  === v0.9.X ===                                                  {{{2
+
+    [ ] first stable version
+                                                                  }}}2
+
+  ...
+                                                                  }}}1
+
 === License ===                                                   {{{1
 
   GPLv2 [1] or EPLv1 [2].
@@ -31,7 +73,7 @@ Version     : v0.1.1
 
   * leiningen   (build)
   * uglify-js   (prettify)
-  * node        (run)
+  * node        (run js)
                                                                   }}}1
 
 === Usage ===                                                     {{{1
@@ -53,14 +95,6 @@ Version     : v0.1.1
 
   I use vimclojure with this in my ~/.vimrc:
   au BufNewFile,BufRead *.fnjs set filetype=clojure
-                                                                  }}}1
-
-=== TODO ===                                                      {{{1
-
-  * v0.1.0 - the basics
-  * v0.2.0 - lang + core
-  * v0.3.0 - more libs
-  * ...
                                                                   }}}1
 
 === References ===                                                {{{1

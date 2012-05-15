@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+  echo 'Usage: set-vsn <vsn>' >&2
+  exit 1
+fi
+
+# --
+
+vsn="$1"
+
+echo 'README ...'
+sed -i 's!(Version *: *v)(.*)$!\1'"$vsn"'!' README
+
+# ...
+
+# --
