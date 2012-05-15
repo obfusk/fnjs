@@ -10,8 +10,13 @@ fi
 vsn="$1"
 
 echo 'README ...'
-sed -i 's!(Version *: *v)(.*)$!\1'"$vsn"'!' README
+sed -E -i '~' 's!(^Version *: *v)(.*)$!\1'"$vsn"'!' README
 
-# ...
+echo 'project.clj ...'
+sed -E -i '~' 's!(^\(defproject +fnjs +")(.*)(")( *)$!\1'"$vsn"'\3!' \
+  project.clj
+
+echo 'bin/fnjs ...'
+sed -E -i '~' 's!(^vsn='\'')(.*)('\'')( *)$!\1'"$vsn"'\3!' bin/fnjs
 
 # --
