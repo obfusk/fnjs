@@ -2,4 +2,4 @@
   :description  "fnjs - functional javascript"
   :source-path  "src"
   :main         fnjs.main
-  :dependencies [ [ org.clojure/clojure "1.3.0" ] ] )
+  :dependencies [ [ org.clojure/clojure "1.4.0" ] ] )
