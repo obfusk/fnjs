@@ -43,11 +43,18 @@
   };
   foo_STR_("hi", 1337);
   (function() {
-    var temp__195__auto__ = 1 * 10;
-    return temp__195__auto__ ? function() {
-      var z_MIN_ = temp__195__auto__;
+    var temp__197__auto__ = 1 * 10;
+    return temp__197__auto__ ? function() {
+      var z_MIN_ = temp__197__auto__;
       return console.log("z=", z_MIN_);
     }() : console.log("false");
   })();
+  var f = function(p1__2_HSH_, p2__1_HSH_) {
+    return p2__1_HSH_ - p1__2_HSH_;
+  };
+  var g = function(p1__4_HSH_, p2__3_HSH_) {
+    return p2__3_HSH_ + p1__4_HSH_;
+  };
+  console.log(f(3, g(11, 2)));
   var x = null;
 })();

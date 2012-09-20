@@ -79,6 +79,7 @@
 (defnjm def     tr_def    )
 (defnjm do      tr_do     )
 (defnjm fn      tr_fn     )
+(defnjm fn*     tr_fn     )
 (defnjm if      tr_if     )
 (defnjm jary    tr_jary   )
 (defnjm juop    tr_juop   )
@@ -96,7 +97,7 @@
 (def sym-map {                                                  ; {{{1
   "!" "_BNG_"   "%" "_PCT_"   "&" "_AMP_"   "*" "_STR_"   "-" "_MIN_"
   "+" "_PLS_"   "=" "_EQS_"   "|" "_BAR_"   "<" "_LTS_"   ">" "_GTS_"
-  "?" "_QMK_" })
+  "?" "_QMK_"   "#" "_HSH_" })
                                                                 ; }}}1
 
 (def sym-rx (re-pattern (str "[\\Q" (join (keys sym-map)) "\\E]")))

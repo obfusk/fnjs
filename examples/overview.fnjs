@@ -87,7 +87,7 @@
 
 (def my-obj-2 (jobj
   x (jobj a 1, b (jary 2 3), c 4)
-  y (jobj d 5, f (fn [x] (jbop + x 1)) )))
+  y (jobj d 5, f #(jbop + % 1)) ))
 
 (show (. my-obj-2 x a)                ; property access
       (.c my-obj-2.x)

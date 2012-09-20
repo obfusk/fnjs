@@ -1,5 +1,5 @@
 ; File        : examples/misc.fnjs
-; Date        : 2012-05-08
+; Date        : 2012-09-20
 ; Description : Testing ground.
 
 (def PI+ 3.14159265)
@@ -30,5 +30,9 @@
 
 (if-let [ z- (jbop * 1 10) ]  (console.log "z=" z-)
                               (console.log "false") )
+
+(def f #(jbop - %2 %1))
+(def g #(jbop + %2 %1))
+(console.log (f 3 (g 11 2)))
 
 (def x nil)

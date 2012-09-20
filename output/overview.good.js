@@ -27,8 +27,8 @@
     },
     y: {
       d: 5,
-      f: function(x) {
-        return x + 1;
+      f: function(p1__1_HSH_) {
+        return p1__1_HSH_ + 1;
       }
     }
   };
@@ -48,9 +48,9 @@
   console.log("JS!");
   show(null);
   (function() {
-    var temp__195__auto__ = PI * PI;
-    return temp__195__auto__ ? function() {
-      var x = temp__195__auto__;
+    var temp__197__auto__ = PI * PI;
+    return temp__197__auto__ ? function() {
+      var x = temp__197__auto__;
       return show("x=", x);
     }() : show("false");
   })();
