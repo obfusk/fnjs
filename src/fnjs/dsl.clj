@@ -40,6 +40,7 @@
 ; --
 
 (defn tr_js   [& xs] (for [x xs] (if (string? x) x (tr x))))
+(defn tr_juop [o x] (_e/unop o (tr x)))
 (defn tr_jbop [o & args] (_e/binop o (mtr args)))
 (defn tr_def  [k v] (apply _e/var_ (mtr [k v])))                ; TODO
 (defn tr_do   [& body] (_e/do_ (mtr body)))
@@ -80,6 +81,7 @@
 (defnjm fn      tr_fn     )
 (defnjm if      tr_if     )
 (defnjm jary    tr_jary   )
+(defnjm juop    tr_juop   )
 (defnjm jbop    tr_jbop   )
 (defnjm jfor    tr_jfor   )
 (defnjm jget    tr_jget   )

@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/elem.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-05-08
+; Date        : 2012-09-20
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -38,6 +38,7 @@
 (defn statement [x] [ x ";" ])
 
 (defn statements  [xs]      (map statement xs))
+(defn unop        [o x]     (group [o x]))
 (defn binop       [o args]  (group (interpose o args)))
 
 (defn object [& xs]
