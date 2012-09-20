@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+  echo 'Usage: set-vsn <vsn>' >&2
+  exit 1
+fi
+
+if [ "$( uname )" == Darwin ]; then
+  sed='sed -E'
+else
+  sed='sed -r'
+fi
+
+# --
+
+vsn="$1"
+
+echo 'README ...'
+$sed -i\~ 's!(^Version *: *v)(.*)$!\1'"$vsn"'!' README
+
+echo 'project.clj ...'
+$sed -i\~ 's!(^\(defproject +fnjs +")(.*)(")( *)$!\1'"$vsn"'\3!' \
+  project.clj
+
+echo 'bin/fnjs ...'
+$sed -i\~ 's!(^vsn='\'')(.*)('\'')( *)$!\1'"$vsn"'\3!' bin/fnjs
+
+# --
