@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/dsl.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-05-08
+; Date        : 2012-09-20
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -18,17 +18,6 @@
   (:use     [ clojure.string :only [ join ] :as _s ])
   (:require [ fnjs.elem                     :as _e ]
             [ fnjs.misc                     :as _m ] ))
-
-; --
-
-; (def DEBUG (seq (get (System/getenv) "DEBUG_FNJS")))
-
-; (def DEBUG
-;   (set (filter (complement empty?)
-;     (_s/split (or (get (System/getenv) "DEBUG") "") #"\s+") )))
-;
-; (when-not (empty? DEBUG)
-;   (.println *err* (str "DEBUG: " (pr-str DEBUG))) )
 
 ; --
 
@@ -117,9 +106,8 @@
 ; --
 
 (defn tr [x]                                                    ; {{{1
-; (when DEBUG ; "tr")
-;   (.println *err* (str  "-[1]-> " (pr-str x)
-;                         " isa " (pr-str (type x)))) )
+; (.println *err* (str  "-[1]-> " (pr-str x)
+;                       " isa " (pr-str (type x)) ))
   (cond
     (and (seq? x) (not (vector? x)))  (tr-list x)               ; TODO
     (symbol?  x)                      (tr-sym  x)
@@ -148,8 +136,7 @@
 ; --
 
 (defn tr-list [xs]                                              ; {{{1
-; (when DEBUG ; "tr-list")
-;   (.println *err* (str "-[2]-> " (pr-str xs))) )
+; (.println *err* (str "-[2]-> " (pr-str xs)))
   (if (seq xs)
     (let [  x     (first xs), xt (rest xs)
             call  #(_e/call (tr x) (mtr xt)) ]
