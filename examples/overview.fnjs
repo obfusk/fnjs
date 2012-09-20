@@ -2,7 +2,7 @@
 ;
 ; File        : examples/overview.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-05-08
+; Date        : 2012-09-20
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -76,7 +76,8 @@
 (show (foo 1 2 3))
 
 (show (jbop + 1 2 3)                  ; javascript operators (!)
-      (jbop === 1 1) )
+      (jbop === 1 1)
+      (juop - 42) )
 
 (def my-ary (jary 2 3 5 7 11 "..."))  ; array
 (def my-obj (jobj x 1, y 2, z 3))     ; object

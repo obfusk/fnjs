@@ -43,9 +43,9 @@
   };
   foo_STR_("hi", 1337);
   (function() {
-    var temp__191__auto__ = 1 * 10;
-    return temp__191__auto__ ? function() {
-      var z_MIN_ = temp__191__auto__;
+    var temp__195__auto__ = 1 * 10;
+    return temp__195__auto__ ? function() {
+      var z_MIN_ = temp__195__auto__;
       return console.log("z=", z_MIN_);
     }() : console.log("false");
   })();

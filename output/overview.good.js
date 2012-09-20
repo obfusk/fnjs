@@ -8,7 +8,7 @@
     return console.log.apply(console, Array.prototype.slice.call(arguments));
   };
   show(foo(1, 2, 3));
-  show(1 + 2 + 3, 1 === 1);
+  show(1 + 2 + 3, 1 === 1, -42);
   var my_MIN_ary = [ 2, 3, 5, 7, 11, "..." ];
   var my_MIN_obj = {
     x: 1,
@@ -48,9 +48,9 @@
   console.log("JS!");
   show(null);
   (function() {
-    var temp__191__auto__ = PI * PI;
-    return temp__191__auto__ ? function() {
-      var x = temp__191__auto__;
+    var temp__195__auto__ = PI * PI;
+    return temp__195__auto__ ? function() {
+      var x = temp__195__auto__;
       return show("x=", x);
     }() : show("false");
   })();
