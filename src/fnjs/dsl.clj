@@ -102,9 +102,10 @@
 
 (def sym-rx (re-pattern (str "[\\Q" (join (keys sym-map)) "\\E]")))
 
-(defn tr-sym [x] (_s/replace x sym-rx #(sym-map %1)))
-(defn tr-str [x] (pr-str x))                                    ; TODO
-(defn tr-num [x] x)                                             ; TODO
+(defn tr-sym  [x] (_s/replace x sym-rx #(sym-map %1)))
+(defn tr-str  [x] (pr-str x))                                   ; TODO
+(defn tr-bool [x] (if x _e/true_ _e/false_))
+(defn tr-num  [x] x)                                            ; TODO
 
 ; --
 
@@ -113,10 +114,11 @@
 ;                       " isa " (pr-str (type x)) ))
   (cond
     (and (seq? x) (not (vector? x)))  (tr-list x)               ; TODO
-    (symbol?  x)                      (tr-sym  x)
-    (string?  x)                      (tr-str  x)
-    (number?  x)                      (tr-num  x)
-    (nil?     x)                      _e/null
+    (symbol?            x)            (tr-sym  x)
+    (string?            x)            (tr-str  x)
+    (instance? Boolean  x)            (tr-bool x)
+    (number?            x)            (tr-num  x)
+    (nil?               x)            _e/null
     :else (_m/die (str  "unknown type " (pr-str (type x))
                         " for --> " (pr-str x) " <--" ))))      ; TODO
                                                                 ; }}}1
