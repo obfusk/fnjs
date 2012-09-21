@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/more.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-05-08
+; Date        : 2012-09-21
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -27,7 +27,7 @@
 ; --
 
 (defn tr_defn [k args & body]
-  (_e/var_ (tr k) (apply _d/tr_fn args body)) )
+  (_d/tr-def k (apply _d/tr_fn args body)) )
 
 (defn tr_if-let [[k e] t f]
   (tr `(~'let [temp# ~e] (~'if temp# (~'let [~k temp#] ~t) ~f))) )

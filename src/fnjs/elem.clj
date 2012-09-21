@@ -15,7 +15,7 @@
 ; --                                                            ; }}}1
 
 (ns fnjs.elem
-  (:use [ clojure.string :only [ join ] ]) )
+  (:use [ clojure.string :only [ join split ] ]) )
 
 ; --
 
@@ -44,10 +44,10 @@
 (defn object [& xs]
   [ "{" (list_ (for [ [k v] xs ] [ k ":" v ])) "}" ] )
 
-(defn array [& xs]    [ "[" (list_ xs) "]" ])
-(defn var_  [k v]     [ "var" k "=" v ] )
-(defn call  [f args]  [ (group f (group (list_ args))) ])
-(defn get_  [x ys]    [ x (map index ys) ])
+(defn array [& xs]      [ "[" (list_ xs) "]" ])
+(defn var!  [k v & ks]  [ "var" (interpose "=" (cons k ks)) "=" v ])
+(defn call  [f args]    [ (group f (group (list_ args))) ])
+(defn get_  [x ys]      [ x (map index ys) ])
 
 (defn if-expr [c a b] [ c "?" a ":" b ])
 (defn if-stmt [c a b] [ "if" (group c) (block a) "else" (block b) ])
@@ -66,10 +66,23 @@
   ([xs]       (do_ xs true))
   ([xs ret?]  (call (function [] xs ret?) [])) )
 
-(defn wrap [body]
-  [ "(function () { var _STR_root_STR_ = this;"
+; --
+
+(defn wrap [body]                                               ; {{{1
+  [ "(function () {"
+      "var _STR_root_STR_ = this;"
+      "var _STR_ns_STR_   = {};"
       (do-body body false)
     "}).call (this);" ] )
+                                                                ; }}}1
+
+(defn mknested [x nms]                                          ; {{{1
+  [ "(function (o, xs) {"
+      "for (var x in xs) { o = o[xs[x]] = o[xs[x]] || {}; }"
+    "})(" x ", ["
+      (interpose "," (map pr-str (split (str nms) #"\.")))
+    "]);" ] )
+                                                                ; }}}1
 
 ; --
 

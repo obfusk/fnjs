@@ -39,10 +39,16 @@
 
 ; --
 
+(defn tr-def [k v] (_e/var! (tr k) v (str (tr '*ns*.) (tr k))))
+
+(defn tr_ns [x]
+  (let [r (tr '*root*), n (tr '*ns*), y (tr x)]
+    [ (_e/mknested r y) (_e/var! n (str r '. y)) ] ))           ; TODO
+
 (defn tr_js   [& xs] (for [x xs] (if (string? x) x (tr x))))
 (defn tr_juop [o x] (_e/unop o (tr x)))
 (defn tr_jbop [o & args] (_e/binop o (mtr args)))
-(defn tr_def  [k v] (apply _e/var_ (mtr [k v])))                ; TODO
+(defn tr_def  [k v] (tr-def k (tr v)))                          ; TODO
 (defn tr_do   [& body] (_e/do_ (mtr body)))
 (defn tr_fn   [args & body] (_e/function (mtr args) (mtr body)))
 
@@ -76,6 +82,7 @@
 
 ; defnjm {                                                      ; {{{1
 
+(defnjm ns      tr_ns     )
 (defnjm def     tr_def    )
 (defnjm do      tr_do     )
 (defnjm fn      tr_fn     )
@@ -97,7 +104,7 @@
 (def sym-map {                                                  ; {{{1
   "!" "_BNG_"   "%" "_PCT_"   "&" "_AMP_"   "*" "_STR_"   "-" "_MIN_"
   "+" "_PLS_"   "=" "_EQS_"   "|" "_BAR_"   "<" "_LTS_"   ">" "_GTS_"
-  "?" "_QMK_"   "#" "_HSH_" })
+  "?" "_QMK_"   "#" "_HSH_"   "'" "_PRM_" })
                                                                 ; }}}1
 
 (def sym-rx (re-pattern (str "[\\Q" (join (keys sym-map)) "\\E]")))
