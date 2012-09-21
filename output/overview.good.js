@@ -1,17 +1,18 @@
 ((function() {
   var _STR_root_STR_ = this;
+  var _STR_ns_STR_ = {};
   console.log("Hello, World");
-  var PI = 3.14159265;
-  var foo = function(x, y, z) {
+  var PI = _STR_ns_STR_.PI = 3.14159265;
+  var foo = _STR_ns_STR_.foo = function(x, y, z) {
     return x * (PI + y + z);
   };
-  var show = function() {
+  var show = _STR_ns_STR_.show = function() {
     return console.log.apply(console, Array.prototype.slice.call(arguments));
   };
   show(foo(1, 2, 3));
   show(1 + 2 + 3, 1 === 1, -42);
-  var my_MIN_ary = [ 2, 3, 5, 7, 11, "..." ];
-  var my_MIN_obj = {
+  var my_MIN_ary = _STR_ns_STR_.my_MIN_ary = [ 2, 3, 5, 7, 11, "..." ];
+  var my_MIN_obj = _STR_ns_STR_.my_MIN_obj = {
     x: 1,
     y: 2,
     z: 3
@@ -20,7 +21,7 @@
     show(my_MIN_ary);
     return show(my_MIN_obj);
   })();
-  var my_MIN_obj_MIN_2 = {
+  var my_MIN_obj_MIN_2 = _STR_ns_STR_.my_MIN_obj_MIN_2 = {
     x: {
       a: 1,
       b: [ 2, 3 ],
@@ -49,9 +50,9 @@
   console.log("JS!");
   show(null);
   (function() {
-    var temp__198__auto__ = PI * PI;
-    return temp__198__auto__ ? function() {
-      var x = temp__198__auto__;
+    var temp__210__auto__ = PI * PI;
+    return temp__210__auto__ ? function() {
+      var x = temp__210__auto__;
       return show("x=", x);
     }() : show("false");
   })();

@@ -39,7 +39,9 @@
 
 ; --
 
-(defn tr-def [k v] (_e/var! (tr k) v (str (tr '*ns*.) (tr k))))
+(defn mk-def  [k v*] (_e/var! (tr k) v* (str (tr '*ns*.) (tr k))))
+(defn mk-def- [k v*] (_e/var! (tr k) v*))
+(defn mk-var  [k v]  (mk-def- k (tr v)))
 
 (defn tr_ns [x]
   (let [r (tr '*root*), n (tr '*ns*), y (tr x)]
@@ -48,12 +50,13 @@
 (defn tr_js   [& xs] (for [x xs] (if (string? x) x (tr x))))
 (defn tr_juop [o x] (_e/unop o (tr x)))
 (defn tr_jbop [o & args] (_e/binop o (mtr args)))
-(defn tr_def  [k v] (tr-def k (tr v)))                          ; TODO
+(defn tr_def  [k v] (mk-def k (tr v)))                          ; TODO
+(defn tr_def- [k v] (mk-def- k (tr v)))                         ; TODO
 (defn tr_do   [& body] (_e/do_ (mtr body)))
 (defn tr_fn   [args & body] (_e/function (mtr args) (mtr body)))
 
 (defn tr_let [vars & body]                                      ; TODO
-  (let [ vs (for [ x (partition 2 vars) ] (apply tr_def x)) ]
+  (let [ vs (for [ x (partition 2 vars) ] (apply mk-var x)) ]
     (_e/do_ (concat vs (mtr body))) ))
 
 (defn tr_if       [c a b] (apply _e/if-expr (mtr [c a b])))
@@ -84,6 +87,7 @@
 
 (defnjm ns      tr_ns     )
 (defnjm def     tr_def    )
+(defnjm def-    tr_def-   )
 (defnjm do      tr_do     )
 (defnjm fn      tr_fn     )
 (defnjm fn*     tr_fn     )

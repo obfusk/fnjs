@@ -27,7 +27,10 @@
 ; --
 
 (defn tr_defn [k args & body]
-  (_d/tr-def k (apply _d/tr_fn args body)) )
+  (_d/mk-def k (apply _d/tr_fn args body)) )
+
+(defn tr_defn- [k args & body]
+  (_d/mk-def- k (apply _d/tr_fn args body)) )
 
 (defn tr_if-let [[k e] t f]
   (tr `(~'let [temp# ~e] (~'if temp# (~'let [~k temp#] ~t) ~f))) )
@@ -37,6 +40,7 @@
 ; defnjm {                                                      ; {{{1
 
 (defnjm defn    tr_defn   )
+(defnjm defn-   tr_defn-  )
 (defnjm if-let  tr_if-let )
 
 ; } defnjm                                                      ; }}}1

@@ -1,6 +1,7 @@
 ((function() {
   var _STR_root_STR_ = this;
-  var PI_PLS_ = 3.14159265;
+  var _STR_ns_STR_ = {};
+  var PI_PLS_ = _STR_ns_STR_.PI_PLS_ = 3.14159265;
   console.log({
     foo_MIN_: 99,
     bar: -1,
@@ -13,7 +14,7 @@
     var m = 3 * 3;
     return m + n_PLS_ + PI_PLS_;
   }());
-  var obj_MIN_ = {
+  var obj_MIN_ = _STR_ns_STR_.obj_MIN_ = {
     foo: [ 1, {
       a_MIN_: {
         d: 42
@@ -39,23 +40,23 @@
       return console.log("...", x_MIN_, y_MIN_);
     });
   });
-  var foo_STR_ = function(x, y_PLS_) {
+  var foo_STR_ = _STR_ns_STR_.foo_STR_ = function(x, y_PLS_) {
     return console.log("x=", x, "y=", y_PLS_);
   };
   foo_STR_("hi", 1337);
   (function() {
-    var temp__198__auto__ = 1 * 10;
-    return temp__198__auto__ ? function() {
-      var z_MIN_ = temp__198__auto__;
+    var temp__210__auto__ = 1 * 10;
+    return temp__210__auto__ ? function() {
+      var z_MIN_ = temp__210__auto__;
       return console.log("z=", z_MIN_);
     }() : console.log("false");
   })();
-  var f = function(p1__2_HSH_, p2__1_HSH_) {
+  var f = _STR_ns_STR_.f = function(p1__2_HSH_, p2__1_HSH_) {
     return p2__1_HSH_ - p1__2_HSH_;
   };
-  var g = function(p1__4_HSH_, p2__3_HSH_) {
+  var g = _STR_ns_STR_.g = function(p1__4_HSH_, p2__3_HSH_) {
     return p2__3_HSH_ + p1__4_HSH_;
   };
   console.log(f(3, g(11, 2)));
-  var x = null;
+  var x = _STR_ns_STR_.x = null;
 })).call(this);

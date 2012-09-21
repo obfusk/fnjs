@@ -1,7 +1,8 @@
 ((function() {
   var _STR_root_STR_ = this;
-  var http = require("http");
-  var server = http.createServer(function(req, res) {
+  var _STR_ns_STR_ = {};
+  var http = _STR_ns_STR_.http = require("http");
+  var server = _STR_ns_STR_.server = http.createServer(function(req, res) {
     res.writeHead(200, {
       "Content-Type": "text/plain"
     });
