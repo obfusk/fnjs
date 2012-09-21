@@ -1,4 +1,5 @@
-(function() {
+((function() {
+  var _STR_root_STR_ = this;
   var PI_PLS_ = 3.14159265;
   console.log({
     foo_MIN_: 99,
@@ -43,9 +44,9 @@
   };
   foo_STR_("hi", 1337);
   (function() {
-    var temp__197__auto__ = 1 * 10;
-    return temp__197__auto__ ? function() {
-      var z_MIN_ = temp__197__auto__;
+    var temp__198__auto__ = 1 * 10;
+    return temp__198__auto__ ? function() {
+      var z_MIN_ = temp__198__auto__;
       return console.log("z=", z_MIN_);
     }() : console.log("false");
   })();
@@ -57,4 +58,4 @@
   };
   console.log(f(3, g(11, 2)));
   var x = null;
-})();
+})).call(this);

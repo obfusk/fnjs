@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/elem.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-20
+; Date        : 2012-09-21
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -65,6 +65,11 @@
 (defn do_
   ([xs]       (do_ xs true))
   ([xs ret?]  (call (function [] xs ret?) [])) )
+
+(defn wrap [body]
+  [ "(function () { var _STR_root_STR_ = this;"
+      (do-body body false)
+    "}).call (this);" ] )
 
 ; --
 

@@ -1,4 +1,5 @@
-(function() {
+((function() {
+  var _STR_root_STR_ = this;
   var http = require("http");
   var server = http.createServer(function(req, res) {
     res.writeHead(200, {
@@ -12,4 +13,4 @@
   });
   server.listen(3e3, "127.0.0.1");
   console.log("web server @ http://localhost:3000/ ...");
-})();
+})).call(this);

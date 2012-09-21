@@ -3,6 +3,7 @@
 
 /jar/
 /output/*.test.*
+/tmp/
 
 # lein {
 

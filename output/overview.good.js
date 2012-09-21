@@ -1,4 +1,5 @@
-(function() {
+((function() {
+  var _STR_root_STR_ = this;
   console.log("Hello, World");
   var PI = 3.14159265;
   var foo = function(x, y, z) {
@@ -48,10 +49,10 @@
   console.log("JS!");
   show(null);
   (function() {
-    var temp__197__auto__ = PI * PI;
-    return temp__197__auto__ ? function() {
-      var x = temp__197__auto__;
+    var temp__198__auto__ = PI * PI;
+    return temp__198__auto__ ? function() {
+      var x = temp__198__auto__;
       return show("x=", x);
     }() : show("false");
   })();
-})();
+})).call(this);
