@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/dsl.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-21
+; Date        : 2012-09-22
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -14,7 +14,7 @@
 ;
 ; --                                                            ; }}}1
 
-; TODO: destructuring, errors, loop/recur, docs, ...
+; TODO: destructuring, assert, loop/recur, docs, ...
 
 ; --
 
@@ -45,7 +45,12 @@
 
 ; --
 
-(defn tr_ns   [x] (_e/nspace (tr x)))                           ; TODO
+(defn tr_use [& refs] (_e/use_ (for [ [k l _ v] refs] (mtr [k l v]))))
+
+(defn tr_ns [x & refs]
+  [ (_e/nspace (tr x))
+    (for [[u & r] refs] (do (assert (= u :use)) (apply tr_use r))) ])
+
 (defn tr_js   [& xs] (for [x xs] (if (string? x) x (tr x))))
 (defn tr_juop [o x] (_e/unop o (tr x)))
 (defn tr_jbop [o & args] (_e/binop o (mtr args)))

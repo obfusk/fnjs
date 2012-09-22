@@ -91,13 +91,24 @@
                                                                 ; }}}1
 
 (defn nspace [x]                                                ; {{{1
-  [ "if (_STR_exports_STR_ === null) {"
-      (mknested "_STR_root_STR_" (str '_STR_namespaces_STR_. x))
-      "_STR_ns_STR_ = _STR_root_STR_._STR_namespaces_STR_." x ";
-     } else {
-       _STR_ns_STR_ = _STR_exports_STR_;
-     }
-     _STR_ns_STR_.__namespace__ =" x ";" ])
+  [  "if (_STR_exports_STR_ === null) {"
+       (mknested "_STR_root_STR_" (str '_STR_namespaces_STR_. x))
+       "_STR_ns_STR_ = _STR_root_STR_._STR_namespaces_STR_." x ";
+      } else {
+        _STR_ns_STR_ = _STR_exports_STR_;
+      }
+      _STR_ns_STR_.__namespace__ =" (-> x str pr-str) ";" ])
+                                                                ; }}}1
+
+(defn use_ [refs]                                               ; {{{1
+  (for [ [k lib v] refs ]
+    (let [ path [ "_STR_root_STR_._STR_namespaces_STR_." lib ] ]
+      [  "if (_STR_exports_STR_ === null) {"
+            (when v [ "if (" path "== null) {" path "=" v "; }" ])
+           "var" k "=" path ";
+          } else {
+            var" k "= require (" (-> lib str pr-str) ");
+          }" ])))
                                                                 ; }}}1
 
 (defn overload [fs v]                                           ; {{{1
@@ -113,10 +124,10 @@
             if (" vari "&&" vari ".length <= arguments.length) {
               return" vari ".apply (null, arguments);
             } else {
-              throw new Error ('...');
+              throw new Error ('Wrong number of args');
             }
           });
-       })([" (list_ fs) "]," (or v "null") ");" ]))             ; TODO
+       })([" (list_ fs) "]," (or v "null") ");" ]))
                                                                 ; }}}1
 
 ; --
