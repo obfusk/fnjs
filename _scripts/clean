@@ -1,6 +1,8 @@
 #!/bin/bash
 
+rm -v -r jar/ js/
+
 rm -v .lein-deps-sum
-rm -v -r classes/ jar/ lib/
+rm -v -r classes/ lib/
 
 # --
