@@ -1,0 +1,12 @@
+#!/bin/bash
+
+mkdir -p js
+
+for x in src-fnjs/*.fnjs; do
+  b="$( basename "$x" .fnjs )"
+
+  echo "processing $x ..."
+  ./bin/fnjs "$x" | ./_scripts/ugly > js/"$b".js
+done
+
+# --

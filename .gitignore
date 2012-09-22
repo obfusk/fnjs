@@ -2,6 +2,7 @@
 *.swp
 
 /jar/
+/js/
 /output/*.test.*
 /tmp/
 
