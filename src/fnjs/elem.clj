@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/elem.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-21
+; Date        : 2012-09-22
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -82,18 +82,22 @@
     "}).call (this);" ])
                                                                 ; }}}1
 
-(defn mknested [x n]
+(defn mknested [x n]                                            ; {{{1
   [ "(function (o, xs) {
-        for (var x in xs) { o = o[xs[x]] = o[xs[x]] || {}; }
+        for (var x in xs) {
+          o = o[xs[x]] = o[xs[x]] == null ? {} : o[xs[x]];
+        }
      })(" x ", [" (list_ (map pr-str (split (str n) #"\."))) "]);" ])
+                                                                ; }}}1
 
 (defn nspace [x]                                                ; {{{1
   [ "if (_STR_exports_STR_ === null) {"
-      (mknested "_STR_root_STR_" x)
-      "_STR_ns_STR_ = _STR_root_STR_." x ";
+      (mknested "_STR_root_STR_" (str '_STR_namespaces_STR_. x))
+      "_STR_ns_STR_ = _STR_root_STR_._STR_namespaces_STR_." x ";
      } else {
        _STR_ns_STR_ = _STR_exports_STR_;
-     }" ])
+     }
+     _STR_ns_STR_.__namespace__ =" x ";" ])
                                                                 ; }}}1
 
 (defn overload [fs v]                                           ; {{{1
