@@ -1,4 +1,4 @@
-((function() {
+(function() {
   var _STR_root_STR_ = this;
   var _STR_ns_STR_ = {};
   var _STR_exports_STR_ = typeof exports === "undefined" ? null : exports;
@@ -46,9 +46,9 @@
   };
   foo_STR_("hi", 1337);
   (function() {
-    var temp__222__auto__ = 1 * 10;
-    return temp__222__auto__ ? function() {
-      var z_MIN_ = temp__222__auto__;
+    var temp__272__auto__ = 1 * 10;
+    return temp__272__auto__ ? function() {
+      var z_MIN_ = temp__272__auto__;
       return console.log("z=", z_MIN_);
     }() : console.log("false");
   })();
@@ -69,7 +69,7 @@
       if (__variadic__7 && __variadic__7.length <= arguments.length) {
         return __variadic__7.apply(null, arguments);
       } else {
-        throw new Error("...");
+        throw new Error("Wrong number of args");
       }
     };
   }([ function() {
@@ -82,4 +82,4 @@
   });
   console.log(multi(1, 2), multi(), multi(1, 2, 3, 4));
   var x = _STR_ns_STR_.x = null;
-})).call(this);
+}).call(this);

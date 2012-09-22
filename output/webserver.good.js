@@ -1,4 +1,4 @@
-((function() {
+(function() {
   var _STR_root_STR_ = this;
   var _STR_ns_STR_ = {};
   var _STR_exports_STR_ = typeof exports === "undefined" ? null : exports;
@@ -15,4 +15,4 @@
   });
   server.listen(3e3, "127.0.0.1");
   console.log("web server @ http://localhost:3000/ ...");
-})).call(this);
+}).call(this);

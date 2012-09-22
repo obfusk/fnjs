@@ -1,4 +1,4 @@
-((function() {
+(function() {
   var _STR_root_STR_ = this;
   var _STR_ns_STR_ = {};
   var _STR_exports_STR_ = typeof exports === "undefined" ? null : exports;
@@ -51,10 +51,10 @@
   console.log("JS!");
   show(null);
   (function() {
-    var temp__222__auto__ = PI * PI;
-    return temp__222__auto__ ? function() {
-      var x = temp__222__auto__;
+    var temp__272__auto__ = PI * PI;
+    return temp__272__auto__ ? function() {
+      var x = temp__272__auto__;
       return show("x=", x);
     }() : show("false");
   })();
-})).call(this);
+}).call(this);

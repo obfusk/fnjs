@@ -14,14 +14,16 @@
 ;
 ; --                                                            ; }}}1
 
-; TODO TODO TODO --- WORK-IN-PROGRESS --- TODO TODO TODO
-
 (ns fnjs.core
-  (:use [U underscore :is *root*._]) )
+  (:use [U underscore :obj *root*._]) )
 
 (def VERSION "0.1.2-dev")
 
 ; --
+
+; TODO TODO TODO --- WORK-IN-PROGRESS --- TODO TODO TODO
+
+; all-pairs? mk-obj
 
 (defn ? [x] (not (or (= x undefined) (= x nil) (= x false))))
 
