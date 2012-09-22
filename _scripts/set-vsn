@@ -25,4 +25,8 @@ $sed -i\~ 's!(^\(defproject +fnjs +")(.*)(")( *)$!\1'"$vsn"'\3!' \
 echo 'bin/fnjs ...'
 $sed -i\~ 's!(^vsn='\'')(.*)('\'')( *)$!\1'"$vsn"'\3!' bin/fnjs
 
+echo 'src-fnjs/fnjs.core.fnjs ...'
+$sed -i\~ 's!(^\(def +VERSION +")(.*)(".*)$!\1'"$vsn"'\3!' \
+  src-fnjs/fnjs.core.fnjs
+
 # --
