@@ -64,8 +64,6 @@
   (let [ ks (take-nth 2 vars), vs (take-nth 2 (rest vars)) ]
     (_e/loop_ (mtr ks) (mtr vs) (tr body)) ))
 
-(defn tr_recur [& args] (_e/recur_ (mtr args)))
-
 ; --
 
 (defn variadic? [args]
@@ -141,7 +139,6 @@
 (defnjm let     tr_let    )
 (defnjm loop    tr_loop   )
 (defnjm ns      tr_ns     )
-(defnjm recur   tr_recur  )
 (defnjm use     tr_use    )
 
 ; } defnjm                                                      ; }}}1
@@ -165,7 +162,7 @@
 
 (defn tr [x]                                                    ; {{{1
 ; (.println *err* (str  "-[1]-> " (pr-str x)
-;                       " isa " (pr-str (type x)) ))
+;                       " isa " (pr-str (type x)) ))          ;  DEBUG
   (cond
     (and (seq? x) (not (vector? x)))  (tr-list x)               ; TODO
     (symbol?            x)            (tr-sym  x)
@@ -195,7 +192,7 @@
 ; --
 
 (defn tr-list [xs]                                              ; {{{1
-; (.println *err* (str "-[2]-> " (pr-str xs)))
+; (.println *err* (str "-[2]-> " (pr-str xs)))                ;  DEBUG
   (if (seq xs)
     (let [  x     (first xs), xt (rest xs)
             call  #(_e/call (tr x) (mtr xt)) ]

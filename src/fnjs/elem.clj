@@ -130,18 +130,22 @@
        })([" (list_ fs) "]," (or v "null") ")" ]))
                                                                 ; }}}1
 
-(defn loop_ [ks vs body]
-  (let [              [  args          cont      ]
-         (map gensym '[__arguments__ __continue__]) ]
+(defn loop_ [ks vs body]                                        ; {{{1
+  (let [              [  args          cont         res     ]
+         (map gensym '[__arguments__ __continue__ __result__]) ]
     [ "(function (" args "," cont ") {
+          var recur = function () {"
+            args "= Array.prototype.slice.call (arguments);
+            return" cont ";
+          };
           while (true) {"
-            (map #([ "var" %1 "=" args "[" %2 "];" ])
-              vs (iterate inc 0) )
-           "return" body ";
+            (map (fn [x i] [ "var" x "=" args "[" i "];" ])
+              ks (iterate inc 0) )
+            res "=" body ";
+            if (" res "!==" cont ") { return" res "; }
           }
        })([" (list_ vs) "], {})" ]))
-
-; (defn recur_ [args]) ; TODO
+                                                                ; }}}1
 
 ; --
 

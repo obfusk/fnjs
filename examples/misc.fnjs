@@ -42,10 +42,18 @@
 
 (console.log (multi 1 2) (multi) (multi 1 2 3 4)) ; (multi 1)
 
+; --
+
+(defn seq' [xs] (.length xs))
+(defn first' [xs] (jget xs 0))
+(defn rest' [xs] (.!slice xs 1))
+
 (defn reduce' [f z xs]
   (loop [z z, xs xs]
-    (if (seq xs)
-      (recur (f z (first xs)) (rest xs))
+    (if (seq' xs)
+      (recur (f z (first' xs)) (rest' xs))
       z )))
+
+(console.log (reduce' #(jbop + %1 %2) 5 (jary 1 2 3)))
 
 (def x nil)

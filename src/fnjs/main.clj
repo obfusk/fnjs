@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/main.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-05-07
+; Date        : 2012-09-22
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -33,7 +33,8 @@
   (try
     (compile-files args)
   (catch Exception e
-    (do (.println *err* (str "fnjs: " (.getMessage e))))
+    (do ; (.printStackTrace e)                                ;  DEBUG
+        (.println *err* (str "fnjs: " (.getMessage e))))
         (System/exit 1) )))
                                                                 ; }}}1
 
