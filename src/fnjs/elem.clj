@@ -127,8 +127,21 @@
               throw new Error ('Wrong number of args');
             }
           });
-       })([" (list_ fs) "]," (or v "null") ");" ]))
+       })([" (list_ fs) "]," (or v "null") ")" ]))
                                                                 ; }}}1
+
+(defn loop_ [ks vs body]
+  (let [              [  args          cont      ]
+         (map gensym '[__arguments__ __continue__]) ]
+    [ "(function (" args "," cont ") {
+          while (true) {"
+            (map #([ "var" %1 "=" args "[" %2 "];" ])
+              vs (iterate inc 0) )
+           "return" body ";
+          }
+       })([" (list_ vs) "], {})" ]))
+
+; (defn recur_ [args]) ; TODO
 
 ; --
 

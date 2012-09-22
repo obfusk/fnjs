@@ -1,5 +1,5 @@
 ; File        : examples/misc.fnjs
-; Date        : 2012-09-21
+; Date        : 2012-09-22
 ; Description : Testing ground.
 
 (def PI+ 3.14159265)
@@ -41,5 +41,11 @@
   ([x y & rest] (jary x y rest)) )
 
 (console.log (multi 1 2) (multi) (multi 1 2 3 4)) ; (multi 1)
+
+(defn reduce' [f z xs]
+  (loop [z z, xs xs]
+    (if (seq xs)
+      (recur (f z (first xs)) (rest xs))
+      z )))
 
 (def x nil)

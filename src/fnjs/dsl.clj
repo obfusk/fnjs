@@ -60,6 +60,14 @@
 
 ; --
 
+(defn tr_loop [vars body]
+  (let [ ks (take-nth 2 vars), vs (take-nth 2 (rest vars)) ]
+    (_e/loop_ (mtr ks) (mtr vs) (tr body)) ))
+
+(defn tr_recur [& args] (_e/recur_ (mtr args)))
+
+; --
+
 (defn variadic? [args]
   (let [ i (.indexOf args '&) ] (when (not= i -1) i)) )
 
@@ -117,7 +125,6 @@
 
 ; defnjm {                                                      ; {{{1
 
-(defnjm ns      tr_ns     )
 (defnjm def     tr_def    )
 (defnjm def-    tr_def-   )
 (defnjm do      tr_do     )
@@ -125,13 +132,17 @@
 (defnjm fn*     tr_fn     )
 (defnjm if      tr_if     )
 (defnjm jary    tr_jary   )
-(defnjm juop    tr_juop   )
 (defnjm jbop    tr_jbop   )
 (defnjm jfor    tr_jfor   )
 (defnjm jget    tr_jget   )
 (defnjm jobj    tr_jobj   )
 (defnjm js      tr_js     )
+(defnjm juop    tr_juop   )
 (defnjm let     tr_let    )
+(defnjm loop    tr_loop   )
+(defnjm ns      tr_ns     )
+(defnjm recur   tr_recur  )
+(defnjm use     tr_use    )
 
 ; } defnjm                                                      ; }}}1
 
