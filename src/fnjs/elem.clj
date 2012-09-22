@@ -48,40 +48,71 @@
 (defn var!  [k v & ks]  [ "var" (interpose "=" (cons k ks)) "=" v ])
 (defn call  [f args]    [ (group f (group (list_ args))) ])
 (defn get_  [x ys]      [ x (map index ys) ])
-
-(defn if-expr [c a b] [ c "?" a ":" b ])
-(defn if-stmt [c a b] [ "if" (group c) (block a) "else" (block b) ])
+(defn if_   [c a b]     [ c "?" a ":" b ])
 
 (defn do-body [xs ret?]
   (let [  ys  (statements (or (seq xs) [ null ]))
           yi  (butlast ys), y (last ys) ]
     [ yi (if ret? (return y) y) ] ))
 
-(defn function
-  ([args body]      (function args body true))
-  ([args body ret?] (group "function" (group (list_ args))
-                      (block (do-body body ret?)) )))
+(defn function                                                  ; {{{1
+  ([nm args v body] (function nm args v body true))
+  ([nm args v body ret?]
+    [ "(function" nm "(" (list_ args) ") {"
+        (when v
+          [ "var" (:k v) "= Array.prototype.slice.call ("
+              "arguments," (:i v) ");" ])
+        (do-body body ret?)
+      "})" ]))
+                                                                ; }}}1
 
 (defn do_
   ([xs]       (do_ xs true))
-  ([xs ret?]  (call (function [] xs ret?) [])) )
+  ([xs ret?]  (call (function nil [] nil xs ret?) [])) )
 
 ; --
 
 (defn wrap [body]                                               ; {{{1
-  [ "(function () {"
-      "var _STR_root_STR_ = this;"
-      "var _STR_ns_STR_   = {};"
+  [ "(function () {
+        var _STR_root_STR_     = this;
+        var _STR_ns_STR_       = {};
+        var _STR_exports_STR_  =
+          typeof exports === 'undefined' ? null : exports;"
       (do-body body false)
-    "}).call (this);" ] )
+    "}).call (this);" ])
                                                                 ; }}}1
 
-(defn mknested [x nms]                                          ; {{{1
-  [ "(function (o, xs) {"
-      "for (var x in xs) { o = o[xs[x]] = o[xs[x]] || {}; }"
-    "})(" x ", ["
-      (interpose "," (map pr-str (split (str nms) #"\.")))
-    "]);" ] )
+(defn mknested [x n]
+  [ "(function (o, xs) {
+        for (var x in xs) { o = o[xs[x]] = o[xs[x]] || {}; }
+     })(" x ", [" (list_ (map pr-str (split (str n) #"\."))) "]);" ])
+
+(defn nspace [x]                                                ; {{{1
+  [ "if (_STR_exports_STR_ === null) {"
+      (mknested "_STR_root_STR_" x)
+      "_STR_ns_STR_ = _STR_root_STR_." x ";
+     } else {
+       _STR_ns_STR_ = _STR_exports_STR_;
+     }" ])
+                                                                ; }}}1
+
+(defn overload [fs v]                                           ; {{{1
+  (let [              [  i     over          vari      ]
+         (map gensym '[__i__ __overloads__ __variadic__]) ]
+    [ "(function (" over "," vari ") {
+          return (function () {
+            for (var" i "in" over ") {
+              if (" over "[" i "].length == arguments.length) {
+                return" over "[" i "].apply (null, arguments);
+              }
+            }
+            if (" vari "&&" vari ".length <= arguments.length) {
+              return" vari ".apply (null, arguments);
+            } else {
+              throw new Error ('...');
+            }
+          });
+       })([" (list_ fs) "]," (or v "null") ");" ]))             ; TODO
                                                                 ; }}}1
 
 ; --

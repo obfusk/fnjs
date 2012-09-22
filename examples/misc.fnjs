@@ -1,5 +1,5 @@
 ; File        : examples/misc.fnjs
-; Date        : 2012-09-20
+; Date        : 2012-09-21
 ; Description : Testing ground.
 
 (def PI+ 3.14159265)
@@ -34,5 +34,12 @@
 (def f #(jbop - %2 %1))
 (def g #(jbop + %2 %1))
 (console.log (f 3 (g 11 2)))
+
+(defn multi
+  ([] "zero")
+  ([x y] "two")
+  ([x y & rest] (jary x y rest)) )
+
+(console.log (multi 1 2) (multi) (multi 1 2 3 4)) ; (multi 1)
 
 (def x nil)

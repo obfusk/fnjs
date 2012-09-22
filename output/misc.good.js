@@ -1,6 +1,7 @@
 ((function() {
   var _STR_root_STR_ = this;
   var _STR_ns_STR_ = {};
+  var _STR_exports_STR_ = typeof exports === "undefined" ? null : exports;
   var PI_PLS_ = _STR_ns_STR_.PI_PLS_ = 3.14159265;
   console.log({
     foo_MIN_: 99,
@@ -45,9 +46,9 @@
   };
   foo_STR_("hi", 1337);
   (function() {
-    var temp__210__auto__ = 1 * 10;
-    return temp__210__auto__ ? function() {
-      var z_MIN_ = temp__210__auto__;
+    var temp__222__auto__ = 1 * 10;
+    return temp__222__auto__ ? function() {
+      var z_MIN_ = temp__222__auto__;
       return console.log("z=", z_MIN_);
     }() : console.log("false");
   })();
@@ -58,5 +59,27 @@
     return p2__3_HSH_ + p1__4_HSH_;
   };
   console.log(f(3, g(11, 2)));
+  var multi = _STR_ns_STR_.multi = function(__overloads__6, __variadic__7) {
+    return function() {
+      for (var __i__5 in __overloads__6) {
+        if (__overloads__6[__i__5].length == arguments.length) {
+          return __overloads__6[__i__5].apply(null, arguments);
+        }
+      }
+      if (__variadic__7 && __variadic__7.length <= arguments.length) {
+        return __variadic__7.apply(null, arguments);
+      } else {
+        throw new Error("...");
+      }
+    };
+  }([ function() {
+    return "zero";
+  }, function(x, y) {
+    return "two";
+  } ], function(x, y) {
+    var rest = Array.prototype.slice.call(arguments, 2);
+    return [ x, y, rest ];
+  });
+  console.log(multi(1, 2), multi(), multi(1, 2, 3, 4));
   var x = _STR_ns_STR_.x = null;
 })).call(this);

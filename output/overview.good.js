@@ -1,6 +1,7 @@
 ((function() {
   var _STR_root_STR_ = this;
   var _STR_ns_STR_ = {};
+  var _STR_exports_STR_ = typeof exports === "undefined" ? null : exports;
   console.log("Hello, World");
   var PI = _STR_ns_STR_.PI = 3.14159265;
   var foo = _STR_ns_STR_.foo = function(x, y, z) {
@@ -50,9 +51,9 @@
   console.log("JS!");
   show(null);
   (function() {
-    var temp__210__auto__ = PI * PI;
-    return temp__210__auto__ ? function() {
-      var x = temp__210__auto__;
+    var temp__222__auto__ = PI * PI;
+    return temp__222__auto__ ? function() {
+      var x = temp__222__auto__;
       return show("x=", x);
     }() : show("false");
   })();

@@ -26,11 +26,8 @@
 
 ; --
 
-(defn tr_defn [k args & body]
-  (_d/mk-def k (apply _d/tr_fn args body)) )
-
-(defn tr_defn- [k args & body]
-  (_d/mk-def- k (apply _d/tr_fn args body)) )
+(defn tr_defn  [k & spec] (_d/mk-def  k (apply _d/tr_fn spec)))
+(defn tr_defn- [k & spec] (_d/mk-def- k (apply _d/tr_fn spec)))
 
 (defn tr_if-let [[k e] t f]
   (tr `(~'let [temp# ~e] (~'if temp# (~'let [~k temp#] ~t) ~f))) )

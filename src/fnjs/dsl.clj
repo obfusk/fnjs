@@ -14,6 +14,10 @@
 ;
 ; --                                                            ; }}}1
 
+; TODO: destructuring, errors, loop/recur, docs, ...
+
+; --
+
 (ns fnjs.dsl
   (:use     [ clojure.string :only [ join ] :as _s ])
   (:require [ fnjs.elem                     :as _e ]
@@ -35,32 +39,55 @@
 
 ; --
 
-; (defn tr-destr [x] ... TODO ...)
-
-; --
-
 (defn mk-def  [k v*] (_e/var! (tr k) v* (str (tr '*ns*.) (tr k))))
 (defn mk-def- [k v*] (_e/var! (tr k) v*))
 (defn mk-var  [k v]  (mk-def- k (tr v)))
 
-(defn tr_ns [x]
-  (let [r (tr '*root*), n (tr '*ns*), y (tr x)]
-    [ (_e/mknested r y) (_e/var! n (str r '. y)) ] ))           ; TODO
+; --
 
+(defn tr_ns   [x] (_e/nspace (tr x)))                           ; TODO
 (defn tr_js   [& xs] (for [x xs] (if (string? x) x (tr x))))
 (defn tr_juop [o x] (_e/unop o (tr x)))
 (defn tr_jbop [o & args] (_e/binop o (mtr args)))
 (defn tr_def  [k v] (mk-def k (tr v)))                          ; TODO
 (defn tr_def- [k v] (mk-def- k (tr v)))                         ; TODO
 (defn tr_do   [& body] (_e/do_ (mtr body)))
-(defn tr_fn   [args & body] (_e/function (mtr args) (mtr body)))
+
+; --
+
+(defn variadic? [args]
+  (let [ i (.indexOf args '&) ] (when (not= i -1) i)) )
+
+(defn mk-fn [nm args body]                                      ; {{{1
+  (let [ nm' (when-not (nil? nm) (tr nm)), b (mtr body) ]
+    (if-let [ i (variadic? args) ]
+      (let [ as (take i args), v (args (inc i)) ]
+        (_e/function nm' (mtr as) { :k (tr v), :i i } b) )
+      (_e/function nm' (mtr args) nil b) )))
+                                                                ; }}}1
+
+(defn tr_fn [& sigs]                                            ; {{{1
+  (let [ nm (first sigs) ]
+    (if (or (symbol? nm) (nil? nm))
+      (let [ args (second sigs) ]
+        (if (vector? args)
+          (mk-fn nm args (drop 2 sigs))
+          (let [ g  (group-by #(-> % first variadic? boolean)
+                      (rest sigs))
+                 fs (g false)
+                 v  (first (g true))                            ; TODO
+                 v' (when v (apply tr_fn nm v)) ]
+            (_e/overload (map #(apply tr_fn nm %) fs) v') )))
+      (apply tr_fn nil sigs) )))
+                                                                ; }}}1
+
+; --
 
 (defn tr_let [vars & body]                                      ; TODO
   (let [ vs (for [ x (partition 2 vars) ] (apply mk-var x)) ]
     (_e/do_ (concat vs (mtr body))) ))
 
-(defn tr_if       [c a b] (apply _e/if-expr (mtr [c a b])))
-(defn tr_if-stmt  [c a b] (apply _e/if-stmt (mtr [c a b])))
+(defn tr_if [c a b] (apply _e/if_ (mtr [c a b])))
 
 (defn tr_jary [& xs] (apply _e/array (mtr xs)))
 (defn tr_jobj [& xs] (apply _e/object (partition 2 (mtr xs))))  ; TODO
@@ -75,7 +102,7 @@
 (defn for-ary [vs body]                                         ; {{{1
   (if (seq vs)                                                  ; TODO
     (let [ [v e] (first vs), b (for-ary (rest vs) body) ]
-      (dot-bang (tr e) 'map (_e/function [(tr v)] b)) )
+      (dot-bang (tr e) 'map (_e/function nil [(tr v)] nil b)) )
     (mtr body) ))
                                                                 ; }}}1
 

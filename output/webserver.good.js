@@ -1,6 +1,7 @@
 ((function() {
   var _STR_root_STR_ = this;
   var _STR_ns_STR_ = {};
+  var _STR_exports_STR_ = typeof exports === "undefined" ? null : exports;
   var http = _STR_ns_STR_.http = require("http");
   var server = _STR_ns_STR_.server = http.createServer(function(req, res) {
     res.writeHead(200, {
