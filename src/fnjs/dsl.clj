@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/dsl.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-22
+; Date        : 2012-09-23
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -45,7 +45,9 @@
 
 ; --
 
-(defn tr_use [& refs] (_e/use_ (for [ [k l _ v] refs] (mtr [k l v]))))
+(defn tr_use [& refs]
+  (_e/use_ (for [ [k l & { :keys [obj module] }] refs ]
+    (concat (mtr [k l]) (map #(when % (tr %)) [obj module])) )))
 
 (defn tr_ns [x & refs]
   [ (_e/nspace (tr x))

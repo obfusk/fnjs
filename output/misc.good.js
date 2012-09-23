@@ -1,7 +1,14 @@
 (function() {
-  var _STR_root_STR_ = this;
-  var _STR_ns_STR_ = {};
+  var _STR_root_STR_ = this, _STR_ns_STR_ = {};
   var _STR_exports_STR_ = typeof exports === "undefined" ? null : exports;
+  (function(o, xs) {
+    for (var x in xs) {
+      o = o[xs[x]] = o[xs[x]] == null ? {} : o[xs[x]];
+    }
+  })(_STR_root_STR_, [ "_STR_fnjs_STR_" ]);
+  _STR_root_STR_._STR_fnjs_STR_.nil = _STR_root_STR_._STR_fnjs_STR_.nil || new function NIL() {
+    this.nil_QMK_ = true;
+  };
   var PI_PLS_ = _STR_ns_STR_.PI_PLS_ = 3.14159265;
   console.log({
     foo_MIN_: 99,
@@ -46,9 +53,9 @@
   };
   foo_STR_("hi", 1337);
   (function() {
-    var temp__272__auto__ = 1 * 10;
-    return temp__272__auto__ ? function() {
-      var z_MIN_ = temp__272__auto__;
+    var temp__290__auto__ = 1 * 10;
+    return temp__290__auto__ ? function() {
+      var z_MIN_ = temp__290__auto__;
       return console.log("z=", z_MIN_);
     }() : console.log("false");
   })();
@@ -59,17 +66,17 @@
     return p2__3_HSH_ + p1__4_HSH_;
   };
   console.log(f(3, g(11, 2)));
-  var multi = _STR_ns_STR_.multi = function(__overloads__6, __variadic__7) {
+  var multi = _STR_ns_STR_.multi = function(__overloads__8, __variadic__9) {
     return function() {
-      for (var __i__5 in __overloads__6) {
-        if (__overloads__6[__i__5].length == arguments.length) {
-          return __overloads__6[__i__5].apply(null, arguments);
+      for (var __i__7 in __overloads__8) {
+        if (__overloads__8[__i__7].length == arguments.length) {
+          return __overloads__8[__i__7].apply(null, arguments);
         }
       }
-      if (__variadic__7 && __variadic__7.length <= arguments.length) {
-        return __variadic__7.apply(null, arguments);
+      if (__variadic__9 && __variadic__9.length <= arguments.length) {
+        return __variadic__9.apply(null, arguments);
       } else {
-        throw new Error("Wrong number of args");
+        throw new Error("Wrong number of args.");
       }
     };
   }([ function() {
@@ -81,5 +88,33 @@
     return [ x, y, rest ];
   });
   console.log(multi(1, 2), multi(), multi(1, 2, 3, 4));
+  var seq_PRM_ = _STR_ns_STR_.seq_PRM_ = function(xs) {
+    return xs.length;
+  };
+  var first_PRM_ = _STR_ns_STR_.first_PRM_ = function(xs) {
+    return xs[0];
+  };
+  var rest_PRM_ = _STR_ns_STR_.rest_PRM_ = function(xs) {
+    return xs.slice(1);
+  };
+  var reduce_PRM_ = _STR_ns_STR_.reduce_PRM_ = function(f, z, xs) {
+    return function(__arguments__10, __continue__11) {
+      var recur = function() {
+        __arguments__10 = Array.prototype.slice.call(arguments);
+        return __continue__11;
+      };
+      while (true) {
+        var z = __arguments__10[0];
+        var xs = __arguments__10[1];
+        __result__12 = seq_PRM_(xs) ? recur(f(z, first_PRM_(xs)), rest_PRM_(xs)) : z;
+        if (__result__12 !== __continue__11) {
+          return __result__12;
+        }
+      }
+    }([ z, xs ], {});
+  };
+  console.log(reduce_PRM_(function(p1__5_HSH_, p2__6_HSH_) {
+    return p1__5_HSH_ + p2__6_HSH_;
+  }, 5, [ 1, 2, 3 ]));
   var x = _STR_ns_STR_.x = null;
 }).call(this);

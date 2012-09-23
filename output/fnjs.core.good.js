@@ -1,23 +1,30 @@
 (function() {
-  var _STR_root_STR_ = this;
-  var _STR_ns_STR_ = {};
+  var _STR_root_STR_ = this, _STR_ns_STR_ = {};
   var _STR_exports_STR_ = typeof exports === "undefined" ? null : exports;
+  (function(o, xs) {
+    for (var x in xs) {
+      o = o[xs[x]] = o[xs[x]] == null ? {} : o[xs[x]];
+    }
+  })(_STR_root_STR_, [ "_STR_fnjs_STR_" ]);
+  _STR_root_STR_._STR_fnjs_STR_.nil = _STR_root_STR_._STR_fnjs_STR_.nil || new function NIL() {
+    this.nil_QMK_ = true;
+  };
   if (_STR_exports_STR_ === null) {
     (function(o, xs) {
       for (var x in xs) {
         o = o[xs[x]] = o[xs[x]] == null ? {} : o[xs[x]];
       }
-    })(_STR_root_STR_, [ "_STR_namespaces_STR_", "fnjs", "core" ]);
-    _STR_ns_STR_ = _STR_root_STR_._STR_namespaces_STR_.fnjs.core;
+    })(_STR_root_STR_, [ "_STR_fnjs_STR_", "namespaces", "fnjs", "core" ]);
+    _STR_ns_STR_ = _STR_root_STR_._STR_fnjs_STR_.namespaces.fnjs.core;
   } else {
     _STR_ns_STR_ = _STR_exports_STR_;
   }
   _STR_ns_STR_.__namespace__ = "fnjs.core";
   if (_STR_exports_STR_ === null) {
-    if (_STR_root_STR_._STR_namespaces_STR_.underscore == null) {
-      _STR_root_STR_._STR_namespaces_STR_.underscore = _STR_root_STR_._;
+    if (_STR_root_STR_._STR_fnjs_STR_.namespaces.underscore == null) {
+      _STR_root_STR_._STR_fnjs_STR_.namespaces.underscore = _STR_root_STR_._;
     }
-    var U = _STR_root_STR_._STR_namespaces_STR_.underscore;
+    var U = _STR_root_STR_._STR_fnjs_STR_.namespaces.underscore;
   } else {
     var U = require("underscore");
   }

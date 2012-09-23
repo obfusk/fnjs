@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/elem.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-22
+; Date        : 2012-09-23
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -72,15 +72,12 @@
 
 ; --
 
-(defn wrap [body]                                               ; {{{1
-  [ "(function () {
-        var _STR_root_STR_     = this;
-        var _STR_ns_STR_       = {};
-        var _STR_exports_STR_  =
-          typeof exports === 'undefined' ? null : exports;"
-      (do-body body false)
-    "}).call (this);" ])
-                                                                ; }}}1
+(def _rt  '_STR_root_STR_)
+(def _ns  '_STR_ns_STR_)
+(def _ex  '_STR_exports_STR_)
+(def _fn  '_STR_fnjs_STR_)
+(def _nss '_STR_fnjs_STR_.namespaces)
+(def _nil '_STR_fnjs_STR_.nil)
 
 (defn mknested [x n]                                            ; {{{1
   [ "(function (o, xs) {
@@ -90,24 +87,35 @@
      })(" x ", [" (list_ (map pr-str (split (str n) #"\."))) "]);" ])
                                                                 ; }}}1
 
+(defn wrap [body]                                               ; {{{1
+  [ "(function () {
+        var" _rt "= this," _ns "= {};
+        var" _ex "= typeof exports === 'undefined' ? null : exports;"
+        (mknested _rt _fn)
+        _rt "." _nil "=" _rt "." _nil "||
+          new (function NIL () { this.nil_QMK_ = true; }) ();"
+        (do-body body false)
+    "}).call (this);" ])
+                                                                ; }}}1
+
 (defn nspace [x]                                                ; {{{1
-  [  "if (_STR_exports_STR_ === null) {"
-       (mknested "_STR_root_STR_" (str '_STR_namespaces_STR_. x))
-       "_STR_ns_STR_ = _STR_root_STR_._STR_namespaces_STR_." x ";
-      } else {
-        _STR_ns_STR_ = _STR_exports_STR_;
-      }
-      _STR_ns_STR_.__namespace__ =" (-> x str pr-str) ";" ])
+  [  "if (" _ex "=== null) {"
+       (mknested _rt (str _nss '. x))
+        _ns "=" _rt "." _nss "." x ";
+      } else {"
+        _ns "=" _ex ";
+      }"
+      _ns ".__namespace__ =" (-> x str pr-str) ";" ])
                                                                 ; }}}1
 
 (defn use_ [refs]                                               ; {{{1
-  (for [ [k lib v] refs ]
-    (let [ path [ "_STR_root_STR_._STR_namespaces_STR_." lib ] ]
-      [  "if (_STR_exports_STR_ === null) {"
-            (when v [ "if (" path "== null) {" path "=" v "; }" ])
+  (for [ [k l obj module] refs ]
+    (let [ path (str _rt '. _nss '. l) ]
+      [  "if (" _ex "=== null) {"
+            (when obj [ "if (" path "== null) {" path "=" obj "; }" ])
            "var" k "=" path ";
           } else {
-            var" k "= require (" (-> lib str pr-str) ");
+            var" k "= require (" (or module (-> l str pr-str)) ");
           }" ])))
                                                                 ; }}}1
 
@@ -124,7 +132,7 @@
             if (" vari "&&" vari ".length <= arguments.length) {
               return" vari ".apply (null, arguments);
             } else {
-              throw new Error ('Wrong number of args');
+              throw new Error ('Wrong number of args.');
             }
           });
        })([" (list_ fs) "]," (or v "null") ")" ]))
