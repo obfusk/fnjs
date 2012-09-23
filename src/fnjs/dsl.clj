@@ -50,7 +50,7 @@
     (concat (mtr [k l]) (map #(when % (tr %)) [obj module])) )))
 
 (defn tr_ns [x & refs]
-  [ (_e/nspace (tr x))
+  [ (_e/nspace (tr x))                                          ; TODO
     (for [[u & r] refs] (do (assert (= u :use)) (apply tr_use r))) ])
 
 (defn tr_js   [& xs] (for [x xs] (if (string? x) x (tr x))))
@@ -59,8 +59,6 @@
 (defn tr_def  [k v] (mk-def k (tr v)))                          ; TODO
 (defn tr_def- [k v] (mk-def- k (tr v)))                         ; TODO
 (defn tr_do   [& body] (_e/do_ (mtr body)))
-
-; --
 
 (defn tr_loop [vars body]
   (let [ ks (take-nth 2 vars), vs (take-nth 2 (rest vars)) ]
@@ -96,8 +94,54 @@
 
 ; --
 
+(defn mk-dsym [] (gensym '__destructure__))
+
+(declare destr)
+
+(defn destr-vec [b e ary?]                                      ; {{{1
+  ; TODO: variadic
+
+  (let [ i      (.indexOf b :as)
+         [xs a] (if (not= i -1) [ (drop-last 2 b) (b (inc i)) ]
+                                [              b  (mk-dsym)   ] )
+         nth_   (if ary? 'jget (:nth _e/lib)) ]
+    [ (mk-var a e)
+      (map (fn [x i] (destr x `(~nth_ ~a ~i)))
+        xs (iterate inc 0)) ]))
+                                                                ; }}}1
+
+(defn destr-map [b e obj?]                                      ; {{{1
+  ; TODO: variadic, or, keys, strs; syms ???
+
+  (let [ { a' :as, o :or, ks :keys, ss :strs } b
+         xs   (dissoc b :as :or :keys :strs)
+         a    (or a' (mk-dsym))
+         get_ (if obj? 'jget (:get _e/lib)) ]
+    [ (mk-var a e) (for [[x i] xs] (destr x `(~get_ ~a ~i))) ]))
+                                                                ; }}}1
+
+(defn destr-js [[x & b' :as b] e]                               ; {{{1
+  (case x
+    :ary (destr-vec (vec            b') e true)
+    :obj (destr-map (apply hash-map b') e true)
+    (assert nil (str "destr-js: expected :ary or :obj,"
+                     " not --> " (pr-str x) " <--" ))))         ; TODO
+                                                                ; }}}1
+
+(defn destr [b e]                                               ; {{{1
+  (cond
+    (symbol? b) (mk-var b e)
+    (vector? b) (destr-vec b e false)
+    (map?    b) (destr-map b e false)
+    (list?   b) (destr-js  b e)
+    :else (assert nil (str "destr: unknown type " (pr-str (type b))
+                           " for --> " (pr-str b) " <--" ))))   ; TODO
+                                                                ; }}}1
+
+; --
+
 (defn tr_let [vars & body]                                      ; TODO
-  (let [ vs (for [ x (partition 2 vars) ] (apply mk-var x)) ]
+  (let [ vs (for [ x (partition 2 vars) ] (apply destr x)) ]
     (_e/do_ (concat vs (mtr body))) ))
 
 (defn tr_if [c a b] (apply _e/if_ (mtr [c a b])))
@@ -171,9 +215,9 @@
     (string?            x)            (tr-str  x)
     (instance? Boolean  x)            (tr-bool x)
     (number?            x)            (tr-num  x)
-    (nil?               x)            _e/null
-    :else (_m/die (str  "unknown type " (pr-str (type x))
-                        " for --> " (pr-str x) " <--" ))))      ; TODO
+    (nil?               x)            (:nil _e/lib)
+    :else (assert nil (str "tr: unknown type " (pr-str (type x))
+                           " for --> " (pr-str x) " <--" ))))   ; TODO
                                                                 ; }}}1
 
 ; --
@@ -195,11 +239,10 @@
 
 (defn tr-list [xs]                                              ; {{{1
 ; (.println *err* (str "-[2]-> " (pr-str xs)))                ;  DEBUG
-  (if (seq xs)
-    (let [  x     (first xs), xt (rest xs)
-            call  #(_e/call (tr x) (mtr xt)) ]
-      (if (symbol? x) (tr-special x xt (str x) call) (call)) )
-    (_m/die "empty list") ))                                    ; TODO
+  (assert (seq xs) "empty list")                                ; TODO
+  (let [  x     (first xs), xt (rest xs)
+          call  #(_e/call (tr x) (mtr xt)) ]
+    (if (symbol? x) (tr-special x xt (str x) call) (call)) ))
                                                                 ; }}}1
 
 ; --

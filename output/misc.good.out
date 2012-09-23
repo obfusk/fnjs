@@ -18,3 +18,5 @@ z= 10
 10
 two zero [ 1, 2, [ 3, 4 ] ]
 11
+MR. X A B C [ 'MR. X', 666, { ab: [ 'A', 'B' ], c: 'C' } ] { ab: [ 'A', 'B' ], c: 'C' }
+MR. X A B C [ 'MR. X', 666, { ab: [ 'A', 'B' ], c: 'C' } ] { ab: [ 'A', 'B' ], c: 'C' }

@@ -44,8 +44,10 @@
 (defn object [& xs]
   [ "{" (list_ (for [ [k v] xs ] [ k ":" v ])) "}" ] )
 
+(defn var! [k v & ks]
+  [ "var" (interpose "=" (cons k ks)) "=" v ";" ] )
+
 (defn array [& xs]      [ "[" (list_ xs) "]" ])
-(defn var!  [k v & ks]  [ "var" (interpose "=" (cons k ks)) "=" v ])
 (defn call  [f args]    [ (group f (group (list_ args))) ])
 (defn get_  [x ys]      [ x (map index ys) ])
 (defn if_   [c a b]     [ c "?" a ":" b ])
@@ -78,6 +80,12 @@
 (def _fn  '_STR_fnjs_STR_)
 (def _nss '_STR_fnjs_STR_.namespaces)
 (def _nil '_STR_fnjs_STR_.nil)
+(def _cr  '_STR_fnjs_STR_.core)
+
+(def lib (let [ f #(symbol (apply str _rt '. %&)) ]
+  { :nil (f _nil), :get (f _cr '.get), :nth (f _cr '.nth) } ))
+
+; --
 
 (defn mknested [x n]                                            ; {{{1
   [ "(function (o, xs) {

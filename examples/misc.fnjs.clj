@@ -1,5 +1,5 @@
 ; File        : examples/misc.fnjs
-; Date        : 2012-09-22
+; Date        : 2012-09-23
 ; Description : Testing ground.
 
 (def PI+ 3.14159265)
@@ -35,6 +35,8 @@
 (def g #(jbop + %2 %1))
 (console.log (f 3 (g 11 2)))
 
+; --
+
 (defn multi
   ([] "zero")
   ([x y] "two")
@@ -55,5 +57,21 @@
       z )))
 
 (console.log (reduce' #(jbop + %1 %2) 5 (jary 1 2 3)))
+
+; --
+
+(def *root* (jobj *fnjs* (jobj core (jobj
+  nth (fn [x i] (jget x i))
+  get (fn [x i] (jget x i)) ))))
+
+(def obj (jary "MR. X" 666 (jobj "ab" (jary "A" "B"), "c" "C")))
+
+(let [ [x _ { [a b] "ab", c "c", :as qux } :as bar] obj ]
+  (console.log x a b c bar qux) )
+
+(let [ (:ary x _ (:obj (:ary a b) "ab", c "c", :as qux) :as bar) obj ]
+  (console.log x a b c bar qux) )
+
+; --
 
 (def x nil)

@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/misc.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-05-07
+; Date        : 2012-09-23
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -20,7 +20,7 @@
 
 ; MOVE {
 
-(defn die [x] (throw (Exception. x)))
+; (defn die [x] (throw (Exception. x)))
 
 (defn safe-read [x] (binding [ *read-eval* false ] (read-string x)))
 (defn read-file [f] (safe-read (str "(" (slurp f) "\n)")))

@@ -30,7 +30,7 @@
   }
   var VERSION = _STR_ns_STR_.VERSION = "0.1.2-dev";
   var _QMK_ = _STR_ns_STR_._QMK_ = function(x) {
-    return not(or(_EQS_(x, undefined), _EQS_(x, null), _EQS_(x, false)));
+    return not(or(_EQS_(x, undefined), _EQS_(x, _STR_root_STR_._STR_fnjs_STR_.nil), _EQS_(x, false)));
   };
   var apply = _STR_ns_STR_.apply = function(f) {
     var a = arguments;
@@ -38,7 +38,7 @@
       var xt = U.tail(U.toArray(a));
       var yi = U.initial(xt);
       var y = U.last(xt);
-      return f.apply(null, yi.concat(y));
+      return f.apply(_STR_root_STR_._STR_fnjs_STR_.nil, yi.concat(y));
     }();
   };
   var _EQS_ = _STR_ns_STR_._EQS_ = function() {
@@ -54,20 +54,20 @@
     this.key = function() {
       return "k:" + this.str;
     };
-    return null;
+    return _STR_root_STR_._STR_fnjs_STR_.nil;
   };
   var key = _STR_ns_STR_.key = function(x) {
     return _EQS_(typeof x, "string") ? "s:" + x : x.key();
   };
   var Vector = _STR_ns_STR_.Vector = function() {
     this.data = U.toArray(arguments);
-    return null;
+    return _STR_root_STR_._STR_fnjs_STR_.nil;
   };
   var Map = _STR_ns_STR_.Map = function() {
     this.data = {};
     for (var i = 0; i < arguments.length; i += 2) {
       this.data[arguments[i]] = key(arguments[i + 1]);
     }
-    return null;
+    return _STR_root_STR_._STR_fnjs_STR_.nil;
   };
 }).call(this);

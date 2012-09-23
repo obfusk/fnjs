@@ -53,9 +53,9 @@
   };
   foo_STR_("hi", 1337);
   (function() {
-    var temp__290__auto__ = 1 * 10;
-    return temp__290__auto__ ? function() {
-      var z_MIN_ = temp__290__auto__;
+    var temp__323__auto__ = 1 * 10;
+    return temp__323__auto__ ? function() {
+      var z_MIN_ = temp__323__auto__;
       return console.log("z=", z_MIN_);
     }() : console.log("false");
   })();
@@ -116,5 +116,43 @@
   console.log(reduce_PRM_(function(p1__5_HSH_, p2__6_HSH_) {
     return p1__5_HSH_ + p2__6_HSH_;
   }, 5, [ 1, 2, 3 ]));
-  var x = _STR_ns_STR_.x = null;
+  var _STR_root_STR_ = _STR_ns_STR_._STR_root_STR_ = {
+    _STR_fnjs_STR_: {
+      core: {
+        nth: function(x, i) {
+          return x[i];
+        },
+        get: function(x, i) {
+          return x[i];
+        }
+      }
+    }
+  };
+  var obj = _STR_ns_STR_.obj = [ "MR. X", 666, {
+    ab: [ "A", "B" ],
+    c: "C"
+  } ];
+  (function() {
+    var bar = obj;
+    var x = _STR_root_STR_._STR_fnjs_STR_.core.nth(bar, 0);
+    var _ = _STR_root_STR_._STR_fnjs_STR_.core.nth(bar, 1);
+    var qux = _STR_root_STR_._STR_fnjs_STR_.core.nth(bar, 2);
+    var __destructure__13 = _STR_root_STR_._STR_fnjs_STR_.core.get(qux, "ab");
+    var a = _STR_root_STR_._STR_fnjs_STR_.core.nth(__destructure__13, 0);
+    var b = _STR_root_STR_._STR_fnjs_STR_.core.nth(__destructure__13, 1);
+    var c = _STR_root_STR_._STR_fnjs_STR_.core.get(qux, "c");
+    return console.log(x, a, b, c, bar, qux);
+  })();
+  (function() {
+    var bar = obj;
+    var x = bar[0];
+    var _ = bar[1];
+    var qux = bar[2];
+    var c = qux["c"];
+    var __destructure__14 = qux["ab"];
+    var a = __destructure__14[0];
+    var b = __destructure__14[1];
+    return console.log(x, a, b, c, bar, qux);
+  })();
+  var x = _STR_ns_STR_.x = _STR_root_STR_._STR_fnjs_STR_.nil;
 }).call(this);

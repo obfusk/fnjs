@@ -56,11 +56,11 @@
   })();
   show(1 === 1 ? "eq" : "ne");
   console.log("JS!");
-  show(null);
+  show(_STR_root_STR_._STR_fnjs_STR_.nil);
   (function() {
-    var temp__290__auto__ = PI * PI;
-    return temp__290__auto__ ? function() {
-      var x = temp__290__auto__;
+    var temp__323__auto__ = PI * PI;
+    return temp__323__auto__ ? function() {
+      var x = temp__323__auto__;
       return show("x=", x);
     }() : show("false");
   })();
