@@ -1,6 +1,6 @@
 #!/bin/bash
 
-lein uberjar
-mkdir -p jar && mv -v *.jar jar/
+"${LEIN:-lein}" uberjar
+mkdir -p jar && mv -v {target/,}*.jar jar/
 
 # --

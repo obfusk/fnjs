@@ -1,5 +1,5 @@
 #!/bin/bash
 
-lein run -- "$@"
+"${LEIN:-lein}" run -- "$@"
 
 # --
