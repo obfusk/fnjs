@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/more.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-21
+; Date        : 2012-09-24
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1

@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs.core.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-22
+; Date        : 2012-09-24
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -21,31 +21,39 @@
 
 ; --
 
-; TODO TODO TODO --- WORK-IN-PROGRESS --- TODO TODO TODO
+(defn all-pairs? [f xs]
+  (js  "for (var i = 1; i < xs.length; ++i) {
+          if (! f (arguments[i-1], arguments [i])) { return false; }
+        }" ) true )
 
-; all-pairs? mk-obj
-
-(defn ? [x] (not (or (= x undefined) (= x nil) (= x false))))
-
-(defn apply [f]
-  (def- a arguments)
-  (let [ xt (U.tail (U.toArray a))
-         yi (U.initial xt)
-         y  (U.last xt) ]
-    (.!apply f nil (.!concat yi y)) ))
+(defn apply [f & xs]
+  (let [ xi (U.initial xs), ys (U.last xs) ]
+    (.!apply f null (.!concat xi ys)) ))
 
 ; --
 
-(defn = []                                                      ; {{{1
-  (js  "for (var i = 1; i < arguments.length; ++i) {
-          if (! U.isEqual (arguments[i-1], arguments [i])) {
-            return false;
-          }
-        }" )
-  true )
-                                                                ; }}}1
+(defn +                     [  & xs] (U.reduce xs #(jbop + %1 %2) 0))
+(defn - ([x] (juop - x  )) ([x & xs] (U.reduce xs #(jbop - %1 %2) x)))
+(defn *                     [  & xs] (U.reduce xs #(jbop * %1 %2) 1))
+(defn / ([x] (jbop / 1 x)) ([x & xs] (U.reduce xs #(jbop / %1 %2) x)))
 
-; (defn not= [] (not (apply = arguments
+(defn inc [x] (jbop + x 1))
+(defn dec [x] (jbop - x 1))
+
+; --
+
+(defn not [x] (jbop || (jbop === x false    ) (jbop === x null)
+                       (jbop === x undefined) (jbop === x nil ) ))
+(defn ? [x] (juop ! (not x)))
+
+(defn = [& xs] (all-pairs? #(U.isEqual %1 %2) xs))
+(defn not= [& xs] (not (apply = xs)))
+
+; --
+
+; TODO TODO TODO --- WORK-IN-PROGRESS --- TODO TODO TODO
+
+; mk-obj
 
 ; --
 
