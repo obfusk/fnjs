@@ -58,9 +58,9 @@
   console.log("JS!");
   show(_STR_root_STR_._STR_fnjs_STR_.nil);
   (function() {
-    var temp__323__auto__ = PI * PI;
-    return temp__323__auto__ ? function() {
-      var x = temp__323__auto__;
+    var temp__319__auto__ = PI * PI;
+    return temp__319__auto__ ? function() {
+      var x = temp__319__auto__;
       return show("x=", x);
     }() : show("false");
   })();

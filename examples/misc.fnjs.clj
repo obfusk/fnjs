@@ -1,5 +1,5 @@
 ; File        : examples/misc.fnjs
-; Date        : 2012-09-23
+; Date        : 2012-09-24
 ; Description : Testing ground.
 
 (def PI+ 3.14159265)
@@ -71,6 +71,23 @@
 
 (let [ (:ary x _ (:obj (:ary a b) "ab", c "c", :as qux) :as bar) obj ]
   (console.log x a b c bar qux) )
+
+(let [ (:obj :strs [a b c] ) (jobj a 1 b 2 c 3) ]
+  (console.log a b c) )
+
+(let [ (:ary x y & xs) (jary 1 2 3 4 5 6) ]
+  (console.log x y xs) )
+
+(defn foo [(:ary x y) & xs] (console.log x y xs))
+(foo (jary 7 8 9) 10 11 12 13 14)
+
+; --
+
+(loop [(:obj :strs [a b c d]) (jobj a 0 b 2 c 2 d 1)]
+  (if (jbop === a b)
+        (console.log "DONE" a b c d)
+    (do (console.log "MORE" a b c d)
+        (recur (jobj a (jbop + a c) b (jbop + b d) c c d d)) )))
 
 ; --
 

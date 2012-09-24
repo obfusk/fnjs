@@ -53,9 +53,9 @@
   };
   foo_STR_("hi", 1337);
   (function() {
-    var temp__323__auto__ = 1 * 10;
-    return temp__323__auto__ ? function() {
-      var z_MIN_ = temp__323__auto__;
+    var temp__319__auto__ = 1 * 10;
+    return temp__319__auto__ ? function() {
+      var z_MIN_ = temp__319__auto__;
       return console.log("z=", z_MIN_);
     }() : console.log("false");
   })();
@@ -137,9 +137,9 @@
     var x = _STR_root_STR_._STR_fnjs_STR_.core.nth(bar, 0);
     var _ = _STR_root_STR_._STR_fnjs_STR_.core.nth(bar, 1);
     var qux = _STR_root_STR_._STR_fnjs_STR_.core.nth(bar, 2);
-    var __destructure__13 = _STR_root_STR_._STR_fnjs_STR_.core.get(qux, "ab");
-    var a = _STR_root_STR_._STR_fnjs_STR_.core.nth(__destructure__13, 0);
-    var b = _STR_root_STR_._STR_fnjs_STR_.core.nth(__destructure__13, 1);
+    var __destructure__20 = _STR_root_STR_._STR_fnjs_STR_.core.get(qux, "ab");
+    var a = _STR_root_STR_._STR_fnjs_STR_.core.nth(__destructure__20, 0);
+    var b = _STR_root_STR_._STR_fnjs_STR_.core.nth(__destructure__20, 1);
     var c = _STR_root_STR_._STR_fnjs_STR_.core.get(qux, "c");
     return console.log(x, a, b, c, bar, qux);
   })();
@@ -149,10 +149,66 @@
     var _ = bar[1];
     var qux = bar[2];
     var c = qux["c"];
-    var __destructure__14 = qux["ab"];
-    var a = __destructure__14[0];
-    var b = __destructure__14[1];
+    var __destructure__21 = qux["ab"];
+    var a = __destructure__21[0];
+    var b = __destructure__21[1];
     return console.log(x, a, b, c, bar, qux);
   })();
+  (function() {
+    var __destructure__13 = {
+      a: 1,
+      b: 2,
+      c: 3
+    };
+    var a = __destructure__13["a"];
+    var c = __destructure__13["c"];
+    var b = __destructure__13["b"];
+    return console.log(a, b, c);
+  })();
+  (function() {
+    var __destructure__14 = [ 1, 2, 3, 4, 5, 6 ];
+    var xs = __destructure__14.slice(2);
+    var x = __destructure__14[0];
+    var y = __destructure__14[1];
+    return console.log(x, y, xs);
+  })();
+  var foo = _STR_ns_STR_.foo = function(__destructure__15) {
+    var xs = Array.prototype.slice.call(arguments, 1);
+    var __destructure__16 = __destructure__15;
+    var x = __destructure__16[0];
+    var y = __destructure__16[1];
+    return console.log(x, y, xs);
+  };
+  foo([ 7, 8, 9 ], 10, 11, 12, 13, 14);
+  (function(__arguments__17, __continue__18) {
+    var recur = function() {
+      __arguments__17 = Array.prototype.slice.call(arguments);
+      return __continue__18;
+    };
+    while (true) {
+      var __destructure__22 = __arguments__17[0];
+      var a = __destructure__22["a"];
+      var c = __destructure__22["c"];
+      var b = __destructure__22["b"];
+      var d = __destructure__22["d"];
+      __result__19 = a === b ? console.log("DONE", a, b, c, d) : function() {
+        console.log("MORE", a, b, c, d);
+        return recur({
+          a: a + c,
+          b: b + d,
+          c: c,
+          d: d
+        });
+      }();
+      if (__result__19 !== __continue__18) {
+        return __result__19;
+      }
+    }
+  })([ {
+    a: 0,
+    b: 2,
+    c: 2,
+    d: 1
+  } ], {});
   var x = _STR_ns_STR_.x = _STR_root_STR_._STR_fnjs_STR_.nil;
 }).call(this);

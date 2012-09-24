@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/dsl.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-23
+; Date        : 2012-09-24
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -14,7 +14,7 @@
 ;
 ; --                                                            ; }}}1
 
-; TODO: destructuring, assert, loop/recur, docs, ...
+; TODO: assert, docs, ...
 
 ; --
 
@@ -60,61 +60,35 @@
 (defn tr_def- [k v] (mk-def- k (tr v)))                         ; TODO
 (defn tr_do   [& body] (_e/do_ (mtr body)))
 
-(defn tr_loop [vars body]
-  (let [ ks (take-nth 2 vars), vs (take-nth 2 (rest vars)) ]
-    (_e/loop_ (mtr ks) (mtr vs) (tr body)) ))
-
 ; --
 
 (defn variadic? [args]
   (let [ i (.indexOf args '&) ] (when (not= i -1) i)) )
-
-(defn mk-fn [nm args body]                                      ; {{{1
-  (let [ nm' (when-not (nil? nm) (tr nm)), b (mtr body) ]
-    (if-let [ i (variadic? args) ]
-      (let [ as (take i args), v (args (inc i)) ]
-        (_e/function nm' (mtr as) { :k (tr v), :i i } b) )
-      (_e/function nm' (mtr args) nil b) )))
-                                                                ; }}}1
-
-(defn tr_fn [& sigs]                                            ; {{{1
-  (let [ nm (first sigs) ]
-    (if (or (symbol? nm) (nil? nm))
-      (let [ args (second sigs) ]
-        (if (vector? args)
-          (mk-fn nm args (drop 2 sigs))
-          (let [ g  (group-by #(-> % first variadic? boolean)
-                      (rest sigs))
-                 fs (g false)
-                 v  (first (g true))                            ; TODO
-                 v' (when v (apply tr_fn nm v)) ]
-            (_e/overload (map #(apply tr_fn nm %) fs) v') )))
-      (apply tr_fn nil sigs) )))
-                                                                ; }}}1
-
-; --
 
 (defn mk-dsym [] (gensym '__destructure__))
 
 (declare destr)
 
 (defn destr-vec [b e ary?]                                      ; {{{1
-  ; TODO: variadic
-
-  (let [ i      (.indexOf b :as)
-         [xs a] (if (not= i -1) [ (drop-last 2 b) (b (inc i)) ]
+  (let [ i (variadic? b), j (.indexOf b :as)
+         [xs a] (if (not= j -1) [ (drop-last 2 b) (b (inc j)) ]
                                 [              b  (mk-dsym)   ] )
-         nth_   (if ary? 'jget (:nth _e/lib)) ]
+         nth_   (if ary? 'jget (:nth _e/lib))
+         drop_  (fn [n c] (if ary? `(.!slice ~c ~n)
+                                   `(~(:drop _e/lib) ~n ~c) )) ]
     [ (mk-var a e)
-      (map (fn [x i] (destr x `(~nth_ ~a ~i)))
-        xs (iterate inc 0)) ]))
+      (when i (mk-var (b (inc i)) (drop_ i a)))
+      (map (fn [x n] (destr x `(~nth_ ~a ~n)))
+        (if i (drop-last 2 xs) xs) (iterate inc 0)) ]))
                                                                 ; }}}1
 
 (defn destr-map [b e obj?]                                      ; {{{1
-  ; TODO: variadic, or, keys, strs; syms ???
+  ; TODO: or (!), syms (?!)
 
   (let [ { a' :as, o :or, ks :keys, ss :strs } b
-         xs   (dissoc b :as :or :keys :strs)
+         xs   (into (dissoc b :as :or :keys :strs)
+                (concat (for [k ks] [k (keyword k)])
+                        (for [s ss] [s (str s)]) ))
          a    (or a' (mk-dsym))
          get_ (if obj? 'jget (:get _e/lib)) ]
     [ (mk-var a e) (for [[x i] xs] (destr x `(~get_ ~a ~i))) ]))
@@ -140,9 +114,49 @@
 
 ; --
 
+(defn destr-fn-args [[as ds] x]
+  (if (symbol? x) [(conj as x) ds]
+    (let [s (mk-dsym)] [(conj as s) (conj ds (destr x s))]) ))
+
+(defn mk-fn [nm args body]                                      ; {{{1
+  (let [ [as os] (if-let [ i (variadic? args) ]
+            [ (take i args) { :i i, :k (tr (args (inc i))) } ]
+            [         args  nil ] )
+         [as' ds] (reduce destr-fn-args [[] []] as) ]
+    (_e/function (when nm (tr nm)) (mtr as') os
+      (concat ds (mtr body)) )))
+                                                                ; }}}1
+
+(defn tr_fn [& sigs]                                            ; {{{1
+  (let [ nm (first sigs) ]
+    (if (or (symbol? nm) (nil? nm))
+      (let [ args (second sigs) ]
+        (if (vector? args)
+          (mk-fn nm args (drop 2 sigs))
+          (let [ g  (group-by #(-> % first variadic? boolean)
+                      (rest sigs))
+                 fs (g false)
+                 v  (first (g true))                            ; TODO
+                 v' (when v (apply tr_fn nm v)) ]
+            (_e/overload (map #(apply tr_fn nm %) fs) v') )))
+      (apply tr_fn nil sigs) )))
+                                                                ; }}}1
+
+; --
+
 (defn tr_let [vars & body]                                      ; TODO
-  (let [ vs (for [ x (partition 2 vars) ] (apply destr x)) ]
-    (_e/do_ (concat vs (mtr body))) ))
+  (_e/do_ (concat (map #(apply destr %) (partition 2 vars))
+    (mtr body) )))
+
+(defn tr_loop [vars body]                                       ; {{{1
+  (let [ ks (take-nth 2 vars), vs (take-nth 2 (rest vars))
+         args (gensym '__arguments__)
+         vars (map (fn [x i] (destr x `(~'jget ~args ~i)))
+                ks (iterate inc 0) ) ]
+    (_e/loop_ args vars (mtr vs) (tr body)) ))
+                                                                ; }}}1
+
+; --
 
 (defn tr_if [c a b] (apply _e/if_ (mtr [c a b])))
 

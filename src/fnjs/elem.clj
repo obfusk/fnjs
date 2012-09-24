@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/elem.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-23
+; Date        : 2012-09-24
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -83,7 +83,8 @@
 (def _cr  '_STR_fnjs_STR_.core)
 
 (def lib (let [ f #(symbol (apply str _rt '. %&)) ]
-  { :nil (f _nil), :get (f _cr '.get), :nth (f _cr '.nth) } ))
+  { :nil (f _nil), :get (f _cr '.get), :nth (f _cr '.nth)
+    :drop (f _cr '.drop) } ))
 
 ; --
 
@@ -146,17 +147,15 @@
        })([" (list_ fs) "]," (or v "null") ")" ]))
                                                                 ; }}}1
 
-(defn loop_ [ks vs body]                                        ; {{{1
-  (let [              [  args          cont         res     ]
-         (map gensym '[__arguments__ __continue__ __result__]) ]
+(defn loop_ [args vars vs body]                                 ; {{{1
+  (let [ [cont res] (map gensym '[__continue__ __result__]) ]
     [ "(function (" args "," cont ") {
           var recur = function () {"
             args "= Array.prototype.slice.call (arguments);
             return" cont ";
           };
           while (true) {"
-            (map (fn [x i] [ "var" x "=" args "[" i "];" ])
-              ks (iterate inc 0) )
+            vars
             res "=" body ";
             if (" res "!==" cont ") { return" res "; }
           }
