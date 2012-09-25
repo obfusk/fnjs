@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/dsl.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-24
+; Date        : 2012-09-25
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -206,9 +206,9 @@
 ; --
 
 (def sym-map {                                                  ; {{{1
-  "!" "_BNG_"   "%" "_PCT_"   "&" "_AMP_"   "*" "_STR_"   "-" "_MIN_"
-  "+" "_PLS_"   "=" "_EQS_"   "|" "_BAR_"   "<" "_LTS_"   ">" "_GTS_"
-  "?" "_QMK_"   "#" "_HSH_"   "'" "_PRM_" })
+  "!" "_BNG_", "#" "_HSH_", "%" "_PCT_", "&" "_AMP_", "'" "_PRM_",
+  "*" "_STR_", "+" "_PLS_", "-" "_MIN_", "/" "_SLH_", "<" "_LTS_",
+  "=" "_EQS_", ">" "_GTS_", "?" "_QMK_", "|" "_BAR_" })
                                                                 ; }}}1
 
 (def sym-rx (re-pattern (str "[\\Q" (join (keys sym-map)) "\\E]")))
