@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/elem.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-24
+; Date        : 2012-09-25
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -61,10 +61,10 @@
   ([nm args v body] (function nm args v body true))
   ([nm args v body ret?]
     [ "(function" nm "(" (list_ args) ") {"
-        (when v
-          [ "var" (:k v) "= Array.prototype.slice.call ("
-              "arguments," (:i v) ");" ])
-        (do-body body ret?)
+          (when v
+            [ "var" (:k v) "= Array.prototype.slice.call ("
+                "arguments," (:i v) ");" ])
+          (do-body body ret?)
       "})" ]))
                                                                 ; }}}1
 
@@ -96,20 +96,20 @@
      })(" x ", [" (list_ (map pr-str (split (str n) #"\."))) "]);" ])
                                                                 ; }}}1
 
-(defn wrap [body]                                               ; {{{1
-  [ "(function () {
-        var" _rt "= this," _ns "= {};
-        var" _ex "= typeof exports === 'undefined' ? null : exports;"
-        (mknested _rt _fn)
-        _rt "." _nil "=" _rt "." _nil "||
-          new (function NIL () { this.nil_QMK_ = true; }) ();"
-        (do-body body false)
-    "}).call (this);" ])
+(defn init []                                                   ; {{{1
+  [  "var" _rt "= this," _ns "= {};
+      var" _ex "= typeof exports === 'undefined' ? null : exports;"
+      (mknested _rt _fn)
+      _rt "." _nil "=" _rt "." _nil "||
+        new (function NIL () { this.nil_QMK_ = true; });" ])
                                                                 ; }}}1
+
+(defn wrap [body]
+  [ "(function () {" (init) (do-body body false) "}).call (this);" ] )
 
 (defn nspace [x]                                                ; {{{1
   [  "if (" _ex "=== null) {"
-       (mknested _rt (str _nss '. x))
+        (mknested _rt (str _nss '. x))
         _ns "=" _rt "." _nss "." x ";
       } else {"
         _ns "=" _ex ";
