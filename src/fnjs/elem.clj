@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/elem.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-25
+; Date        : 2012-09-27
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -42,7 +42,7 @@
 (defn binop       [o args]  (group (interpose o args)))
 
 (defn object [& xs]
-  [ "{" (list_ (for [ [k v] xs ] [ k ":" v ])) "}" ] )
+  [ "({" (list_ (for [ [k v] xs ] [ k ":" v ])) "})" ] )
 
 (defn var! [k v & ks]
   [ "var" (interpose "=" (cons k ks)) "=" v ";" ] )

@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/main.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-23
+; Date        : 2012-09-25
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -18,6 +18,7 @@
   (:gen-class)
   (:require [ fnjs.core :as _c ]
 ;           [ fnjs.elem :as _e ]
+            [ fnjs.repl :as _r ]
             [ fnjs.misc :as _m ] ))
 
 ; --
@@ -31,7 +32,7 @@
 
 (defn -main [& args]                                            ; {{{1
   (try
-    (compile-files args)
+    (if (= args [":repl"]) (_r/repl) (compile-files args))
   (catch Exception e
     (do (.printStackTrace e)                                  ;  DEBUG
         (.println *err* (str "fnjs: " (.getMessage e))))
