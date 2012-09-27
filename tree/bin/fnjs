@@ -3,7 +3,7 @@
 vsn='0.1.2-dev'
 
 abs="$( perl -e 'use Cwd;print Cwd::abs_path($ARGV[0]),"\n"' "$0" )"
-dir="$( dirname "$abs" )"
+dir="$( dirname "$( dirname "$abs" )" )"
 
 java -jar "$dir"/lib/fnjs/jar/fnjs-"$vsn"-standalone.jar "$@"
 
