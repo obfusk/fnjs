@@ -98,8 +98,9 @@
                                                                 ; }}}1
 
 (defn init []                                                   ; {{{1
-  [  "var" _rt "= this," _ns "= {};
-      var" _ex "= typeof exports === 'undefined' ? null : exports;"
+  [  "var" _ex "= typeof exports === 'undefined' ? null : exports;
+      var" _rt "= exports === null ? window : global;
+      var" _ns "= {};"
       (mknested _rt _fn)
       _rt "." _nil "=" _rt "." _nil "||
         new (function NIL () { this.nil_QMK_ = true; });
@@ -130,10 +131,10 @@
           }" ])))
                                                                 ; }}}1
 
-(defn overload [fs v]                                           ; {{{1
+(defn overload [nm fs v]                                        ; {{{1
   (let [                 [  i     over          vari      ]
          (map _m/mk-sym '[__i__ __overloads__ __variadic__]) ]
-    [ "(function (" over "," vari ") {
+    [ "(function" nm "(" over "," vari ") {
           return (function () {
             for (var" i "in" over ") {
               if (" over "[" i "].length == arguments.length) {

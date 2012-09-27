@@ -138,7 +138,8 @@
                  fs (g false)
                  v  (first (g true))                            ; TODO
                  v' (when v (apply tr_fn nm v)) ]
-            (_e/overload (map #(apply tr_fn nm %) fs) v') )))
+            (_e/overload (when nm (tr nm))
+              (map #(apply tr_fn nm %) fs) v' ))))
       (apply tr_fn nil sigs) )))
                                                                 ; }}}1
 

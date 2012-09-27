@@ -1,6 +1,7 @@
 (function() {
-  var _STR_root_STR_ = this, _STR_ns_STR_ = {};
   var _STR_exports_STR_ = typeof exports === "undefined" ? null : exports;
+  var _STR_root_STR_ = exports === null ? window : global;
+  var _STR_ns_STR_ = {};
   (function(o, xs) {
     for (var x in xs) {
       o = o[xs[x]] = o[xs[x]] == null ? {} : o[xs[x]];
@@ -52,7 +53,7 @@
       return p1__396_HSH_ + p2__397_HSH_;
     }, 0);
   };
-  var _MIN_ = _STR_ns_STR_._MIN_ = function(__overloads___GEN_2, __variadic___GEN_3) {
+  var _MIN_ = _STR_ns_STR_._MIN_ = function _MIN_(__overloads___GEN_2, __variadic___GEN_3) {
     return function() {
       for (var __i___GEN_1 in __overloads___GEN_2) {
         if (__overloads___GEN_2[__i___GEN_1].length == arguments.length) {
@@ -79,7 +80,7 @@
       return p1__400_HSH_ * p2__401_HSH_;
     }, 1);
   };
-  var _SLH_ = _STR_ns_STR_._SLH_ = function(__overloads___GEN_5, __variadic___GEN_6) {
+  var _SLH_ = _STR_ns_STR_._SLH_ = function _SLH_(__overloads___GEN_5, __variadic___GEN_6) {
     return function() {
       for (var __i___GEN_4 in __overloads___GEN_5) {
         if (__overloads___GEN_5[__i___GEN_4].length == arguments.length) {

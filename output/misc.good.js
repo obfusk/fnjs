@@ -1,6 +1,7 @@
 (function() {
-  var _STR_root_STR_ = this, _STR_ns_STR_ = {};
   var _STR_exports_STR_ = typeof exports === "undefined" ? null : exports;
+  var _STR_root_STR_ = exports === null ? window : global;
+  var _STR_ns_STR_ = {};
   (function(o, xs) {
     for (var x in xs) {
       o = o[xs[x]] = o[xs[x]] == null ? {} : o[xs[x]];
@@ -67,7 +68,7 @@
     return p2__398_HSH_ + p1__399_HSH_;
   };
   console.log(f(3, g(11, 2)));
-  var multi = _STR_ns_STR_.multi = function(__overloads___GEN_3, __variadic___GEN_4) {
+  var multi = _STR_ns_STR_.multi = function multi(__overloads___GEN_3, __variadic___GEN_4) {
     return function() {
       for (var __i___GEN_2 in __overloads___GEN_3) {
         if (__overloads___GEN_3[__i___GEN_2].length == arguments.length) {
