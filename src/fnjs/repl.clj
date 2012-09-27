@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/repl.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-26
+; Date        : 2012-09-27
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -27,36 +27,6 @@
     (doseq [line (line-seq (java.io.BufferedReader. *in*))]
       (-> line _m/read-many (_c/fnjs false) o) )))
                                                                 ; }}}1
-
-; --
-
-; DAMN {{{1
-; (def node-expr
-;   "require ('repl').start ({ prompt: '', terminal: false });" )
-;
-; (def node-cmd ["node" "-e" node-expr])
-;
-; (defn repl []
-;   (let [ p (.start (doto (ProcessBuilder. (into-array node-cmd))
-;                          (.redirectErrorStream true) )) ]
-;     (with-open [ i (.getInputStream p), o (.getOutputStream p) ]
-;       (let [  r (-> i java.io.InputStreamReader.
-;                       java.io.BufferedReader.)
-;               w (-> o java.io.OutputStreamWriter.) ]
-;         (clojure.main/repl
-;           :prompt #(print ">>> ")
-;           :eval (fn [x]
-;             (println "INPUT -->" (pr-str x) "<--")
-;             (.write w (str x "\n"))
-;             (.flush w)
-;             (loop [done? false]
-;               (if (.ready r)
-;                 (let [line (.readLine r)]
-;                   (println "OUTPUT -->" line "<--")
-;                   (recur true) )
-;                 (when-not done? (recur false)) ))))
-;         (.waitFor p) ))))
-; }}}1
 
 ; --
 
