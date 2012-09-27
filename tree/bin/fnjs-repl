@@ -1,0 +1,10 @@
+#!/bin/bash
+
+abs="$( perl -e 'use Cwd;print Cwd::abs_path($ARGV[0]),"\n"' "$0" )"
+dir="$( dirname "$abs" )"
+
+if [ -x "$( which rlwrap )" ]; then wrap=rlwrap ; else wrap= ; fi
+
+FNJS_HOME="$dir" $wrap node "$dir"/lib/fnjs/js/repl.js "$@"
+
+# --

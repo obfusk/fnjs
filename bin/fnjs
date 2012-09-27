@@ -1,7 +1,0 @@
-#!/bin/bash
-
-vsn='0.1.2-dev'
-
-java -jar jar/fnjs-"$vsn"-standalone.jar "$@"
-
-# --
