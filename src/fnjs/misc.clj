@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/misc.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-26
+; Date        : 2012-09-27
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -15,6 +15,11 @@
 ; --                                                            ; }}}1
 
 (ns fnjs.misc)
+
+; --
+
+(def _sym_counter_ (atom 0))
+(defn mk-sym [x] (symbol (str x "_GEN_" (swap! _sym_counter_ inc))))
 
 ; --
 

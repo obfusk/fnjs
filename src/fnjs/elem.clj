@@ -15,7 +15,8 @@
 ; --                                                            ; }}}1
 
 (ns fnjs.elem
-  (:use [ clojure.string :only [ join split ] ]) )
+  (:use [ clojure.string :only [ join split ] ])
+  (:require [ fnjs.misc :as _m ]) )
 
 ; --
 
@@ -130,8 +131,8 @@
                                                                 ; }}}1
 
 (defn overload [fs v]                                           ; {{{1
-  (let [              [  i     over          vari      ]
-         (map gensym '[__i__ __overloads__ __variadic__]) ]
+  (let [                 [  i     over          vari      ]
+         (map _m/mk-sym '[__i__ __overloads__ __variadic__]) ]
     [ "(function (" over "," vari ") {
           return (function () {
             for (var" i "in" over ") {
@@ -149,7 +150,7 @@
                                                                 ; }}}1
 
 (defn loop_ [args vars vs body]                                 ; {{{1
-  (let [ [cont res] (map gensym '[__continue__ __result__]) ]
+  (let [ [cont res] (map _m/mk-sym '[__continue__ __result__]) ]
     [ "(function (" args "," cont ") {
           var recur = function () {"
             args "= Array.prototype.slice.call (arguments);

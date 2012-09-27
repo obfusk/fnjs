@@ -21,16 +21,17 @@
 ; --                                                            ; }}}1
 
 (ns fnjs.more
-  (:use     [ fnjs.dsl  :only [ defnjm tr mtr ] :as _d ])
-  (:require [ fnjs.elem                         :as _e ]) )
+  (:use     [ fnjs.dsl :only [ defnjm tr ] :as _d ])
+  (:require [ fnjs.elem :as _e ] [ fnjs.misc :as _m ]) )
 
 ; --
 
 (defn tr_defn  [k & spec] (_d/mk-def  k (apply _d/tr_fn k spec)))
 (defn tr_defn- [k & spec] (_d/mk-def- k (apply _d/tr_fn k spec)))
 
-(defn tr_if-let [[k e] t f]
-  (tr `(~'let [temp# ~e] (~'if temp# (~'let [~k temp#] ~t) ~f))) )
+(defn tr_if-let [[k e] a b]
+  (let [ t (_m/mk-sym '__if_let__) ]
+    (tr `(~'let [~t ~e] (~'if ~t (~'let [~k ~t] ~a) ~b))) ))
 
 ; --
 

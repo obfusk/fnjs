@@ -65,7 +65,7 @@
 (defn variadic? [args]
   (let [ i (.indexOf args '&) ] (when (not= i -1) i)) )
 
-(defn mk-dsym [] (gensym '__destructure__))
+(defn mk-dsym [] (_m/mk-sym '__destructure__))
 
 (declare destr)
 
@@ -150,7 +150,7 @@
 
 (defn tr_loop [vars body]                                       ; {{{1
   (let [ ks (take-nth 2 vars), vs (take-nth 2 (rest vars))
-         args (gensym '__arguments__)
+         args (_m/mk-sym '__arguments__)
          vars (map (fn [x i] (destr x `(~'jget ~args ~i)))
                 ks (iterate inc 0) ) ]
     (_e/loop_ args vars (mtr vs) (tr body)) ))
