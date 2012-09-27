@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/more.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-24
+; Date        : 2012-09-27
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -26,8 +26,8 @@
 
 ; --
 
-(defn tr_defn  [k & spec] (_d/mk-def  k (apply _d/tr_fn spec)))
-(defn tr_defn- [k & spec] (_d/mk-def- k (apply _d/tr_fn spec)))
+(defn tr_defn  [k & spec] (_d/mk-def  k (apply _d/tr_fn k spec)))
+(defn tr_defn- [k & spec] (_d/mk-def- k (apply _d/tr_fn k spec)))
 
 (defn tr_if-let [[k e] t f]
   (tr `(~'let [temp# ~e] (~'if temp# (~'let [~k temp#] ~t) ~f))) )
