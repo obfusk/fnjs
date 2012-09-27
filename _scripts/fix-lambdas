@@ -1,0 +1,17 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+my $i = 0; my %v = ();
+
+sub r {
+  my $x = shift;
+  $v{$x} || ($v{$x} = "__lambda__" . ++$i . "__");
+}
+
+while (<>) {
+  s!(\bp\d+__\d+_HSH_\b)!r($1)!ge;
+  print;
+}
+
+# --

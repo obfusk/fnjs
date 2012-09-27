@@ -6,7 +6,8 @@ for x in examples/*.fnjs; do
   b="$( basename "$x" .fnjs )"
 
   echo "processing $x ..." >&2
-  ./bin/fnjs "$x" | ./_scripts/ugly > output/"$b.$e"
+  ./bin/fnjs "$x" | ./_scripts/ugly | ./_scripts/fix-lambdas \
+    > output/"$b.$e"
   diff -Naur output/"$b".{good.js,"$e"}
 done
 

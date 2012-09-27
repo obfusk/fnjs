@@ -39,8 +39,8 @@
     },
     y: {
       d: 5,
-      f: function(p1__396_HSH_) {
-        return p1__396_HSH_ + 1;
+      f: function(__lambda__1__) {
+        return __lambda__1__ + 1;
       }
     }
   };

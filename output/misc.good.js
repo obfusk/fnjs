@@ -61,11 +61,11 @@
       return console.log("z=", z_MIN_);
     }() : console.log("false");
   })();
-  var f = _STR_ns_STR_.f = function(p1__397_HSH_, p2__396_HSH_) {
-    return p2__396_HSH_ - p1__397_HSH_;
+  var f = _STR_ns_STR_.f = function(__lambda__1__, __lambda__2__) {
+    return __lambda__2__ - __lambda__1__;
   };
-  var g = _STR_ns_STR_.g = function(p1__399_HSH_, p2__398_HSH_) {
-    return p2__398_HSH_ + p1__399_HSH_;
+  var g = _STR_ns_STR_.g = function(__lambda__3__, __lambda__4__) {
+    return __lambda__4__ + __lambda__3__;
   };
   console.log(f(3, g(11, 2)));
   var multi = _STR_ns_STR_.multi = function multi(__overloads___GEN_3, __variadic___GEN_4) {
@@ -115,8 +115,8 @@
       }
     }([ z, xs ], {});
   };
-  console.log(reduce_PRM_(function(p1__400_HSH_, p2__401_HSH_) {
-    return p1__400_HSH_ + p2__401_HSH_;
+  console.log(reduce_PRM_(function(__lambda__5__, __lambda__6__) {
+    return __lambda__5__ + __lambda__6__;
   }, 5, [ 1, 2, 3 ]));
   var _STR_root_STR_ = _STR_ns_STR_._STR_root_STR_ = {
     _STR_fnjs_STR_: {

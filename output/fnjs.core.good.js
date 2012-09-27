@@ -49,8 +49,8 @@
   };
   var _PLS_ = _STR_ns_STR_._PLS_ = function _PLS_() {
     var xs = Array.prototype.slice.call(arguments, 0);
-    return U.reduce(xs, function(p1__396_HSH_, p2__397_HSH_) {
-      return p1__396_HSH_ + p2__397_HSH_;
+    return U.reduce(xs, function(__lambda__1__, __lambda__2__) {
+      return __lambda__1__ + __lambda__2__;
     }, 0);
   };
   var _MIN_ = _STR_ns_STR_._MIN_ = function _MIN_(__overloads___GEN_2, __variadic___GEN_3) {
@@ -70,14 +70,14 @@
     return -x;
   } ], function _MIN_(x) {
     var xs = Array.prototype.slice.call(arguments, 1);
-    return U.reduce(xs, function(p1__398_HSH_, p2__399_HSH_) {
-      return p1__398_HSH_ - p2__399_HSH_;
+    return U.reduce(xs, function(__lambda__3__, __lambda__4__) {
+      return __lambda__3__ - __lambda__4__;
     }, x);
   });
   var _STR_ = _STR_ns_STR_._STR_ = function _STR_() {
     var xs = Array.prototype.slice.call(arguments, 0);
-    return U.reduce(xs, function(p1__400_HSH_, p2__401_HSH_) {
-      return p1__400_HSH_ * p2__401_HSH_;
+    return U.reduce(xs, function(__lambda__5__, __lambda__6__) {
+      return __lambda__5__ * __lambda__6__;
     }, 1);
   };
   var _SLH_ = _STR_ns_STR_._SLH_ = function _SLH_(__overloads___GEN_5, __variadic___GEN_6) {
@@ -97,8 +97,8 @@
     return 1 / x;
   } ], function _SLH_(x) {
     var xs = Array.prototype.slice.call(arguments, 1);
-    return U.reduce(xs, function(p1__402_HSH_, p2__403_HSH_) {
-      return p1__402_HSH_ / p2__403_HSH_;
+    return U.reduce(xs, function(__lambda__7__, __lambda__8__) {
+      return __lambda__7__ / __lambda__8__;
     }, x);
   });
   var inc = _STR_ns_STR_.inc = function inc(x) {
@@ -115,8 +115,8 @@
   };
   var _EQS_ = _STR_ns_STR_._EQS_ = function _EQS_() {
     var xs = Array.prototype.slice.call(arguments, 0);
-    return all_MIN_pairs_QMK_(function(p1__404_HSH_, p2__405_HSH_) {
-      return U.isEqual(p1__404_HSH_, p2__405_HSH_);
+    return all_MIN_pairs_QMK_(function(__lambda__9__, __lambda__10__) {
+      return U.isEqual(__lambda__9__, __lambda__10__);
     }, xs);
   };
   var not_EQS_ = _STR_ns_STR_.not_EQS_ = function not_EQS_() {

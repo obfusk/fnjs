@@ -4,7 +4,8 @@ for x in examples/*.fnjs; do
   b="$( basename "$x" .fnjs )"
 
   echo "processing $x ..."
-  ./bin/fnjs "$x" | ./_scripts/ugly > output/"$b".good.js
+  ./bin/fnjs "$x" | ./_scripts/ugly | ./_scripts/fix-lambdas \
+    > output/"$b".good.js
 done
 
 # --
