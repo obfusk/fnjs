@@ -101,7 +101,8 @@
       var" _ex "= typeof exports === 'undefined' ? null : exports;"
       (mknested _rt _fn)
       _rt "." _nil "=" _rt "." _nil "||
-        new (function NIL () { this.nil_QMK_ = true; });" ])
+        new (function NIL () { this.nil_QMK_ = true; });
+      undefined;" ])
                                                                 ; }}}1
 
 (defn wrap [body]

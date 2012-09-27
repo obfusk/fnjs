@@ -51,6 +51,8 @@ var eval_2 = function (code, d) {                             //  {{{1
     err = e;
   }
 
+  global._ = res;
+
   //  try {
   //    var ns = vm.runInThisContext (
   //      '_STR_ns_STR_.__namespace__', d.file
