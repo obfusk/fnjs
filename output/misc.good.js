@@ -9,6 +9,7 @@
   _STR_root_STR_._STR_fnjs_STR_.nil = _STR_root_STR_._STR_fnjs_STR_.nil || new function NIL() {
     this.nil_QMK_ = true;
   };
+  undefined;
   var PI_PLS_ = _STR_ns_STR_.PI_PLS_ = 3.14159265;
   console.log({
     foo_MIN_: 99,
@@ -48,73 +49,73 @@
       return console.log("...", x_MIN_, y_MIN_);
     });
   });
-  var foo_STR_ = _STR_ns_STR_.foo_STR_ = function(x, y_PLS_) {
+  var foo_STR_ = _STR_ns_STR_.foo_STR_ = function foo_STR_(x, y_PLS_) {
     return console.log("x=", x, "y=", y_PLS_);
   };
   foo_STR_("hi", 1337);
   (function() {
-    var temp__319__auto__ = 1 * 10;
-    return temp__319__auto__ ? function() {
-      var z_MIN_ = temp__319__auto__;
+    var __if_let___GEN_1 = 1 * 10;
+    return __if_let___GEN_1 ? function() {
+      var z_MIN_ = __if_let___GEN_1;
       return console.log("z=", z_MIN_);
     }() : console.log("false");
   })();
-  var f = _STR_ns_STR_.f = function(p1__2_HSH_, p2__1_HSH_) {
-    return p2__1_HSH_ - p1__2_HSH_;
+  var f = _STR_ns_STR_.f = function(p1__397_HSH_, p2__396_HSH_) {
+    return p2__396_HSH_ - p1__397_HSH_;
   };
-  var g = _STR_ns_STR_.g = function(p1__4_HSH_, p2__3_HSH_) {
-    return p2__3_HSH_ + p1__4_HSH_;
+  var g = _STR_ns_STR_.g = function(p1__399_HSH_, p2__398_HSH_) {
+    return p2__398_HSH_ + p1__399_HSH_;
   };
   console.log(f(3, g(11, 2)));
-  var multi = _STR_ns_STR_.multi = function(__overloads__8, __variadic__9) {
+  var multi = _STR_ns_STR_.multi = function(__overloads___GEN_3, __variadic___GEN_4) {
     return function() {
-      for (var __i__7 in __overloads__8) {
-        if (__overloads__8[__i__7].length == arguments.length) {
-          return __overloads__8[__i__7].apply(null, arguments);
+      for (var __i___GEN_2 in __overloads___GEN_3) {
+        if (__overloads___GEN_3[__i___GEN_2].length == arguments.length) {
+          return __overloads___GEN_3[__i___GEN_2].apply(null, arguments);
         }
       }
-      if (__variadic__9 && __variadic__9.length <= arguments.length) {
-        return __variadic__9.apply(null, arguments);
+      if (__variadic___GEN_4 && __variadic___GEN_4.length <= arguments.length) {
+        return __variadic___GEN_4.apply(null, arguments);
       } else {
         throw new Error("Wrong number of args.");
       }
     };
-  }([ function() {
+  }([ function multi() {
     return "zero";
-  }, function(x, y) {
+  }, function multi(x, y) {
     return "two";
-  } ], function(x, y) {
+  } ], function multi(x, y) {
     var rest = Array.prototype.slice.call(arguments, 2);
     return [ x, y, rest ];
   });
   console.log(multi(1, 2), multi(), multi(1, 2, 3, 4));
-  var seq_PRM_ = _STR_ns_STR_.seq_PRM_ = function(xs) {
+  var seq_PRM_ = _STR_ns_STR_.seq_PRM_ = function seq_PRM_(xs) {
     return xs.length;
   };
-  var first_PRM_ = _STR_ns_STR_.first_PRM_ = function(xs) {
+  var first_PRM_ = _STR_ns_STR_.first_PRM_ = function first_PRM_(xs) {
     return xs[0];
   };
-  var rest_PRM_ = _STR_ns_STR_.rest_PRM_ = function(xs) {
+  var rest_PRM_ = _STR_ns_STR_.rest_PRM_ = function rest_PRM_(xs) {
     return xs.slice(1);
   };
-  var reduce_PRM_ = _STR_ns_STR_.reduce_PRM_ = function(f, z, xs) {
-    return function(__arguments__10, __continue__11) {
+  var reduce_PRM_ = _STR_ns_STR_.reduce_PRM_ = function reduce_PRM_(f, z, xs) {
+    return function(__arguments___GEN_5, __continue___GEN_6) {
       var recur = function() {
-        __arguments__10 = Array.prototype.slice.call(arguments);
-        return __continue__11;
+        __arguments___GEN_5 = Array.prototype.slice.call(arguments);
+        return __continue___GEN_6;
       };
       while (true) {
-        var z = __arguments__10[0];
-        var xs = __arguments__10[1];
-        __result__12 = seq_PRM_(xs) ? recur(f(z, first_PRM_(xs)), rest_PRM_(xs)) : z;
-        if (__result__12 !== __continue__11) {
-          return __result__12;
+        var z = __arguments___GEN_5[0];
+        var xs = __arguments___GEN_5[1];
+        __result___GEN_7 = seq_PRM_(xs) ? recur(f(z, first_PRM_(xs)), rest_PRM_(xs)) : z;
+        if (__result___GEN_7 !== __continue___GEN_6) {
+          return __result___GEN_7;
         }
       }
     }([ z, xs ], {});
   };
-  console.log(reduce_PRM_(function(p1__5_HSH_, p2__6_HSH_) {
-    return p1__5_HSH_ + p2__6_HSH_;
+  console.log(reduce_PRM_(function(p1__400_HSH_, p2__401_HSH_) {
+    return p1__400_HSH_ + p2__401_HSH_;
   }, 5, [ 1, 2, 3 ]));
   var _STR_root_STR_ = _STR_ns_STR_._STR_root_STR_ = {
     _STR_fnjs_STR_: {
@@ -137,9 +138,9 @@
     var x = _STR_root_STR_._STR_fnjs_STR_.core.nth(bar, 0);
     var _ = _STR_root_STR_._STR_fnjs_STR_.core.nth(bar, 1);
     var qux = _STR_root_STR_._STR_fnjs_STR_.core.nth(bar, 2);
-    var __destructure__20 = _STR_root_STR_._STR_fnjs_STR_.core.get(qux, "ab");
-    var a = _STR_root_STR_._STR_fnjs_STR_.core.nth(__destructure__20, 0);
-    var b = _STR_root_STR_._STR_fnjs_STR_.core.nth(__destructure__20, 1);
+    var __destructure___GEN_15 = _STR_root_STR_._STR_fnjs_STR_.core.get(qux, "ab");
+    var a = _STR_root_STR_._STR_fnjs_STR_.core.nth(__destructure___GEN_15, 0);
+    var b = _STR_root_STR_._STR_fnjs_STR_.core.nth(__destructure___GEN_15, 1);
     var c = _STR_root_STR_._STR_fnjs_STR_.core.get(qux, "c");
     return console.log(x, a, b, c, bar, qux);
   })();
@@ -149,49 +150,49 @@
     var _ = bar[1];
     var qux = bar[2];
     var c = qux["c"];
-    var __destructure__21 = qux["ab"];
-    var a = __destructure__21[0];
-    var b = __destructure__21[1];
+    var __destructure___GEN_16 = qux["ab"];
+    var a = __destructure___GEN_16[0];
+    var b = __destructure___GEN_16[1];
     return console.log(x, a, b, c, bar, qux);
   })();
   (function() {
-    var __destructure__13 = {
+    var __destructure___GEN_8 = {
       a: 1,
       b: 2,
       c: 3
     };
-    var a = __destructure__13["a"];
-    var c = __destructure__13["c"];
-    var b = __destructure__13["b"];
+    var a = __destructure___GEN_8["a"];
+    var c = __destructure___GEN_8["c"];
+    var b = __destructure___GEN_8["b"];
     return console.log(a, b, c);
   })();
   (function() {
-    var __destructure__14 = [ 1, 2, 3, 4, 5, 6 ];
-    var xs = __destructure__14.slice(2);
-    var x = __destructure__14[0];
-    var y = __destructure__14[1];
+    var __destructure___GEN_9 = [ 1, 2, 3, 4, 5, 6 ];
+    var xs = __destructure___GEN_9.slice(2);
+    var x = __destructure___GEN_9[0];
+    var y = __destructure___GEN_9[1];
     return console.log(x, y, xs);
   })();
-  var foo = _STR_ns_STR_.foo = function(__destructure__15) {
+  var foo = _STR_ns_STR_.foo = function foo(__destructure___GEN_10) {
     var xs = Array.prototype.slice.call(arguments, 1);
-    var __destructure__16 = __destructure__15;
-    var x = __destructure__16[0];
-    var y = __destructure__16[1];
+    var __destructure___GEN_11 = __destructure___GEN_10;
+    var x = __destructure___GEN_11[0];
+    var y = __destructure___GEN_11[1];
     return console.log(x, y, xs);
   };
   foo([ 7, 8, 9 ], 10, 11, 12, 13, 14);
-  (function(__arguments__17, __continue__18) {
+  (function(__arguments___GEN_12, __continue___GEN_13) {
     var recur = function() {
-      __arguments__17 = Array.prototype.slice.call(arguments);
-      return __continue__18;
+      __arguments___GEN_12 = Array.prototype.slice.call(arguments);
+      return __continue___GEN_13;
     };
     while (true) {
-      var __destructure__22 = __arguments__17[0];
-      var a = __destructure__22["a"];
-      var c = __destructure__22["c"];
-      var b = __destructure__22["b"];
-      var d = __destructure__22["d"];
-      __result__19 = a === b ? console.log("DONE", a, b, c, d) : function() {
+      var __destructure___GEN_17 = __arguments___GEN_12[0];
+      var a = __destructure___GEN_17["a"];
+      var c = __destructure___GEN_17["c"];
+      var b = __destructure___GEN_17["b"];
+      var d = __destructure___GEN_17["d"];
+      __result___GEN_14 = a === b ? console.log("DONE", a, b, c, d) : function() {
         console.log("MORE", a, b, c, d);
         return recur({
           a: a + c,
@@ -200,8 +201,8 @@
           d: d
         });
       }();
-      if (__result__19 !== __continue__18) {
-        return __result__19;
+      if (__result___GEN_14 !== __continue___GEN_13) {
+        return __result___GEN_14;
       }
     }
   })([ {

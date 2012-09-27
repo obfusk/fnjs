@@ -9,12 +9,13 @@
   _STR_root_STR_._STR_fnjs_STR_.nil = _STR_root_STR_._STR_fnjs_STR_.nil || new function NIL() {
     this.nil_QMK_ = true;
   };
+  undefined;
   console.log("Hello, World");
   var PI = _STR_ns_STR_.PI = 3.14159265;
   var foo = _STR_ns_STR_.foo = function(x, y, z) {
     return x * (PI + y + z);
   };
-  var show = _STR_ns_STR_.show = function() {
+  var show = _STR_ns_STR_.show = function show() {
     return console.log.apply(console, Array.prototype.slice.call(arguments));
   };
   show(foo(1, 2, 3));
@@ -37,8 +38,8 @@
     },
     y: {
       d: 5,
-      f: function(p1__1_HSH_) {
-        return p1__1_HSH_ + 1;
+      f: function(p1__396_HSH_) {
+        return p1__396_HSH_ + 1;
       }
     }
   };
@@ -58,9 +59,9 @@
   console.log("JS!");
   show(_STR_root_STR_._STR_fnjs_STR_.nil);
   (function() {
-    var temp__319__auto__ = PI * PI;
-    return temp__319__auto__ ? function() {
-      var x = temp__319__auto__;
+    var __if_let___GEN_1 = PI * PI;
+    return __if_let___GEN_1 ? function() {
+      var x = __if_let___GEN_1;
       return show("x=", x);
     }() : show("false");
   })();

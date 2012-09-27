@@ -9,6 +9,7 @@
   _STR_root_STR_._STR_fnjs_STR_.nil = _STR_root_STR_._STR_fnjs_STR_.nil || new function NIL() {
     this.nil_QMK_ = true;
   };
+  undefined;
   var http = _STR_ns_STR_.http = require("http");
   var server = _STR_ns_STR_.server = http.createServer(function(req, res) {
     res.writeHead(200, {

@@ -9,7 +9,8 @@
   _STR_root_STR_._STR_fnjs_STR_.nil = _STR_root_STR_._STR_fnjs_STR_.nil || new function NIL() {
     this.nil_QMK_ = true;
   };
-  var hello = _STR_ns_STR_.hello = function(x) {
+  undefined;
+  var hello = _STR_ns_STR_.hello = function hello(x) {
     return console.log("Hello, " + x);
   };
   hello("World");
