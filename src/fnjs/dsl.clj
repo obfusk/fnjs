@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/dsl.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-25
+; Date        : 2012-09-27
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -223,15 +223,18 @@
 (defn tr [x]                                                    ; {{{1
 ; (.println *err* (str  "-[1]-> " (pr-str x)
 ;                       " isa " (pr-str (type x)) ))          ;  DEBUG
-  (cond
-    (and (seq? x) (not (vector? x)))  (tr-list x)               ; TODO
-    (symbol?            x)            (tr-sym  x)
-    (string?            x)            (tr-str  x)
-    (instance? Boolean  x)            (tr-bool x)
-    (number?            x)            (tr-num  x)
-    (nil?               x)            (:nil _e/lib)
-    :else (assert nil (str "tr: unknown type " (pr-str (type x))
-                           " for --> " (pr-str x) " <--" ))))   ; TODO
+  (assert (-> x meta :translated not)
+    (str "tr: already translated --> " (pr-str x) " <--" ) )
+  (let [ x' (cond (seq?               x) (tr-list x)
+                  (symbol?            x) (tr-sym  x)
+                  (string?            x) (tr-str  x)
+                  (instance? Boolean  x) (tr-bool x)
+                  (number?            x) (tr-num  x)
+                  (nil?               x) (:nil _e/lib)
+                  :else (assert nil
+                    (str "tr: unknown type " (pr-str (type x))
+                         " for --> " (pr-str x) " <--" ))) ]    ; TODO
+    (if (coll? x') (with-meta x' { :translated true }) x') ))
                                                                 ; }}}1
 
 ; --
