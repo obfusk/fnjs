@@ -60,6 +60,23 @@
 (defn tr_def- [k v] (mk-def- k (tr v)))                         ; TODO
 (defn tr_do   [& body] (_e/do_ (mtr body)))
 
+(defn tr_new [x & args] (_e/new_ (tr x) (mtr args)))
+(defn tr_throw [x] (_e/throw_ (tr x)))
+
+(defn tr_try [& args]                                           ; {{{1
+  ; TODO: more checking ???
+
+  (let [ p #(and (seq? %) (#{ 'catch 'finally } (first %)))
+         [body clauses] (split-with p args)
+         [cs fs] (split-with #(= 'finally %) clauses) ]
+    (assert (every? #(<= (count %) 1) [cs fs])
+      "tr_try: more than one catch/finally" )
+    (let [ [[_ cnm & cbody]] cs, [[_ & fbody]] fs
+           [b c f] (map #(-> % mtr seq) [body cbody fbody]) ]
+      (assert (or c f) "tr_try: neither of catch/finally")
+      (_e/try_ b (when cnm (tr cnm)) c f) )))
+                                                                ; }}}1
+
 ; --
 
 (defn variadic? [args]
@@ -199,7 +216,10 @@
 (defnjm juop    tr_juop   )
 (defnjm let     tr_let    )
 (defnjm loop    tr_loop   )
+(defnjm new     tr_new    )
 (defnjm ns      tr_ns     )
+(defnjm throw   tr_throw  )
+(defnjm try     tr_try    )
 (defnjm use     tr_use    )
 
 ; } defnjm                                                      ; }}}1

@@ -75,6 +75,16 @@
 
 ; --
 
+(defn new_ [x args] [ "new" x "(" (list_ args) ")" ])
+(defn throw_ [x] [ "throw" x ])
+
+(defn try_ [body cnm cbody fbody]
+  [ "try {" body "}"
+    (when cbody [ "catch (" cnm ") {" cbody "}" ])
+    (when fbody [ "finally {" fbody "}" ]) ])
+
+; --
+
 (def _rt  '_STR_root_STR_)
 (def _ns  '_STR_ns_STR_)
 (def _ex  '_STR_exports_STR_)
