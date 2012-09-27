@@ -26,3 +26,8 @@ MR. X A B C [ 'MR. X', 666, { ab: [ 'A', 'B' ], c: 'C' } ] { ab: [ 'A', 'B' ], c
 MORE 0 2 2 1
 MORE 2 3 2 1
 DONE 4 4 2 1
+E1: [Error: E1]
+OK
+F1
+E2: [Error: E2]
+F2

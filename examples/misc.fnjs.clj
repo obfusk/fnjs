@@ -1,5 +1,5 @@
 ; File        : examples/misc.fnjs
-; Date        : 2012-09-24
+; Date        : 2012-09-27
 ; Description : Testing ground.
 
 (def PI+ 3.14159265)
@@ -88,6 +88,25 @@
         (console.log "DONE" a b c d)
     (do (console.log "MORE" a b c d)
         (recur (jobj a (jbop + a c) b (jbop + b d) c c d d)) )))
+
+; --
+
+(try
+  (throw (new Error "E1"))
+(catch e
+  (console.log "E1:" e) ))
+
+(try
+  (console.log "OK")
+(finally
+  (console.log "F1") ))
+
+(try
+  (throw (new Error "E2"))
+(catch e
+  (console.log "E2:" e) )
+(finally
+  (console.log "F2") ))
 
 ; --
 

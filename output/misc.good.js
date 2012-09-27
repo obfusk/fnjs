@@ -212,5 +212,22 @@
     c: 2,
     d: 1
   } ], {});
+  try {
+    throw new Error("E1");
+  } catch (e) {
+    console.log("E1:", e);
+  }
+  try {
+    console.log("OK");
+  } finally {
+    console.log("F1");
+  }
+  try {
+    throw new Error("E2");
+  } catch (e) {
+    console.log("E2:", e);
+  } finally {
+    console.log("F2");
+  }
   var x = _STR_ns_STR_.x = _STR_root_STR_._STR_fnjs_STR_.nil;
 }).call(this);

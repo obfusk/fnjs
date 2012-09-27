@@ -67,8 +67,8 @@
   ; TODO: more checking ???
 
   (let [ p #(and (seq? %) (#{ 'catch 'finally } (first %)))
-         [body clauses] (split-with p args)
-         [cs fs] (split-with #(= 'finally %) clauses) ]
+         [body clauses] (split-with (complement p) args)
+         [cs fs] (split-with #(= 'catch (first %)) clauses) ]
     (assert (every? #(<= (count %) 1) [cs fs])
       "tr_try: more than one catch/finally" )
     (let [ [[_ cnm & cbody]] cs, [[_ & fbody]] fs
