@@ -2,7 +2,7 @@
 //
 //  File        : repl.js
 //  Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-//  Date        : 2012-09-26
+//  Date        : 2012-09-27
 //
 //  Copyright   : Copyright (C) 2012  Felix C. Stegerman
 //  Licence     : GPLv2 or EPLv1
@@ -73,6 +73,10 @@ var eval_2 = function (code, d) {                             //  {{{1
 
 var init = false, eval_data = { file: 'repl', cb: function () {} };
 
+global.exports  = module.exports;                               // ???
+global.module   = module;                                       // ???
+global.require  = require;
+
 fnjs = cp.spawn (fnjs_cmd, [':repl']);
 
 var start = function () {                                     //  {{{1
@@ -87,6 +91,7 @@ var start = function () {                                     //  {{{1
 }                                                             //  }}}1
 
 fnjs.stdout.on ('data', function (data) {
+  // console.log ('--> ' + data); // DEBUG
   eval_2 (data, eval_data);
   if (! init) { init = true; start (); }
 });
