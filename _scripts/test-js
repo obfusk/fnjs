@@ -16,7 +16,7 @@ for x in examples/*.fnjs; do
     fi
   done
 
-  if [ "$1" -eq -q ]; then
+  if [ "$1" == -q ]; then
     if diff -q output/"$b".{good.js,"$e"}; then
       echo OK
     else
