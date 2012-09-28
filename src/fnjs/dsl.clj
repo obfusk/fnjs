@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/dsl.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-27
+; Date        : 2012-09-28
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -74,7 +74,8 @@
     (let [ [[_ cnm & cbody]] cs, [[_ & fbody]] fs
            [b c f] (map #(-> % mtr seq) [body cbody fbody]) ]
       (assert (or c f) "tr_try: neither of catch/finally")
-      (_e/try_ b (when cnm (tr cnm)) c f) )))
+      (_e/try_ (when b (_e/do_ b)) (when cnm (tr cnm))
+        (when c (_e/do_ c)) (when f (_e/do_ f)) ))))
                                                                 ; }}}1
 
 ; --

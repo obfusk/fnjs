@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/elem.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-27
+; Date        : 2012-09-28
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -76,12 +76,15 @@
 ; --
 
 (defn new_ [x args] [ "new" x "(" (list_ args) ")" ])
-(defn throw_ [x] [ "throw" x ])
+(defn throw_ [x] [ "(function () { throw" x "; })()" ])
 
-(defn try_ [body cnm cbody fbody]
-  [ "try {" body "}"
-    (when cbody [ "catch (" cnm ") {" cbody "}" ])
-    (when fbody [ "finally {" fbody "}" ]) ])
+(defn try_ [body cnm cbody fbody]                               ; {{{1
+  [ "(function () {
+        try { return" body "}"
+        (when cbody [ "catch (" cnm ") { return" cbody "; }" ])
+        (when fbody [ "finally { return" fbody "; }" ])
+    "})()" ])
+                                                                ; }}}1
 
 ; --
 
