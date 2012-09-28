@@ -1,6 +1,7 @@
 #!/bin/bash
 
-e=test."$( date +'%Y%m%dT%H%M%S' )".out
+ e=test."$( date +'%Y%m%dT%H%M%S' )".out
+ok=y
 
 for x in examples/*.fnjs; do
   b="$( basename "$x" .fnjs )"
@@ -21,11 +22,14 @@ for x in examples/*.fnjs; do
     if diff -q output/"$b".{good.out,"$e"}; then
       echo OK
     else
+      ok=n
       echo DIFFERS
     fi
   else
     diff -Naur output/"$b".{good.out,"$e"}
   fi
 done
+
+[ "$ok" == y ] || exit 1
 
 # --

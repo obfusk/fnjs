@@ -37,7 +37,7 @@
   } else {
     var V = require("vm");
   }
-  var VERSION = _STR_ns_STR_.VERSION = "0.1.2-dev";
+  var VERSION = _STR_ns_STR_.VERSION = "0.2.0-dev";
   var _data_ = _STR_ns_STR_._data_ = {
     init: false,
     repl: null,

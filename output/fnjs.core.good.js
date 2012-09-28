@@ -30,7 +30,7 @@
   } else {
     var U = require("underscore");
   }
-  var VERSION = _STR_ns_STR_.VERSION = "0.1.2-dev";
+  var VERSION = _STR_ns_STR_.VERSION = "0.2.0-dev";
   var all_MIN_pairs_QMK_ = _STR_ns_STR_.all_MIN_pairs_QMK_ = function all_MIN_pairs_QMK_(f, xs) {
     for (var i = 1; i < xs.length; ++i) {
       if (!f(arguments[i - 1], arguments[i])) {
