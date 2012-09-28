@@ -65,7 +65,6 @@
 
     ; (console.log (jobj code (jbop + "" code), res res, err err))
     ; (console.log "--> callback ...")
-
     (if err (do
         (.!write process.stdout (jbop + (jbop || err.stack err) "\n"))
         (d.cb null undefined) )
@@ -80,11 +79,11 @@
 ; --
 
 (defn start []                                                  ; {{{1
+  (.!write process.stdout (jbop + "fnjs v" VERSION "\n"))
   (jbop = _data_.repl (R.start (jobj
     prompt "fnjs> ", terminal false, eval eval-1 )))            ; TODO
-
   (.!on _data_.repl "exit" (fn []
-    ; (.!write process.stderr "bye.")
+    ; (.!write process.stderr "bye.\n")
     (.!exit process) )))
                                                                 ; }}}1
 
