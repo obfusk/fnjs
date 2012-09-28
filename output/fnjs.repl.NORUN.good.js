@@ -106,6 +106,6 @@
   });
   fnjs.on("exit", function(code, signal) {
     process.stderr.write("[fnjs exited w/ code " + code + ", signal " + signal + "]\n");
-    return process.exit_BNG_;
+    return process.exit();
   });
 }).call(this);
