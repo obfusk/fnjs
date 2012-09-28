@@ -1,12 +1,16 @@
 #!/bin/bash
 
-mkdir -p js
+mkdir -p js tree/lib/fnjs/js
 
 for x in src-fnjs/*.fnjs; do
   b="$( basename "$x" .fnjs )"
 
   echo "processing $x ..."
   ./bin/fnjs "$x" | ./_scripts/ugly > js/"$b".js
+
+  for x in "${PIPESTATUS[@]}"; do [ "$x" -ne 0 ] && exit 1; done
 done
+
+mv -v js/*.js tree/lib/fnjs/js/
 
 # --

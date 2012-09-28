@@ -1,0 +1,18 @@
+#!/bin/bash
+
+vsn="$( cat _vsn )"
+
+if [[ "$vsn" == *-dev ]]; then
+  v="${vsn%-dev}-$( date +'%Y%m%d' )-$( git rev-parse --short HEAD )"
+else
+  v="$vsn"
+fi
+
+mkdir -p archive/fnjs-"$v"
+
+pushd archive > /dev/null || exit 1
+  cp -v -R tree/ fnjs-"$v"/
+  tar czf fnjs-"$v".tgz fnjs-"$v"/
+popd > /dev/null
+
+# --

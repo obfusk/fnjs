@@ -15,6 +15,9 @@ fi
 
 vsn="$1"
 
+echo '_vsn ...'
+echo "$vsn" > _vsn
+
 echo 'README ...'
 $sed -i\~ 's!(^Version *: *v)(.*)$!\1'"$vsn"'!' README
 
@@ -27,6 +30,10 @@ $sed -i\~ 's!(^vsn='\'')(.*)('\'')( *)$!\1'"$vsn"'\3!' bin/fnjs
 
 echo 'src-fnjs/fnjs.core.fnjs ...'
 $sed -i\~ 's!(^\(def +VERSION +")(.*)(".*)$!\1'"$vsn"'\3!' \
-  src-fnjs/fnjs.core.fnjs
+  src-fnjs/fnjs.core.fnjs.clj
+
+echo 'src-fnjs/fnjs.repl.fnjs ...'
+$sed -i\~ 's!(^\(def +VERSION +")(.*)(".*)$!\1'"$vsn"'\3!' \
+  src-fnjs/fnjs.repl.fnjs.clj
 
 # --

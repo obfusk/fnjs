@@ -9,7 +9,23 @@ for x in examples/*.fnjs; do
 
   echo "running $x ..." >&2
   ./bin/fnjs "$x" | node > output/"$b.$e"
-  diff -Naur output/"$b".{good.out,"$e"}
+
+  for x in "${PIPESTATUS[@]}"; do
+    if [ "$x" -ne 0 ]; then
+      echo ERROR
+      exit 1
+    fi
+  done
+
+  if [ "$1" -eq -q ]; then
+    if diff -q output/"$b".{good.out,"$e"}; then
+      echo OK
+    else
+      echo DIFFERS
+    fi
+  else
+    diff -Naur output/"$b".{good.out,"$e"}
+  fi
 done
 
 # --

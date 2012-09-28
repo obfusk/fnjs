@@ -1,6 +1,12 @@
 #!/bin/bash
 
-"${LEIN:-lein}" uberjar
-mkdir -p jar && mv -v {target/,}*.jar jar/
+vsn="$( cat _vsn )"
+
+"${LEIN:-lein}" uberjar || exit 1
+
+mkdir -p jar tree/lib/fnjs/jar
+
+mv -v {target/,}*.jar jar/
+mv -v jar/fnjs-"$vsn"-standalone.jar tree/lib/fnjs/jar/
 
 # --

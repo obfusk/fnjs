@@ -1,10 +1,13 @@
 *~
 *.swp
 
+/archive/
 /jar/
 /js/
 /output/*.test.*
 /tmp/
+/tree/lib/fnjs/jar/
+/tree/lib/fnjs/js/
 
 # lein {
 

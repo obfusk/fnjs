@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rm -vr jar/ js/
+rm -vr {tree/lib/fnjs/,}{jar,js}/ archive/
 rm -vr .lein-deps-sum classes/ lib/ target/
 
 # --
