@@ -13,7 +13,7 @@ all: tree/lib/fnjs/jar/fnjs-$(vsn)-standalone.jar
 tree/lib/fnjs/jar/fnjs-$(vsn)-standalone.jar: src/fnjs/*.clj
 	./_scripts/build
 
-test:
+test: all
 	./_scripts/test-js -q && ./_scripts/test-out -q
 
 install: all
