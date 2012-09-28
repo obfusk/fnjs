@@ -21,7 +21,7 @@
 (ns fnjs.repl
   (:use [C child_process] [R repl] [V vm]) )
 
-(def VERSION "0.1.2-dev")
+(def VERSION "0.2.0-dev")
 
 ; --
 

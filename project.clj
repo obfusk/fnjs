@@ -1,4 +1,4 @@
-(defproject fnjs "0.1.2-dev"
+(defproject fnjs "0.2.0-dev"
   :description  "fnjs - functional javascript"
   :source-path  "src"
   :main         fnjs.main

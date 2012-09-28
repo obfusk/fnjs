@@ -17,7 +17,7 @@
 (ns fnjs.core
   (:use [U underscore :obj *root*._]) )
 
-(def VERSION "0.1.2-dev")
+(def VERSION "0.2.0-dev")
 
 ; --
 
