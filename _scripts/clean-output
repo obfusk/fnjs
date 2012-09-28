@@ -1,5 +1,5 @@
 #!/bin/bash
 
-rm -v output/*.test.*
+rm -vf output/*.test.*
 
 # --
