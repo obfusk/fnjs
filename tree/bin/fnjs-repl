@@ -5,6 +5,6 @@ dir="$( dirname "$( dirname "$abs" )" )"
 
 if [ -x "$( which rlwrap )" ]; then wrap=rlwrap ; else wrap= ; fi
 
-FNJS_HOME="$dir" $wrap node "$dir"/lib/fnjs/js/repl.js "$@"
+FNJS_HOME="$dir" $wrap node "$dir"/lib/fnjs/js/fnjs.repl.js "$@"
 
 # --

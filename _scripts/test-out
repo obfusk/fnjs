@@ -5,7 +5,7 @@ e=test."$( date +'%Y%m%dT%H%M%S' )".out
 for x in examples/*.fnjs; do
   b="$( basename "$x" .fnjs )"
 
-  [[ "$b" == *web* ]] && continue
+  [[ "$b" == *NORUN* ]] && continue
 
   echo "running $x ..." >&2
   ./bin/fnjs "$x" | node > output/"$b.$e"

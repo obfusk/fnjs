@@ -14,7 +14,9 @@
 ;
 ; --                                                            ; }}}1
 
-; TODO: review !!!
+; TODO:
+;   * review !!!
+;   * improve w/ new features !!!
 
 (ns fnjs.repl
   (:use [C child_process] [R repl] [V vm]) )
@@ -49,13 +51,13 @@
                                                                 ; }}}1
 
 (defn eval-2 [code d]                                           ; {{{1
-  (let [ [err res]
-           (try (jary null (.!runInThisContext vm code d.file))
+  (let [ (:ary err res)
+           (try (jary null (.!runInThisContext V code d.file))
            (catch e (jary e null)) ) ]
     (jbop = global._ res)                                       ; TODO
 
     ; try {                                                     ; {{{2
-    ;   var ns = vm.runInThisContext (
+    ;   var ns = V.runInThisContext (
     ;     '_STR_ns_STR_.__namespace__', d.file
     ;   );
     ;   if (ns) { repl.prompt = ns + '=> '; }                 //  !!!!
@@ -72,25 +74,27 @@
 
 ; --
 
-(def fnjs (C.spawn "fnjs" (jary ":repl")))
+(def fnjs (C.spawn
+  (jbop + process.env.FNJS_HOME "/bin/fnjs") (jary ":repl") ))
 
 ; --
 
 (defn start []                                                  ; {{{1
   (jbop = _data_.repl (R.start (jobj
-    prompt "fnjs> ", terminal false, eval: eval-1 ))            ; TODO
+    prompt "fnjs> ", terminal false, eval eval-1 )))            ; TODO
 
   (.!on _data_.repl "exit" (fn []
     ; (.!write process.stderr "bye.")
-    (.exit! process) ))))
+    (.!exit process) )))
                                                                 ; }}}1
 
 (.!on fnjs.stdout "data" (fn [data]                             ; {{{1
   ; (console.log (jbop + "--> " data))                        ;  DEBUG
   (eval-2 data _data_.eval)
   (if (juop ! _data_.init) (do                                  ; TODO
-    (jbop = _data_.init true)                                   ; TODO
-    (start) ))))
+      (jbop = _data_.init true)                                 ; TODO
+      (start) )
+    null )))
                                                                 ; }}}1
 
 (.!on fnjs.stderr "data" (fn [data]
