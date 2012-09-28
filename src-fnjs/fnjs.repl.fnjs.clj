@@ -103,7 +103,7 @@
 (.!on fnjs "exit" (fn [code signal]
   (.!write process.stderr (jbop +
     "[fnjs exited w/ code " code ", signal " signal "]\n" ))
-  (.exit! process) ))
+  (.!exit process) ))
 
 ; --
 
