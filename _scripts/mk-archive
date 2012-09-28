@@ -8,9 +8,9 @@ else
   v="$vsn"
 fi
 
-mkdir -p archive/fnjs-"$v"
-
-cp -v -R tree/ archive/fnjs-"$v"/
-tar czf fnjs-"$v".tgz -C archive fnjs-"$v"/
+rm -fr                           archive/fnjs-"$v"/
+mkdir -p                         archive/fnjs-"$v"
+cp -v -R tree/                   archive/fnjs-"$v"/
+tar czf archive/fnjs-"$v".tgz -C archive fnjs-"$v"/
 
 # --
