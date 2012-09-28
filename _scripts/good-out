@@ -3,7 +3,7 @@
 for x in examples/*.fnjs; do
   b="$( basename "$x" .fnjs )"
 
-  [[ "$b" == *web* ]] && continue
+  [[ "$b" == *NORUN* ]] && continue
 
   echo "running $x ..."
   ./bin/fnjs "$x" | node > output/"$b".good.out

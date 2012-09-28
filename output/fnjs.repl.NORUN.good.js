@@ -2,14 +2,6 @@
   var _STR_exports_STR_ = typeof exports === "undefined" ? null : exports;
   var _STR_root_STR_ = exports === null ? window : global;
   var _STR_ns_STR_ = {};
-  (function(o, xs) {
-    for (var x in xs) {
-      o = o[xs[x]] = o[xs[x]] == null ? {} : o[xs[x]];
-    }
-  })(_STR_root_STR_, [ "_STR_fnjs_STR_" ]);
-  _STR_root_STR_._STR_fnjs_STR_.nil = _STR_root_STR_._STR_fnjs_STR_.nil || new function NIL() {
-    this.nil_QMK_ = true;
-  };
   undefined;
   if (_STR_exports_STR_ === null) {
     (function(o, xs) {
@@ -85,6 +77,7 @@
   };
   var fnjs = _STR_ns_STR_.fnjs = C.spawn(process.env.FNJS_HOME + "/bin/fnjs", [ ":repl" ]);
   var start = _STR_ns_STR_.start = function start() {
+    process.stdout.write("fnjs v" + VERSION + "\n");
     _data_.repl = R.start({
       prompt: "fnjs> ",
       terminal: false,

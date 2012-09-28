@@ -252,7 +252,7 @@
                   (string?            x) (tr-str  x)
                   (instance? Boolean  x) (tr-bool x)
                   (number?            x) (tr-num  x)
-                  (nil?               x) (:nil _e/lib)
+                  (nil?               x) _e/null
                   :else (assert nil
                     (str "tr: unknown type " (pr-str (type x))
                          " for --> " (pr-str x) " <--" ))) ]    ; TODO

@@ -93,12 +93,10 @@
 (def _ex  '_STR_exports_STR_)
 (def _fn  '_STR_fnjs_STR_)
 (def _nss '_STR_fnjs_STR_.namespaces)
-(def _nil '_STR_fnjs_STR_.nil)
 (def _cr  '_STR_fnjs_STR_.core)
 
-(def lib (let [ f #(symbol (apply str _rt '. %&)) ]
-  { :nil (f _nil), :get (f _cr '.get), :nth (f _cr '.nth)
-    :drop (f _cr '.drop) } ))
+(def lib (let [ f #(symbol (apply str _rt '. _cr '. %&)) ]
+  { :get (f 'get), :nth (f 'nth), :drop (f 'drop) } ))
 
 ; --
 
@@ -110,15 +108,10 @@
      })(" x ", [" (list_ (map pr-str (split (str n) #"\."))) "]);" ])
                                                                 ; }}}1
 
-(defn init []                                                   ; {{{1
+(defn init []
   [  "var" _ex "= typeof exports === 'undefined' ? null : exports;
       var" _rt "= exports === null ? window : global;
-      var" _ns "= {};"
-      (mknested _rt _fn)
-      _rt "." _nil "=" _rt "." _nil "||
-        new (function NIL () { this.nil_QMK_ = true; });
-      undefined;" ])
-                                                                ; }}}1
+      var" _ns "= {}; undefined;" ])
 
 (defn wrap [body]
   [ "(function () {" (init) (do-body body false) "}).call (this);" ] )

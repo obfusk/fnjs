@@ -2,14 +2,6 @@
   var _STR_exports_STR_ = typeof exports === "undefined" ? null : exports;
   var _STR_root_STR_ = exports === null ? window : global;
   var _STR_ns_STR_ = {};
-  (function(o, xs) {
-    for (var x in xs) {
-      o = o[xs[x]] = o[xs[x]] == null ? {} : o[xs[x]];
-    }
-  })(_STR_root_STR_, [ "_STR_fnjs_STR_" ]);
-  _STR_root_STR_._STR_fnjs_STR_.nil = _STR_root_STR_._STR_fnjs_STR_.nil || new function NIL() {
-    this.nil_QMK_ = true;
-  };
   undefined;
   console.log("Hello, World");
   var PI = _STR_ns_STR_.PI = 3.14159265;
@@ -58,7 +50,7 @@
   })();
   show(1 === 1 ? "eq" : "ne");
   console.log("JS!");
-  show(_STR_root_STR_._STR_fnjs_STR_.nil);
+  show(null);
   (function() {
     var __if_let___GEN_1 = PI * PI;
     return __if_let___GEN_1 ? function() {

@@ -14,5 +14,5 @@ x= 3 y= bar
 42 37
 eq
 JS!
-{ nil_QMK_: true }
+null
 x= 9.869604378534024

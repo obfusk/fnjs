@@ -27,7 +27,7 @@
 
 (def _data_ (jobj                                               ; TODO
   init false
-  repl null
+  repl nil
   eval (jobj file "repl", cb (fn [])) ))
 
 (jbop = global.exports module.exports)  ; ???                   ; TODO
@@ -52,8 +52,8 @@
 
 (defn eval-2 [code d]                                           ; {{{1
   (let [ (:ary err res)
-           (try (jary null (.!runInThisContext V code d.file))
-           (catch e (jary e null)) ) ]
+           (try (jary nil (.!runInThisContext V code d.file))
+           (catch e (jary e nil)) ) ]
     (jbop = global._ res)                                       ; TODO
 
     ; try {                                                     ; {{{2
@@ -67,8 +67,8 @@
     ; (console.log "--> callback ...")
     (if err (do
         (.!write process.stdout (jbop + (jbop || err.stack err) "\n"))
-        (d.cb null undefined) )
-      (d.cb null res) )))
+        (d.cb nil undefined) )
+      (d.cb nil res) )))
                                                                 ; }}}1
 
 ; --
@@ -93,7 +93,7 @@
   (if (juop ! _data_.init) (do                                  ; TODO
       (jbop = _data_.init true)                                 ; TODO
       (start) )
-    null )))
+    nil )))
                                                                 ; }}}1
 
 (.!on fnjs.stderr "data" (fn [data]
