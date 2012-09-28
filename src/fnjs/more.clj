@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/more.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-27
+; Date        : 2012-09-28
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -11,12 +11,6 @@
 ; Description : ...
 ;
 ; TODO        : ...
-;
-; --                                                            ; }}}1
-
-; === Notes ===                                                 ; {{{1
-;
-; coco: (x!)@(y!) --> (_r = x())[_k = y()] || (_r[_k] = {})
 ;
 ; --                                                            ; }}}1
 
@@ -29,6 +23,13 @@
 (defn tr_defn  [k & spec] (tr `(~'def  ~k (~'fn ~k ~@spec))))
 (defn tr_defn- [k & spec] (tr `(~'def- ~k (~'fn ~k ~@spec))))
 
+(defn tr_when [x & body] (tr `(~'if ~x (~'do ~@body))))
+
+(defn tr_cond' [[x y & more :as clauses]]
+  (when clauses `(~'if ~x ~y ~(tr_cond' more))) )
+
+(defn tr_cond [& clauses] (tr (tr_cond' clauses)))
+
 (defn tr_if-let [[k e] a b]
   (let [ t (_m/mk-sym '__if_let__) ]
     (tr `(~'let [~t ~e] (~'if ~t (~'let [~k ~t] ~a) ~b))) ))
@@ -37,9 +38,11 @@
 
 ; defnjm {                                                      ; {{{1
 
+(defnjm cond    tr_cond   )
 (defnjm defn    tr_defn   )
 (defnjm defn-   tr_defn-  )
 (defnjm if-let  tr_if-let )
+(defnjm when    tr_when   )
 
 ; } defnjm                                                      ; }}}1
 

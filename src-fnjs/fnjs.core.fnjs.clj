@@ -14,40 +14,76 @@
 ;
 ; --                                                            ; }}}1
 
+; NB: for now, these functions will only work with JS arrays/objects;
+; support for vectors/maps/etc. will follow with those types.
+
 (ns fnjs.core
   (:use [U underscore :obj *root*._]) )
 
 (def VERSION "0.2.0-dev")
 
+(if (jbop == *root*.*fnjs* nil) (jbop = *root*.*fnjs* (jobj)))  ; !!!!
+(jbop = *root*.*fnjs*.core *ns*)                                ; TODO
+
 ; --
+
+(def- _red U.reduce)
+
+; === Utils ===                                                   {{{1
+
+(def -else true)
+
+(defn apply [f & xs]
+  (.!apply f nil (.!concat (U.initial xs) (U.last xs))) )
 
 (defn all-pairs? [f xs]
   (js  "for (var i = 1; i < xs.length; ++i) {
           if (! f (xs[i-1], xs[i])) { return false; }
         }" ) true )
 
-(defn apply [f & xs]
-  (let [ xi (U.initial xs), ys (U.last xs) ]
-    (.!apply f null (.!concat xi ys)) ))
+; ...
+                                                                ; }}}1
 
-; --
+; === Arithmetic ===                                              {{{1
 
-(defn +                     [  & xs] (U.reduce xs #(jbop + %1 %2) 0))
-(defn - ([x] (juop -   x)) ([x & xs] (U.reduce xs #(jbop - %1 %2) x)))
-(defn *                     [  & xs] (U.reduce xs #(jbop * %1 %2) 1))
-(defn / ([x] (jbop / 1 x)) ([x & xs] (U.reduce xs #(jbop / %1 %2) x)))
+(defn +                       [  & xs] (_red xs #(jbop + %1 %2) 0))
+(defn *                       [  & xs] (_red xs #(jbop * %1 %2) 1))
+(defn -   ([x] (juop -   x)) ([x & xs] (_red xs #(jbop - %1 %2) x)))
+(defn div ([x] (jbop / 1 x)) ([x & xs] (_red xs #(jbop / %1 %2) x)))
+
+; TODO: quot, rem, mod
 
 (defn inc [x] (jbop + x 1))
 (defn dec [x] (jbop - x 1))
 
-; --
+(defn max [& xs] (U.max xs))
+(defn min [& xs] (U.min xs))
+                                                                ; }}}1
 
-(defn not [x] (jbop || (jbop === x false    ) (jbop === x null)
-                       (jbop === x undefined) (jbop === x nil ) ))
+; === Truth/Compare ===                                           {{{1
+
+(defn not [x] (jbop ||
+  (jbop === x false) (jbop === x nil) (jbop === x undefined) ))
 (defn ? [x] (juop ! (not x)))
+
+; ...
 
 (defn = [& xs] (all-pairs? U.isEqual xs))
 (defn not= [& xs] (juop ! (apply = xs)))
+
+; NB: JS and Clojure comparison semantics differ.
+
+(defn <  [& xs] (all-pairs? #(jbop <  %1 %2) xs))
+(defn <= [& xs] (all-pairs? #(jbop <= %1 %2) xs))
+(defn >  [& xs] (all-pairs? #(jbop >  %1 %2) xs))
+(defn >= [& xs] (all-pairs? #(jbop >= %1 %2) xs))
+
+(defn compare [x y]
+  (cond (= x y) 0, (jbop < x y) -1, (jbop > x y) 1
+        -else (throw (new Error "compare: not <, >, or =")) ))
+                                                                ; }}}1
+
+; ---> TODO <----
 
 ; --
 

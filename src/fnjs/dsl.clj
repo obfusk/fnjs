@@ -177,7 +177,9 @@
 
 ; --
 
-(defn tr_if [c a b] (apply _e/if_ (mtr [c a b])))
+(defn tr_if
+  ([c a] (tr_if c a nil))
+  ([c a b] (apply _e/if_ (mtr [c a b]))) )
 
 (defn tr_jary [& xs] (apply _e/array (mtr xs)))
 (defn tr_jobj [& xs] (apply _e/object (partition 2 (mtr xs))))  ; TODO

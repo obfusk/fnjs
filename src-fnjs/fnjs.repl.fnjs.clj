@@ -90,10 +90,9 @@
 (.!on fnjs.stdout "data" (fn [data]                             ; {{{1
   ; (console.log (jbop + "--> " data))                        ;  DEBUG
   (eval-2 data _data_.eval)
-  (if (juop ! _data_.init) (do                                  ; TODO
-      (jbop = _data_.init true)                                 ; TODO
-      (start) )
-    nil )))
+  (when (juop ! _data_.init)                                    ; TODO
+    (jbop = _data_.init true)                                   ; TODO
+    (start) )))
                                                                 ; }}}1
 
 (.!on fnjs.stderr "data" (fn [data]
