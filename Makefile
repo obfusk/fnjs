@@ -7,10 +7,10 @@ PREFIX ?= /usr/local
 
 .PHONY: all test install clean archive
 
-all: fnjs-$(vsn)-standalone.jar
+all: tree/lib/fnjs/jar/fnjs-$(vsn)-standalone.jar
 	./_scripts/build-libs
 
-fnjs-$(vsn)-standalone.jar: src/fnjs/*.clj
+tree/lib/fnjs/jar/fnjs-$(vsn)-standalone.jar: src/fnjs/*.clj
 	./_scripts/build
 
 test:
