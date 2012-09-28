@@ -10,9 +10,7 @@ fi
 
 mkdir -p archive/fnjs-"$v"
 
-pushd archive > /dev/null || exit 1
-  cp -v -R tree/ fnjs-"$v"/
-  tar czf fnjs-"$v".tgz fnjs-"$v"/
-popd > /dev/null
+cp -v -R tree/ archive/fnjs-"$v"/
+tar czf fnjs-"$v".tgz -C archive fnjs-"$v"/
 
 # --
