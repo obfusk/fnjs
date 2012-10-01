@@ -150,4 +150,39 @@
       throw new Error("compare: not <, >, or =");
     }() : null;
   };
+  var identical_QMK_ = _STR_ns_STR_.identical_QMK_ = function identical_QMK_(x, y) {
+    return x === y;
+  };
+  var nil_QMK_ = _STR_ns_STR_.nil_QMK_ = function nil_QMK_(x) {
+    return identical_QMK_(x, null);
+  };
+  var true_QMK_ = _STR_ns_STR_.true_QMK_ = function true_QMK_(x) {
+    return identical_QMK_(x, true);
+  };
+  var false_QMK_ = _STR_ns_STR_.false_QMK_ = function false_QMK_(x) {
+    return identical_QMK_(x, false);
+  };
+  var zero_QMK_ = _STR_ns_STR_.zero_QMK_ = function zero_QMK_(x) {
+    return _EQS_(x, 0);
+  };
+  var pos_QMK_ = _STR_ns_STR_.pos_QMK_ = function pos_QMK_(x) {
+    return _GTS_(x, 0);
+  };
+  var neg_QMK_ = _STR_ns_STR_.neg_QMK_ = function neg_QMK_(x) {
+    return _LTS_(x, 0);
+  };
+  var even_QMK_ = _STR_ns_STR_.even_QMK_ = function even_QMK_(x) {
+    return zero_QMK_(x & 1);
+  };
+  var odd_QMK_ = _STR_ns_STR_.odd_QMK_ = function odd_QMK_(x) {
+    return not(even_QMK_(x));
+  };
+  var int = _STR_ns_STR_.int = function int(x) {
+    return function() {
+      var t = typeof x;
+      return _EQS_(t, "number") ? neg_QMK_(x) ? Math.ceil(x) : Math.floor(x) : _EQS_(t, "string") ? x.charCodeAt(0) : _MIN_else ? function() {
+        throw new Error("int: not number or string");
+      }() : null;
+    }();
+  };
 }).call(this);
