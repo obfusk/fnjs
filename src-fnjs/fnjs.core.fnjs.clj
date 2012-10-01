@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs.core.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-28
+; Date        : 2012-10-01
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -81,6 +81,44 @@
 (defn compare [x y]
   (cond (= x y) 0, (jbop < x y) -1, (jbop > x y) 1
         -else (throw (new Error "compare: not <, >, or =")) ))
+                                                                ; }}}1
+
+; === Test ===                                                    {{{1
+
+; NB: JS and Clojure object identity comparison semantics differ.
+
+(defn identical? [x y] (jbop === x y))
+
+(defn nil?   [x] (identical? x nil  ))
+(defn true?  [x] (identical? x true ))
+(defn false? [x] (identical? x false))
+
+(defn zero? [x] (= x 0))
+(defn pos?  [x] (> x 0))
+(defn neg?  [x] (< x 0))
+
+(defn even? [x] (zero? (jbop & x 1)))                           ; TODO
+(defn odd?  [x] (not (even? x)))
+
+; ...
+                                                                ; }}}1
+
+; === Cast ===                                                  ; {{{1
+
+(defn int [x]                                                   ; {{{2
+  (let [ t (typeof x) ]
+    (cond
+      (= t "number") (if (neg? x) (Math.ceil x) (Math.floor x))
+      (= t "string") (.!charCodeAt x 0)
+      -else (throw (new Error "int: not number or string")) )))
+                                                                ; }}}2
+
+; ...
+                                                                ; }}}1
+
+; === Collections ===                                             {{{1
+
+; ...
                                                                 ; }}}1
 
 ; ---> TODO <----
