@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs.repl.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-28
+; Date        : 2012-10-01
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -25,10 +25,8 @@
 
 ; --
 
-(def _data_ (jobj                                               ; TODO
-  init false
-  repl nil
-  eval (jobj file "repl", cb (fn [])) ))
+(def _data_ (jobj init false, eval (jobj file "repl", cb (fn []))))
+                                                                ; TODO
 
 (jbop = global.exports module.exports)  ; ???                   ; TODO
 (jbop = global.module  module)          ; ???                   ; TODO
@@ -80,11 +78,11 @@
 
 (defn start []                                                  ; {{{1
   (.!write process.stdout (jbop + "fnjs v" VERSION "\n"))
-  (jbop = _data_.repl (R.start (jobj
-    prompt "fnjs> ", terminal false, eval eval-1 )))            ; TODO
-  (.!on _data_.repl "exit" (fn []
-    ; (.!write process.stderr "bye.\n")
-    (.!exit process) )))
+  (let [ repl (R.start (jobj prompt "fnjs> ", terminal false
+                             eval eval-1 )) ]
+    (.!on repl "exit" (fn []
+      ; (.!write process.stderr "bye.\n")
+      (.!exit process) ))))
                                                                 ; }}}1
 
 (.!on fnjs.stdout "data" (fn [data]                             ; {{{1
