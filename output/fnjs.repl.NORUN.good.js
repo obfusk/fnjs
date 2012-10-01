@@ -32,7 +32,6 @@
   var VERSION = _STR_ns_STR_.VERSION = "0.2.0-dev";
   var _data_ = _STR_ns_STR_._data_ = {
     init: false,
-    repl: null,
     eval: {
       file: "repl",
       cb: function() {
@@ -78,14 +77,16 @@
   var fnjs = _STR_ns_STR_.fnjs = C.spawn(process.env.FNJS_HOME + "/bin/fnjs", [ ":repl" ]);
   var start = _STR_ns_STR_.start = function start() {
     process.stdout.write("fnjs v" + VERSION + "\n");
-    _data_.repl = R.start({
-      prompt: "fnjs> ",
-      terminal: false,
-      eval: eval_MIN_1
-    });
-    return _data_.repl.on("exit", function() {
-      return process.exit();
-    });
+    return function() {
+      var repl = R.start({
+        prompt: "fnjs> ",
+        terminal: false,
+        eval: eval_MIN_1
+      });
+      return repl.on("exit", function() {
+        return process.exit();
+      });
+    }();
   };
   fnjs.stdout.on("data", function(data) {
     eval_MIN_2(data, _data_.eval);
