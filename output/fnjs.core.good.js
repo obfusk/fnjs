@@ -178,11 +178,19 @@
     return not(even_QMK_(x));
   };
   var int = _STR_ns_STR_.int = function int(x) {
-    return function() {
-      var t = typeof x;
-      return _EQS_(t, "number") ? neg_QMK_(x) ? Math.ceil(x) : Math.floor(x) : _EQS_(t, "string") ? x.charCodeAt(0) : _MIN_else ? function() {
-        throw new Error("int: not number or string");
-      }() : null;
-    }();
+    return U.isNumber(x) ? neg_QMK_(x) ? Math.ceil(x) : Math.floor(x) : U.isString(x) ? x.charCodeAt(0) : _MIN_else ? function() {
+      throw new Error("int: not number or string");
+    }() : null;
+  };
+  var count = _STR_ns_STR_.count = function count(x) {
+    return nil_QMK_(x) ? 0 : U.isArray(x) || U.isArguments(x) || U.isString(x) ? x.length : U.isObject(x) ? Object.keys(x).length : _MIN_else ? function() {
+      throw new Error("count: not nil, array, arguments, string, or object");
+    }() : null;
+  };
+  var str = _STR_ns_STR_.str = function str() {
+    var xs = Array.prototype.slice.call(arguments, 0);
+    return _red(xs, function(__lambda__17__, __lambda__18__) {
+      return __lambda__17__ + __lambda__18__;
+    }, "");
   };
 }).call(this);

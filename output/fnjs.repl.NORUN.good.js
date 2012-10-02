@@ -29,9 +29,16 @@
   } else {
     var V = require("vm");
   }
+  if (_STR_exports_STR_ === null) {
+    var F = _STR_root_STR_._STR_fnjs_STR_.namespaces.fnjs.core;
+  } else {
+    var F = require("fnjs.core");
+  }
   var VERSION = _STR_ns_STR_.VERSION = "0.2.0-dev";
   var _data_ = _STR_ns_STR_._data_ = {
     init: false,
+    count: 0,
+    fnjs: null,
     eval: {
       file: "repl",
       cb: function() {
@@ -44,12 +51,12 @@
   global.require = require;
   var eval_MIN_1 = _STR_ns_STR_.eval_MIN_1 = function eval_MIN_1(code, context, file, cb) {
     return function() {
-      var code_PRM_ = cb.name !== "finish" && /^\(/.test(code) && /\)$/.test(code) ? code.slice(1, -1) : code;
+      var code_PRM_ = F.not_EQS_(cb.name, "finish") && /^\(/.test(code) && /\)$/.test(code) ? code.slice(1, -1) : code;
       _data_.eval = {
         file: file,
         cb: cb
       };
-      return fnjs.stdin.write(code_PRM_);
+      return _data_.fnjs.stdin.write(code_PRM_);
     }();
   };
   var eval_MIN_2 = _STR_ns_STR_.eval_MIN_2 = function eval_MIN_2(code, d) {
@@ -69,37 +76,44 @@
       var res = __destructure___GEN_1[1];
       global._ = res;
       return err ? function() {
-        process.stdout.write((err.stack || err) + "\n");
+        process.stdout.write(F.str(err.stack || err, "\n"));
         return d.cb(null, undefined);
       }() : d.cb(null, res);
     }();
   };
-  var fnjs = _STR_ns_STR_.fnjs = C.spawn(process.env.FNJS_HOME + "/bin/fnjs", [ ":repl" ]);
   var start = _STR_ns_STR_.start = function start() {
-    process.stdout.write("fnjs v" + VERSION + "\n");
-    return function() {
-      var repl = R.start({
-        prompt: "fnjs> ",
-        terminal: false,
-        eval: eval_MIN_1
-      });
-      return repl.on("exit", function() {
-        return process.exit();
-      });
-    }();
-  };
-  fnjs.stdout.on("data", function(data) {
-    eval_MIN_2(data, _data_.eval);
-    return !_data_.init ? function() {
-      _data_.init = true;
-      return start();
+    F._EQS_(_data_.count, 0) ? function() {
+      process.stdout.write(F.str("fnjs v", VERSION, "\n"));
+      return function() {
+        var repl = R.start({
+          prompt: "fnjs> ",
+          terminal: false,
+          eval: eval_MIN_1
+        });
+        return repl.on("exit", function() {
+          return process.exit();
+        });
+      }();
     }() : null;
-  });
-  fnjs.stderr.on("data", function(data) {
-    return process.stderr.write(data);
-  });
-  fnjs.on("exit", function(code, signal) {
-    process.stderr.write("[fnjs exited w/ code " + code + ", signal " + signal + "]\n");
-    return process.exit();
-  });
+    return _data_.count = F.inc(_data_.count);
+  };
+  var start_MIN_fnjs = _STR_ns_STR_.start_MIN_fnjs = function start_MIN_fnjs() {
+    _data_.fnjs = C.spawn(F.str(process.env.FNJS_HOME, "/bin/fnjs"), [ ":repl" ]);
+    _data_.fnjs.stdout.on("data", function(data) {
+      eval_MIN_2(_data_.init || F._EQS_(_data_.count, 0) ? data : "undefined", _data_.eval);
+      return F.not(_data_.init) ? function() {
+        _data_.init = true;
+        return start();
+      }() : null;
+    });
+    _data_.fnjs.stderr.on("data", function(data) {
+      return process.stderr.write(data);
+    });
+    return _data_.fnjs.on("exit", function(code, signal) {
+      process.stderr.write(F.str("[fnjs exited w/ code ", code, ", signal ", signal, "; respawning ...]\n"));
+      _data_.init = false;
+      return start_MIN_fnjs();
+    });
+  };
+  start_MIN_fnjs();
 }).call(this);
