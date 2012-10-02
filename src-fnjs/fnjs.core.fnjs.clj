@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs.core.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-10-01
+; Date        : 2012-10-02
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -62,8 +62,8 @@
 
 ; === Truth/Compare ===                                           {{{1
 
-(defn not [x] (jbop ||
-  (jbop === x false) (jbop === x nil) (jbop === x undefined) ))
+(defn not [x] (or (jbop === x false) (jbop === x nil)
+                  (jbop === x undefined) ))
 (defn ? [x] (juop ! (not x)))
 
 ; ...
@@ -105,18 +105,30 @@
 
 ; === Cast ===                                                  ; {{{1
 
-(defn int [x]                                                   ; {{{2
-  (let [ t (typeof x) ]
-    (cond
-      (= t "number") (if (neg? x) (Math.ceil x) (Math.floor x))
-      (= t "string") (.!charCodeAt x 0)
-      -else (throw (new Error "int: not number or string")) )))
-                                                                ; }}}2
+(defn int [x]
+  (cond (U.isNumber x) (if (neg? x) (Math.ceil x) (Math.floor x))
+        (U.isString x) (.!charCodeAt x 0)
+        -else (throw (new Error "int: not number or string")) ))
 
 ; ...
                                                                 ; }}}1
 
 ; === Collections ===                                             {{{1
+
+(defn count [x]                                                 ; {{{2
+  (cond (nil? x) 0
+        (or (U.isArray x) (U.isArguments x) (U.isString x)) x.length
+        (U.isObject x) (.length (Object.keys x))
+        -else (throw (new Error
+          "count: not nil, array, arguments, string, or object" ))))
+                                                                ; }}}2
+
+; ...
+                                                                ; }}}1
+
+; === Strings ===                                                 {{{1
+
+(defn str [& xs] (_red xs #(jbop + %1 %2) ""))
 
 ; ...
                                                                 ; }}}1
