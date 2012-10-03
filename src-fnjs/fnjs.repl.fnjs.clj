@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs.repl.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-10-02
+; Date        : 2012-10-03
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -17,6 +17,7 @@
 ; TODO:
 ;   * review !!!
 ;   * improve w/ new features !!!
+;   * make more functional (w/ atom) !?
 
 (ns fnjs.repl
   (:use [C child_process] [R repl] [V vm] [F fnjs.core]) )
@@ -29,9 +30,10 @@
   init false, count 0, fnjs nil
   eval (jobj file "repl", cb (fn []))))                         ; TODO
 
-(jbop = global.exports module.exports)  ; ???                   ; TODO
-(jbop = global.module  module)          ; ???                   ; TODO
-(jbop = global.require require)                                 ; TODO
+(jbop = global.exports  module.exports) ; ???                   ; TODO
+(jbop = global.module   module)         ; ???                   ; TODO
+(jbop = global.require  require)                                ; TODO
+(jbop = global.F        F)                                      ; TODO
 
 ; --
 
@@ -62,7 +64,7 @@
     ;   if (ns) { repl.prompt = ns + '=> '; }                 //  !!!!
     ; } catch (e) {}                                            ; }}}2
 
-    ; (console.log (jobj code (F.str "" code), res res, err err))
+    ; (console.log (jobj code (F.str code), res res, err err))
     ; (console.log "--> callback ...")
     (if err (do
         (.!write process.stdout (F.str (or err.stack err) "\n"))
@@ -74,7 +76,8 @@
 
 (defn start []                                                  ; {{{1
   (when (F.= _data_.count 0)
-    (.!write process.stdout (F.str "fnjs v" VERSION "\n"))
+    (.!write process.stdout (F.str
+      "fnjs v" VERSION "\nF is fnjs.core.\n" ))
     (let [ repl (R.start (jobj prompt "fnjs> ", terminal false
                                eval eval-1 )) ]
       (.!on repl "exit" (fn []
