@@ -183,9 +183,7 @@
     }() : null;
   };
   var count = _STR_ns_STR_.count = function count(x) {
-    return nil_QMK_(x) ? 0 : U.isArray(x) || U.isArguments(x) || U.isString(x) ? x.length : U.isObject(x) ? Object.keys(x).length : _MIN_else ? function() {
-      throw new Error("count: not nil, array, arguments, string, or object");
-    }() : null;
+    return nil_QMK_(x) ? 0 : _MIN_else ? U.size(x) : null;
   };
   var str = _STR_ns_STR_.str = function str() {
     var xs = Array.prototype.slice.call(arguments, 0);

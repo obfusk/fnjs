@@ -49,6 +49,7 @@
   global.exports = module.exports;
   global.module = module;
   global.require = require;
+  global.F = F;
   var eval_MIN_1 = _STR_ns_STR_.eval_MIN_1 = function eval_MIN_1(code, context, file, cb) {
     return function() {
       var code_PRM_ = F.not_EQS_(cb.name, "finish") && /^\(/.test(code) && /\)$/.test(code) ? code.slice(1, -1) : code;
@@ -83,7 +84,7 @@
   };
   var start = _STR_ns_STR_.start = function start() {
     F._EQS_(_data_.count, 0) ? function() {
-      process.stdout.write(F.str("fnjs v", VERSION, "\n"));
+      process.stdout.write(F.str("fnjs v", VERSION, "\nF is fnjs.core.\n"));
       return function() {
         var repl = R.start({
           prompt: "fnjs> ",
