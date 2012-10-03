@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/core.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-26
+; Date        : 2012-10-03
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -21,7 +21,7 @@
 
 ; --
 
-(defn fnjs-init [] (_e/build (_e/init)))
+(def fnjs-init (_e/build (_e/init)))
 
 (defn fnjs
   ([body]       (fnjs body true))

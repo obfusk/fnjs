@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/repl.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-27
+; Date        : 2012-10-03
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -23,7 +23,7 @@
 
 (defn repl []                                                   ; {{{1
   (let [ o #(-> % (_s/replace #"\n" " ") println) ]
-    (o (_c/fnjs-init))
+    (o _c/fnjs-init)
     (doseq [line (line-seq (java.io.BufferedReader. *in*))]
       (-> line _m/read-many (_c/fnjs false) o) )))
                                                                 ; }}}1
