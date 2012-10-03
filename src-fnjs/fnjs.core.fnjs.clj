@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs.core.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-10-02
+; Date        : 2012-10-03
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -115,13 +115,7 @@
 
 ; === Collections ===                                             {{{1
 
-(defn count [x]                                                 ; {{{2
-  (cond (nil? x) 0
-        (or (U.isArray x) (U.isArguments x) (U.isString x)) x.length
-        (U.isObject x) (.length (Object.keys x))
-        -else (throw (new Error
-          "count: not nil, array, arguments, string, or object" ))))
-                                                                ; }}}2
+(defn count [x] (cond (nil? x) 0, -else (U.size x)))
 
 ; ...
                                                                 ; }}}1
