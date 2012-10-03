@@ -2,7 +2,7 @@
 
 File        : README
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-09-20
+Date        : 2012-10-03
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 Version     : v0.2.0-dev
@@ -13,97 +13,159 @@ Version     : v0.2.0-dev
 
   fnjs - functional javascript
 
-  fnjs ("fungus"? -- let's hope it spreads ...) is more or less a
-  clojure DSL that produces javascript.  It's not a platform like
-  clojurescript, but simply a nicer way to write javascript -- with
-  clojure syntax.
+  fnjs ("fungus"? -- let's hope it spreads ...) is JavaScript with a
+  Clojure-like [1] syntax.  It allows you to write JavaScript code
+  with a nicer -- functional -- syntax and style.
+
+  It's not a complete Clojure platform like ClojureScript [2].
+  Instead, like CoffeeScript [3], it's compiled one-to-one into
+  equivalent JS, and interoperates seamlessly with existing JS.
+
+  It also comes with a small (optional) Clojure-inspired standard
+  library, and a Node.js-based [4] repl.
 
   See examples/overview.fnjs for an annotated example of the current
-  implementation.
+  implementation.                                                 TODO
                                                                   }}}1
 
-=== Roadmap ===                                                   {{{1
+=== Synopsis ===                                                  {{{1
 
-  v0.[1-8].X will probably see many changes.  I'll try to keep the
-  apis stable, but no promises.  Things may change; and break existing
-  code.  Starting with v0.9.0, point releases should always be
-  backward-compatible; and hopefully things will have stabilised to
-  the extent that no major backward-incompatible changes will occur at
-  all, only incremental improvements.
-
-
-  === Branches ===                                                {{{2
-
-    master  stable version
-    next    working dev version; will be next master
-    dev     dev version -- may be broken; will be next dev
-                                                                  }}}2
-
-  === v0.1.X ===                                                  {{{2
-
-    [X] most of the basics
-
-    [X] v0.1.0  the basics
-    [X] v0.1.1  a small fix
-    [X] v0.1.2  roadmap
-                                                                  }}}2
-
-  === v0.2.X - v0.8.X ===                                         {{{2
-
-    [ ] more features
-    [ ] libraries
-    [ ] test everything
-    [ ] improve things
-                                                                  }}}2
-
-  === v0.9.X ===                                                  {{{2
-
-    [ ] first stable version
-                                                                  }}}2
-
-  ...
-                                                                  }}}1
-
-=== License ===                                                   {{{1
-
-  GPLv2 [1] or EPLv1 [2].
-                                                                  }}}1
-
-=== Depends ===                                                   {{{1
-
-  * leiningen   (build)
-  * uglify-js   (prettify)
-  * node        (run js)
+  (ns hello (:use [F fnjs.core]))
+  (defn say-hello [x] (console.log (F.str "Hello, " x "!")))
+  (say-hello "World")
                                                                   }}}1
 
 === Usage ===                                                     {{{1
 
   Get it at https://github.com/obfusk/fnjs.
 
-  $ ./_scripts/run file...                # compile to js on stdout
-  $ ./_scripts/run ... | ./_scripts/ugly  # make output pretty
-  $ ./_scripts/run ... | node             # run
+  $ make                                  # build; see tree/
+  $ make test                             # run tests
 
-  $ ./_scripts/build                      # build jar
-  $ ./bin/fnjs file...                    # like run; uses jar
+  $ ./bin/fnjs file...                    # "compile" to JS on stdout
+  $ ./bin/fnjs-repl                       # repl
 
-  To install (of sorts), put bin/fnjs somewhere on your PATH and edit
-  it to point to (a copy of) jar/fnjs-x.y.z-dev-standalone.jar.
+  $ ./bin/fnjs ... | ./_scripts/ugly      # prettify
+  $ ./bin/fnjs ... | node                 # run
+
+
+  === Other make targets ===
+
+    $ make install PREFIX=/some/path      # install
+    $ make archive                        # create .tgz
+    $ make clean                          # clean up
+                                                                  }}}1
+
+=== Roadmap ===                                                   {{{1
+
+  === Branches ===                                                {{{2
+
+    dev     development version; may be broken; will be next dev
+    next    working development version; will be next master
+    master  stable version
+                                                                  }}}2
+
+  === v0.2.0 ===                                                  {{{2
+
+    [ ] core language
+    [ ] core library
+    [X] repl
+                                                                  }}}2
+
+  === v0.3.0 ===                                                  {{{2
+
+    [ ] update examples
+    [ ] improve test coverage
+    [ ] review everything
+                                                                  }}}2
+
+  === v0.4.0 ===                                                  {{{2
+
+    [ ] app: bootstrap, ...
+    [ ] app: examples
+    [ ] app: api
+    [ ] app: repl
+    [ ] website
+                                                                  }}}2
+
+  === v0.5.0 ===                                                  {{{2
+
+    [ ] first release; --> clojars, announce
+    [ ] downloads
+    [ ] --> brew formula, .deb (!?)
+    [ ] issues, milestones
+                                                                  }}}2
+
+  === ... ===                                                     {{{2
+
+    [ ] vectors, lists, maps, keywords, ...
+    [ ] records, protocols, multimethods, ...
+    [ ] --> polymorphism in library
+
+    [ ] compile-time macros
+    [ ] eval, app: api
+
+    [ ] typechecking (!?)
+
+    ...
+                                                                  }}}2
+                                                                  }}}1
+
+=== Dependencies ===                                              {{{1
+
+  * Node.js     [4] (>= 0.8.9)  (to run the repl and examples)
+  * Underscore  [5] (>= 1.4.1)  (to use the repl and library)
+  * UglifyJS    [6]             (to prettify)
+
+  * Leiningen   [7]             (to build)
+  * Java                        (to run)
+
+  NB: Node.js v0.6.12 (which comes with Ubuntu 12.04) is too old to
+  run the fnjs repl; I've only tested with >= v0.8.9.
+                                                                  }}}1
+
+=== License ===                                                   {{{1
+
+  GPLv2 [9] or EPLv1 [10].
                                                                   }}}1
 
 === Editing ===                                                   {{{1
 
-  I use vimclojure with this in my ~/.vimrc:
+  I use VimClojure [8] with this in my ~/.vimrc:
   au BufNewFile,BufRead *.fnjs set filetype=clojure
                                                                   }}}1
 
 === References ===                                                {{{1
 
-  [1] GNU General Public License, version 2
-      http://www.opensource.org/licenses/GPL-2.0
+  [1]   Clojure
+        http://clojure.org/
 
-  [2] Eclipse Public License, version 1
-      http://www.opensource.org/licenses/EPL-1.0
+  [2]   ClojureScript
+        https://github.com/clojure/clojurescript
+
+  [3]   CoffeeScript
+        http://coffeescript.org/
+
+  [4]   Node.js
+        http://nodejs.org/
+
+  [5]   Underscore
+        http://underscorejs.org/
+
+  [6]   UglifyJS
+        https://npmjs.org/package/uglify-js
+
+  [7]   Leiningen
+        http://leiningen.org/
+
+  [8]   VimClojure
+        https://github.com/vim-scripts/VimClojure
+
+  [9]   GNU General Public License, version 2
+        http://www.opensource.org/licenses/GPL-2.0
+
+  [10]  Eclipse Public License, version 1
+        http://www.opensource.org/licenses/EPL-1.0
                                                                   }}}1
 
 --
