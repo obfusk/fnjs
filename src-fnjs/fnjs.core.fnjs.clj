@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs.core.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-10-03
+; Date        : 2012-10-04
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -89,9 +89,10 @@
 
 (defn identical? [x y] (jbop === x y))
 
-(defn nil?   [x] (identical? x nil  ))
-(defn true?  [x] (identical? x true ))
-(defn false? [x] (identical? x false))
+(defn nil?        [x] (identical? x nil      ))
+(defn undefined?  [x] (identical? x undefined))
+(defn true?       [x] (identical? x true     ))
+(defn false?      [x] (identical? x false    ))
 
 (defn zero? [x] (= x 0))
 (defn pos?  [x] (> x 0))
@@ -122,7 +123,41 @@
 
 ; === Strings ===                                                 {{{1
 
-(defn str [& xs] (_red xs #(jbop + %1 %2) ""))
+(defn _cjoin [xs] (if xs.length (_red xs #(jbop + %1 "," %2)) ""))
+
+; TODO: _pr-str: window, ...
+
+(defn _pr-str [x seen]                                          ; {{{2
+  (cond
+    (nil? x) "null", (undefined? x) "undefined"
+    (or (U.isNumber x) (U.isBoolean x)) (.!toString x)
+    (U.isString x) (JSON.stringify x)
+    (U.isFunction x)
+      (jbop + "<fn" (if x.name (jbop + " " x.name) "") ">")
+    -else
+      (if (>= (.!indexOf seen x) 0) "<circular>"
+        (do
+          (.!push seen x)
+          (let [ p #(_pr-str %1 seen) ]
+            (if (or (U.isArray x) (U.isArguments x))
+              (jbop + "[" (_cjoin (U.map x p)) "]")
+              (if (U.isFunction (.toString x))
+                (let [ s (.!toString x) ]
+                  (if (.!test (js "/^\\[object [A-Za-z]+\\]$/") s)
+                    (jbop + "{" (_cjoin (U.map (U.pairs x)
+                        (fn [(:ary k v)] (jbop + (p k) ":" (p v))) ))
+                      "}" )
+                    (JSON.stringify s) ))
+                "<???>" )))))))
+                                                                ; }}}2
+
+(defn pr-str [x] (_pr-str x (jary)))
+
+(defn _str [x]
+  (cond (or (nil? x) (undefined? x)) "", (U.isString x) x
+        -else (pr-str x)) )
+
+(defn str [& xs] (_red (U.map xs _str) #(jbop + %1 %2) ""))
 
 ; ...
                                                                 ; }}}1

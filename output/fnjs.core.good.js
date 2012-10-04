@@ -1,6 +1,6 @@
 (function() {
   var _STR_exports_STR_ = typeof exports === "undefined" ? null : exports;
-  var _STR_root_STR_ = exports === null ? window : global;
+  var _STR_root_STR_ = _STR_exports_STR_ === null ? window : global;
   var _STR_ns_STR_ = {};
   undefined;
   if (_STR_exports_STR_ === null) {
@@ -156,6 +156,9 @@
   var nil_QMK_ = _STR_ns_STR_.nil_QMK_ = function nil_QMK_(x) {
     return identical_QMK_(x, null);
   };
+  var undefined_QMK_ = _STR_ns_STR_.undefined_QMK_ = function undefined_QMK_(x) {
+    return identical_QMK_(x, undefined);
+  };
   var true_QMK_ = _STR_ns_STR_.true_QMK_ = function true_QMK_(x) {
     return identical_QMK_(x, true);
   };
@@ -185,10 +188,40 @@
   var count = _STR_ns_STR_.count = function count(x) {
     return nil_QMK_(x) ? 0 : _MIN_else ? U.size(x) : null;
   };
+  var _cjoin = _STR_ns_STR_._cjoin = function _cjoin(xs) {
+    return xs.length ? _red(xs, function(__lambda__17__, __lambda__18__) {
+      return __lambda__17__ + "," + __lambda__18__;
+    }) : "";
+  };
+  var _pr_MIN_str = _STR_ns_STR_._pr_MIN_str = function _pr_MIN_str(x, seen) {
+    return nil_QMK_(x) ? "null" : undefined_QMK_(x) ? "undefined" : U.isNumber(x) || U.isBoolean(x) ? x.toString() : U.isString(x) ? JSON.stringify(x) : U.isFunction(x) ? "<fn" + (x.name ? " " + x.name : "") + ">" : _MIN_else ? _GTS__EQS_(seen.indexOf(x), 0) ? "<circular>" : function() {
+      seen.push(x);
+      return function() {
+        var p = function(__lambda__19__) {
+          return _pr_MIN_str(__lambda__19__, seen);
+        };
+        return U.isArray(x) || U.isArguments(x) ? "[" + _cjoin(U.map(x, p)) + "]" : U.isFunction(x.toString) ? function() {
+          var s = x.toString();
+          return /^\[object [A-Za-z]+\]$/.test(s) ? "{" + _cjoin(U.map(U.pairs(x), function(__destructure___GEN_7) {
+            var __destructure___GEN_8 = __destructure___GEN_7;
+            var k = __destructure___GEN_8[0];
+            var v = __destructure___GEN_8[1];
+            return p(k) + ":" + p(v);
+          })) + "}" : JSON.stringify(s);
+        }() : "<???>";
+      }();
+    }() : null;
+  };
+  var pr_MIN_str = _STR_ns_STR_.pr_MIN_str = function pr_MIN_str(x) {
+    return _pr_MIN_str(x, []);
+  };
+  var _str = _STR_ns_STR_._str = function _str(x) {
+    return nil_QMK_(x) || undefined_QMK_(x) ? "" : U.isString(x) ? x : _MIN_else ? pr_MIN_str(x) : null;
+  };
   var str = _STR_ns_STR_.str = function str() {
     var xs = Array.prototype.slice.call(arguments, 0);
-    return _red(xs, function(__lambda__17__, __lambda__18__) {
-      return __lambda__17__ + __lambda__18__;
+    return _red(U.map(xs, _str), function(__lambda__20__, __lambda__21__) {
+      return __lambda__20__ + __lambda__21__;
     }, "");
   };
 }).call(this);
