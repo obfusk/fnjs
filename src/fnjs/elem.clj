@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/elem.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-28
+; Date        : 2012-10-04
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -51,7 +51,7 @@
 (defn array [& xs]      [ "[" (list_ xs) "]" ])
 (defn call  [f args]    [ (group f (group (list_ args))) ])
 (defn get_  [x ys]      [ x (map index ys) ])
-(defn if_   [c a b]     [ c "?" a ":" b ])
+(defn if_   [c a b]     (group [ c "?" a ":" b ]))
 
 (defn do-body [xs ret?]
   (let [  ys  (statements (or (seq xs) [ null ]))
@@ -110,7 +110,7 @@
 
 (defn init []
   [  "var" _ex "= typeof exports === 'undefined' ? null : exports;
-      var" _rt "= exports === null ? window : global;
+      var" _rt "=" _ex "=== null ? window : global;
       var" _ns "= {}; undefined;" ])
 
 (defn wrap [body]
