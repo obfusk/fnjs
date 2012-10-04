@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs.repl.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-10-03
+; Date        : 2012-10-04
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -33,6 +33,8 @@
 (jbop = global.exports  module.exports) ; ???                   ; TODO
 (jbop = global.module   module)         ; ???                   ; TODO
 (jbop = global.require  require)                                ; TODO
+
+(jbop = global.DEBUG    false)          ; ???                   ; TODO
 (jbop = global.F        F)                                      ; TODO
 
 ; --
@@ -52,6 +54,8 @@
                                                                 ; }}}1
 
 (defn eval-2 [code d]                                           ; {{{1
+  (when DEBUG (console.log (F.str
+    "[ --> " (.!replace (F.str code) (js "/\\n/g") " ") " <-- ]" )))
   (let [ (:ary err res)
            (try (jary nil (.!runInThisContext V code d.file))
            (catch e (jary e nil)) ) ]

@@ -49,6 +49,7 @@
   global.exports = module.exports;
   global.module = module;
   global.require = require;
+  global.DEBUG = false;
   global.F = F;
   var eval_MIN_1 = _STR_ns_STR_.eval_MIN_1 = function eval_MIN_1(code, context, file, cb) {
     return function() {
@@ -61,6 +62,9 @@
     }();
   };
   var eval_MIN_2 = _STR_ns_STR_.eval_MIN_2 = function eval_MIN_2(code, d) {
+    DEBUG ? function() {
+      return console.log(F.str("[ --> ", F.str(code).replace(/\n/g, " "), " <-- ]"));
+    }() : null;
     return function() {
       var __destructure___GEN_1 = function() {
         try {
