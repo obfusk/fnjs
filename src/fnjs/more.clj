@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/more.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-10-02
+; Date        : 2012-10-04
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -39,8 +39,28 @@
 
 ; --
 
+(def _? '*root*.*fnjs*.core.?)
+
+(defn tr_?and' [[x & more :as exprs]]
+  (if exprs
+    (let [ t (_m/mk-sym '__?and__) ]
+      `(~'let [~t ~x] (~'if (~_? ~t) ~(tr_?and' more) ~t)) )
+    true ))
+
+(defn tr_?or' [[x & more :as exprs]]
+  (when exprs
+    (let [ t (_m/mk-sym '__?or__) ]
+      `(~'let [~t ~x] (~'if (~_? ~t) ~t ~(tr_?or' more))) )))
+
+(defn tr_?and [& exprs] (tr (tr_?and' exprs)))
+(defn tr_?or  [& exprs] (tr (tr_?or'  exprs)))
+
+; --
+
 ; defnjm {                                                      ; {{{1
 
+(defnjm ?and    tr_?and   )
+(defnjm ?or     tr_?or    )
 (defnjm and     tr_and    )
 (defnjm cond    tr_cond   )
 (defnjm defn    tr_defn   )
