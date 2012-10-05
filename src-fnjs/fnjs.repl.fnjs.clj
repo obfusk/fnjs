@@ -44,8 +44,8 @@
 
   ; !!! DEPENDS ON IMPLEMENTATION !!!                           ; !!!!
   (let [ code' (if (and (F.not= cb.name "finish")
-                        (.!test (js "/^\\(/") code)
-                        (.!test (js "/\\)$/") code) )
+                        (.!test (F.rx "^\\(") code)
+                        (.!test (F.rx "\\)$") code) )
                 ; (do (console.log "--> monkey patching")     ;  DEBUG
                   (.!slice code 1 -1) ; )
                   code ) ]
@@ -54,8 +54,8 @@
                                                                 ; }}}1
 
 (defn eval-2 [code d]                                           ; {{{1
-  (when DEBUG (console.log (F.str
-    "[ --> " (.!replace (F.str code) (js "/\\n/g") " ") " <-- ]" )))
+  (when DEBUG (console.log (F.str "[ --> "
+    (.!replace (F.str code) (F.rx "\\n" "g") " ") " <-- ]" )))
   (let [ (:ary err res)
            (try (jary nil (.!runInThisContext V code d.file))
            (catch e (jary e nil)) ) ]

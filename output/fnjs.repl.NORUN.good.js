@@ -53,7 +53,7 @@
   global.F = F;
   var eval_MIN_1 = _STR_ns_STR_.eval_MIN_1 = function eval_MIN_1(code, context, file, cb) {
     return function() {
-      var code_PRM_ = F.not_EQS_(cb.name, "finish") && /^\(/.test(code) && /\)$/.test(code) ? code.slice(1, -1) : code;
+      var code_PRM_ = F.not_EQS_(cb.name, "finish") && F.rx("^\\(").test(code) && F.rx("\\)$").test(code) ? code.slice(1, -1) : code;
       _data_.eval = {
         file: file,
         cb: cb
@@ -63,7 +63,7 @@
   };
   var eval_MIN_2 = _STR_ns_STR_.eval_MIN_2 = function eval_MIN_2(code, d) {
     DEBUG ? function() {
-      return console.log(F.str("[ --> ", F.str(code).replace(/\n/g, " "), " <-- ]"));
+      return console.log(F.str("[ --> ", F.str(code).replace(F.rx("\\n", "g"), " "), " <-- ]"));
     }() : null;
     return function() {
       var __destructure___GEN_1 = function() {

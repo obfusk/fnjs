@@ -25,31 +25,59 @@
 (if (jbop == *root*.*fnjs* nil) (jbop = *root*.*fnjs* (jobj)))  ; !!!!
 (jbop = *root*.*fnjs*.core *ns*)                                ; TODO
 
-; --
+; === Helpers ===                                               ; {{{1
 
-(def- _red U.reduce)
+(def _zip (fn zip [& xss]                                       ; {{{2
+  (when (juop ! xss.length) (throw (new Error "_zip: no arguments")))
+  (let [ l (U.min (U.map xss #(.length %))), res (new Array l) ]
+    (js  "for (var i = 0; i < l; ++i) {
+            res[i] =" (U.map xss #(jget % i))
+         "}" ) res )))
+                                                                ; }}}2
+
+(def _map (fn map [f & xss]
+  (U.map (.!apply _zip nil xss) #(.!apply f nil %)) ))
+
+(def _red (fn reduce ([f   xs] (U.reduce xs #(f %1 %2)  ))
+                     ([f z xs] (U.reduce xs #(f %1 %2) z)) ))
+
+; ...
+                                                                ; }}}1
 
 ; === Utils ===                                                   {{{1
+
+(defn reload [x]
+  (delete (jget require.cache (require.resolve x)))
+  (require x) )
 
 (def -else true)
 
 (defn apply [f & xs]
   (.!apply f nil (.!concat (U.initial xs) (U.last xs))) )
 
+(defn apply-new [cls & xs]
+  (new (Function.prototype.bind.apply cls
+    (.!concat (jary nil) (U.initial xs) (U.last xs)) )))
+
 (defn all-pairs? [f xs]
   (js  "for (var i = 1; i < xs.length; ++i) {
           if (! f (xs[i-1], xs[i])) { return false; }
         }" ) true )
+
+(defn cls-to-string [c x] (c.prototype.toString.call x))
+(defn obj-to-string [x] (cls-to-string Object x))
+
+(defn rx [& args] (apply-new RegExp args))
 
 ; ...
                                                                 ; }}}1
 
 ; === Arithmetic ===                                              {{{1
 
-(defn +                       [  & xs] (_red xs #(jbop + %1 %2) 0))
-(defn *                       [  & xs] (_red xs #(jbop * %1 %2) 1))
-(defn -   ([x] (juop -   x)) ([x & xs] (_red xs #(jbop - %1 %2) x)))
-(defn div ([x] (jbop / 1 x)) ([x & xs] (_red xs #(jbop / %1 %2) x)))
+(defn +                       [  & xs] (_red #(jbop + %1 %2) 0 xs))
+(defn *                       [  & xs] (_red #(jbop * %1 %2) 1 xs))
+(defn -   ([x] (juop -   x)) ([x & xs] (_red #(jbop - %1 %2) x xs)))
+(defn div ([x] (jbop / 1 x)) ([x & xs] (_red #(jbop / %1 %2) x xs)))
 
 ; TODO: quot, rem, mod
 
@@ -89,10 +117,21 @@
 
 (defn identical? [x y] (jbop === x y))
 
-(defn nil?        [x] (identical? x nil      ))
 (defn undefined?  [x] (identical? x undefined))
-(defn true?       [x] (identical? x true     ))
-(defn false?      [x] (identical? x false    ))
+(defn nil?        [x] (identical? x nil))
+(defn boolean?    [x] (U.isBoolean x))
+(defn number?     [x] (U.isNumber x))
+(defn string?     [x] (U.isString x))
+(defn regexp?     [x] (U.isRegExp x))
+(defn date?       [x] (U.isDate x))
+(defn error?      [x] (and (= (typeof x) "object")
+                           (= (obj-to-string x) "[object Error]") ))
+(defn function?   [x] (U.isFunction x))
+(defn array?      [x] (U.isArray x))
+(defn object?     [x] (U.isObject x))
+
+(defn true?  [x] (identical? x true))
+(defn false? [x] (identical? x false))
 
 (defn zero? [x] (= x 0))
 (defn pos?  [x] (> x 0))
@@ -107,8 +146,8 @@
 ; === Cast ===                                                  ; {{{1
 
 (defn int [x]
-  (cond (U.isNumber x) (if (neg? x) (Math.ceil x) (Math.floor x))
-        (U.isString x) (.!charCodeAt x 0)
+  (cond (number? x) (if (neg? x) (Math.ceil x) (Math.floor x))
+        (string? x) (.!charCodeAt x 0)
         -else (throw (new Error "int: not number or string")) ))
 
 ; ...
@@ -123,41 +162,58 @@
 
 ; === Strings ===                                                 {{{1
 
-(defn _cjoin [xs] (if xs.length (_red xs #(jbop + %1 "," %2)) ""))
+(defn _cjoin [xs] (if xs.length (_red #(jbop + %1 ", " %2) xs) ""))
+(defn _brckt [x] (jbop + "<" x ">"))
 
-; TODO: _pr-str: window, ...
+(defn _pr_undefined [pr?] (if pr? "undefined" ""))
+(defn _pr_nil       [pr?] (if pr? "null" ""))
+(defn _pr_boolean   [x] (jbop + "" x))
+(defn _pr_number    [x] (jbop + "" x))
+(defn _pr_string    [x pr?] (if pr? (JSON.stringify x) x))
+(defn _pr_regexp    [x pr?] (cls-to-string RegExp x))
 
-(defn _pr-str [x seen]                                          ; {{{2
-  (cond
-    (nil? x) "null", (undefined? x) "undefined"
-    (or (U.isNumber x) (U.isBoolean x)) (.!toString x)
-    (U.isString x) (JSON.stringify x)
-    (U.isFunction x)
-      (jbop + "<fn" (if x.name (jbop + " " x.name) "") ">")
-    -else
-      (if (>= (.!indexOf seen x) 0) "<circular>"
-        (do
-          (.!push seen x)
-          (let [ p #(_pr-str %1 seen) ]
-            (if (or (U.isArray x) (U.isArguments x))
-              (jbop + "[" (_cjoin (U.map x p)) "]")
-              (if (U.isFunction (.toString x))
-                (let [ s (.!toString x) ]
-                  (if (.!test (js "/^\\[object [A-Za-z]+\\]$/") s)
-                    (jbop + "{" (_cjoin (U.map (U.pairs x)
-                        (fn [(:ary k v)] (jbop + (p k) ":" (p v))) ))
-                      "}" )
-                    (JSON.stringify s) ))
-                "<???>" )))))))
+(defn _pr_date   [x pr?] (if pr? (_brckt (_pr_date x false))
+                                 (cls-to-string Date x) ))
+(defn _pr_error  [x pr?] (if pr? (_brckt (_pr_error x false))
+                                 (cls-to-string Error x) ))
+
+(defn _pr_function [x]
+  (jbop + "<fn" (if x.name (jbop + " " x.name) "") ">") )
+
+(defn _pr_pairs [ps f]
+  (_map (fn [(:ary k v)] (jbop + (f k) ": " (f v))) ps) )
+
+(defn _pr_array [x f]
+  (jbop + "[" (_cjoin (.!concat (_map f x)
+    (_pr_pairs (U.filter (U.pairs x)
+      (fn [(:ary k v)] (not (.!test (rx "^\\d+$") k))) ) f ))) "]" ))
+
+(defn _pr_object [x f]
+  (jbop + "{" (_cjoin (_pr_pairs (U.pairs x) f)) "}") )
+
+(defn _pr_value [x pr? seen]                                    ; {{{2
+  ; TODO: window, ...
+
+  (let [ f #(_pr_value % true (.!concat seen (jary x))) ]
+    (cond (undefined? x) (_pr_undefined pr?), (nil? x) (_pr_nil pr?)
+      (boolean? x) (_pr_boolean x), (number? x) (_pr_number x)
+      (string? x) (_pr_string x pr?), (regexp? x) (_pr_regexp x)
+      (date? x) (_pr_date x pr?), (error? x) (_pr_error x pr?)
+      (function? x) (_pr_function x)
+      (or (array? x) (U.isArguments x)) (_pr_array x f)
+      (>= (.!indexOf seen x) 0) "<circular>"
+      (and pr? (function? (.inspect x))) (.!inspect x)
+      (and (function? (.toString x))
+          (not= (.toString x) Object.prototype.toString) )
+        (if pr? (_brckt (jbop + (obj-to-string x) " "
+                                (_pr_string (.!toString x) true) ))
+                (.!toString x) )
+      -else (_pr_object x f) )))
                                                                 ; }}}2
 
-(defn pr-str [x] (_pr-str x (jary)))
-
-(defn _str [x]
-  (cond (or (nil? x) (undefined? x)) "", (U.isString x) x
-        -else (pr-str x)) )
-
-(defn str [& xs] (_red (U.map xs _str) #(jbop + %1 %2) ""))
+(defn pr-str [x] (_pr_value x true  (jary)))
+(defn _str   [x] (_pr_value x false (jary)))
+(defn str [& xs] (_red #(jbop + %1 %2) "" (_map _str xs)))
 
 ; ...
                                                                 ; }}}1
