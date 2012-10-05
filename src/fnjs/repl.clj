@@ -16,14 +16,23 @@
 
 (ns fnjs.repl
   (:require [ fnjs.core :as _c ] [ fnjs.misc :as _m ]
-            [ clojure.string :as _s ] ))
+            fnjs.ParseError [ clojure.string :as _s ] )
+  (:import  fnjs.ParseError) )
 
 ; --
 
-(defn repl []
-  (doseq [ line (line-seq (java.io.BufferedReader. *in*)) ]
-    (-> line _m/read-many (_c/fnjs false) (_s/replace #"\n" " ")
-        println )))
+(defn repl []                                                   ; {{{1
+  (let [ ok #(println "OK" %), err #(println "ERROR" %) ]
+    (doseq [ l (line-seq (java.io.BufferedReader. *in*)) ]
+      (try
+        (-> l _m/read-many (_c/fnjs false) (_s/replace #"\n" " ") ok)
+      (catch ParseError e
+        (err (str "{ msg: " (pr-str (.getMessage e)) ", "
+                    "class: " (-> e type pr-str pr-str) ", "
+                    "stack: [" (apply str (interpose ", "
+                       (map #(-> % str pr-str) (.getStackTrace e)) ))
+                    "] }" )))))))
+                                                                ; }}}1
 
 ; --
 
