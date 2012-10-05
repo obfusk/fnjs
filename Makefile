@@ -5,13 +5,25 @@ PREFIX ?= /usr/local
 
 # --
 
-.PHONY: all test install clean archive
+fnjs   := $(wildcard src-fnjs/*.fnjs.clj)
+tree   := $(fnjs:src-fnjs/%=tree/lib/fnjs/js/%)
+libs   := $(tree:.fnjs.clj=.js)
 
-all: tree/lib/fnjs/jar/fnjs-$(vsn)-standalone.jar
-	./_scripts/build-libs
+# --
+
+.PHONY: all jar libs test install clean archive
+
+all: jar libs
+
+jar: tree/lib/fnjs/jar/fnjs-$(vsn)-standalone.jar
+
+libs: $(libs)
 
 tree/lib/fnjs/jar/fnjs-$(vsn)-standalone.jar: src/fnjs/*.clj
 	./_scripts/build
+
+$(libs): $(fnjs)
+	./_scripts/build-libs
 
 test: all
 	./_scripts/test-js -q && ./_scripts/test-out -q

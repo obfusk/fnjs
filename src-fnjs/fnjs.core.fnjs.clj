@@ -213,8 +213,12 @@
       -else (_pr_object x f) )))
                                                                 ; }}}2
 
-(defn pr-str [x] (_pr_value x true  (jary)))
-(defn _str   [x] (_pr_value x false (jary)))
+(defn _pr-str [x] (_pr_value x true  (jary)))
+(defn _str    [x] (_pr_value x false (jary)))
+
+(defn pr-str [& xs]
+  (if xs.length (_red #(jbop + %1 " " %2) (_map _pr-str xs)) "") )
+
 (defn str [& xs] (_red #(jbop + %1 %2) "" (_map _str xs)))
 
 ; ...
