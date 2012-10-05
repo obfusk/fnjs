@@ -93,6 +93,7 @@
         var repl = R.start({
           prompt: "fnjs> ",
           terminal: false,
+          writer: F.pr_MIN_str,
           eval: eval_MIN_1
         });
         return repl.on("exit", function() {

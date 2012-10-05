@@ -51,6 +51,11 @@
       return f.apply(null, __lambda__3__);
     });
   };
+  var _fil = _STR_ns_STR_._fil = function filter(f, xs) {
+    return U.filter(xs, function(__lambda__4__) {
+      return f(__lambda__4__);
+    });
+  };
   var _red = _STR_ns_STR_._red = function reduce(__overloads___GEN_2, __variadic___GEN_3) {
     return function() {
       for (var __i___GEN_1 in __overloads___GEN_2) {
@@ -65,12 +70,12 @@
       }
     };
   }([ function reduce(f, xs) {
-    return U.reduce(xs, function(__lambda__4__, __lambda__5__) {
-      return f(__lambda__4__, __lambda__5__);
+    return U.reduce(xs, function(__lambda__5__, __lambda__6__) {
+      return f(__lambda__5__, __lambda__6__);
     });
   }, function reduce(f, z, xs) {
-    return U.reduce(xs, function(__lambda__6__, __lambda__7__) {
-      return f(__lambda__6__, __lambda__7__);
+    return U.reduce(xs, function(__lambda__7__, __lambda__8__) {
+      return f(__lambda__7__, __lambda__8__);
     }, z);
   } ], null);
   var reload = _STR_ns_STR_.reload = function reload(x) {
@@ -106,14 +111,14 @@
   };
   var _PLS_ = _STR_ns_STR_._PLS_ = function _PLS_() {
     var xs = Array.prototype.slice.call(arguments, 0);
-    return _red(function(__lambda__8__, __lambda__9__) {
-      return __lambda__8__ + __lambda__9__;
+    return _red(function(__lambda__9__, __lambda__10__) {
+      return __lambda__9__ + __lambda__10__;
     }, 0, xs);
   };
   var _STR_ = _STR_ns_STR_._STR_ = function _STR_() {
     var xs = Array.prototype.slice.call(arguments, 0);
-    return _red(function(__lambda__10__, __lambda__11__) {
-      return __lambda__10__ * __lambda__11__;
+    return _red(function(__lambda__11__, __lambda__12__) {
+      return __lambda__11__ * __lambda__12__;
     }, 1, xs);
   };
   var _MIN_ = _STR_ns_STR_._MIN_ = function _MIN_(__overloads___GEN_5, __variadic___GEN_6) {
@@ -133,8 +138,8 @@
     return -x;
   } ], function _MIN_(x) {
     var xs = Array.prototype.slice.call(arguments, 1);
-    return _red(function(__lambda__12__, __lambda__13__) {
-      return __lambda__12__ - __lambda__13__;
+    return _red(function(__lambda__13__, __lambda__14__) {
+      return __lambda__13__ - __lambda__14__;
     }, x, xs);
   });
   var div = _STR_ns_STR_.div = function div(__overloads___GEN_8, __variadic___GEN_9) {
@@ -154,8 +159,8 @@
     return 1 / x;
   } ], function div(x) {
     var xs = Array.prototype.slice.call(arguments, 1);
-    return _red(function(__lambda__14__, __lambda__15__) {
-      return __lambda__14__ / __lambda__15__;
+    return _red(function(__lambda__15__, __lambda__16__) {
+      return __lambda__15__ / __lambda__16__;
     }, x, xs);
   });
   var inc = _STR_ns_STR_.inc = function inc(x) {
@@ -188,26 +193,26 @@
   };
   var _LTS_ = _STR_ns_STR_._LTS_ = function _LTS_() {
     var xs = Array.prototype.slice.call(arguments, 0);
-    return all_MIN_pairs_QMK_(function(__lambda__16__, __lambda__17__) {
-      return __lambda__16__ < __lambda__17__;
+    return all_MIN_pairs_QMK_(function(__lambda__17__, __lambda__18__) {
+      return __lambda__17__ < __lambda__18__;
     }, xs);
   };
   var _LTS__EQS_ = _STR_ns_STR_._LTS__EQS_ = function _LTS__EQS_() {
     var xs = Array.prototype.slice.call(arguments, 0);
-    return all_MIN_pairs_QMK_(function(__lambda__18__, __lambda__19__) {
-      return __lambda__18__ <= __lambda__19__;
+    return all_MIN_pairs_QMK_(function(__lambda__19__, __lambda__20__) {
+      return __lambda__19__ <= __lambda__20__;
     }, xs);
   };
   var _GTS_ = _STR_ns_STR_._GTS_ = function _GTS_() {
     var xs = Array.prototype.slice.call(arguments, 0);
-    return all_MIN_pairs_QMK_(function(__lambda__20__, __lambda__21__) {
-      return __lambda__20__ > __lambda__21__;
+    return all_MIN_pairs_QMK_(function(__lambda__21__, __lambda__22__) {
+      return __lambda__21__ > __lambda__22__;
     }, xs);
   };
   var _GTS__EQS_ = _STR_ns_STR_._GTS__EQS_ = function _GTS__EQS_() {
     var xs = Array.prototype.slice.call(arguments, 0);
-    return all_MIN_pairs_QMK_(function(__lambda__22__, __lambda__23__) {
-      return __lambda__22__ >= __lambda__23__;
+    return all_MIN_pairs_QMK_(function(__lambda__23__, __lambda__24__) {
+      return __lambda__23__ >= __lambda__24__;
     }, xs);
   };
   var compare = _STR_ns_STR_.compare = function compare(x, y) {
@@ -280,9 +285,9 @@
   var count = _STR_ns_STR_.count = function count(x) {
     return nil_QMK_(x) ? 0 : _MIN_else ? U.size(x) : null;
   };
-  var _cjoin = _STR_ns_STR_._cjoin = function _cjoin(xs) {
-    return xs.length ? _red(function(__lambda__24__, __lambda__25__) {
-      return __lambda__24__ + ", " + __lambda__25__;
+  var _cjoin = _STR_ns_STR_._cjoin = function _cjoin(sep, xs) {
+    return xs.length ? " " + _red(function(__lambda__25__, __lambda__26__) {
+      return __lambda__25__ + sep + __lambda__26__;
     }, xs) : "";
   };
   var _brckt = _STR_ns_STR_._brckt = function _brckt(x) {
@@ -292,7 +297,7 @@
     return pr_QMK_ ? "undefined" : "";
   };
   var _pr_nil = _STR_ns_STR_._pr_nil = function _pr_nil(pr_QMK_) {
-    return pr_QMK_ ? "null" : "";
+    return pr_QMK_ ? "nil" : "";
   };
   var _pr_boolean = _STR_ns_STR_._pr_boolean = function _pr_boolean(x) {
     return "" + x;
@@ -320,24 +325,19 @@
       var __destructure___GEN_11 = __destructure___GEN_10;
       var k = __destructure___GEN_11[0];
       var v = __destructure___GEN_11[1];
-      return f(k) + ": " + f(v);
+      return f(k) + " " + f(v);
     }, ps);
   };
   var _pr_array = _STR_ns_STR_._pr_array = function _pr_array(x, f) {
-    return "[" + _cjoin(_map(f, x).concat(_pr_pairs(U.filter(U.pairs(x), function(__destructure___GEN_12) {
-      var __destructure___GEN_13 = __destructure___GEN_12;
-      var k = __destructure___GEN_13[0];
-      var v = __destructure___GEN_13[1];
-      return not(rx("^\\d+$").test(k));
-    }), f))) + "]";
+    return "(jary" + _cjoin(" ", _map(f, x)) + ")";
   };
   var _pr_object = _STR_ns_STR_._pr_object = function _pr_object(x, f) {
-    return "{" + _cjoin(_pr_pairs(U.pairs(x), f)) + "}";
+    return "(jobj" + _cjoin(", ", _pr_pairs(U.pairs(x), f)) + ")";
   };
   var _pr_value = _STR_ns_STR_._pr_value = function _pr_value(x, pr_QMK_, seen) {
     return function() {
-      var f = function(__lambda__26__) {
-        return _pr_value(__lambda__26__, true, seen.concat([ x ]));
+      var f = function(__lambda__27__) {
+        return _pr_value(__lambda__27__, true, seen.concat([ x ]));
       };
       return undefined_QMK_(x) ? _pr_undefined(pr_QMK_) : nil_QMK_(x) ? _pr_nil(pr_QMK_) : boolean_QMK_(x) ? _pr_boolean(x) : number_QMK_(x) ? _pr_number(x) : string_QMK_(x) ? _pr_string(x, pr_QMK_) : regexp_QMK_(x) ? _pr_regexp(x) : date_QMK_(x) ? _pr_date(x, pr_QMK_) : error_QMK_(x) ? _pr_error(x, pr_QMK_) : function_QMK_(x) ? _pr_function(x) : array_QMK_(x) || U.isArguments(x) ? _pr_array(x, f) : _GTS__EQS_(seen.indexOf(x), 0) ? "<circular>" : pr_QMK_ && function_QMK_(x.inspect) ? x.inspect() : function_QMK_(x.toString) && not_EQS_(x.toString, Object.prototype.toString) ? pr_QMK_ ? _brckt(obj_MIN_to_MIN_string(x) + " " + _pr_string(x.toString(), true)) : x.toString() : _MIN_else ? _pr_object(x, f) : null;
     }();
@@ -350,8 +350,8 @@
   };
   var str = _STR_ns_STR_.str = function str() {
     var xs = Array.prototype.slice.call(arguments, 0);
-    return _red(function(__lambda__27__, __lambda__28__) {
-      return __lambda__27__ + __lambda__28__;
+    return _red(function(__lambda__28__, __lambda__29__) {
+      return __lambda__28__ + __lambda__29__;
     }, "", _map(_str, xs));
   };
 }).call(this);
