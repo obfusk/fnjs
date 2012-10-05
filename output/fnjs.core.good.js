@@ -282,15 +282,36 @@
       throw new Error("int: not number or string");
     }() : null;
   };
+  var merge = _STR_ns_STR_.merge = function merge() {
+    var maps = Array.prototype.slice.call(arguments, 0);
+    return apply(U.extend, {}, maps);
+  };
+  var obj_MIN_from_MIN_pairs = _STR_ns_STR_.obj_MIN_from_MIN_pairs = function obj_MIN_from_MIN_pairs(xs) {
+    return function() {
+      var res = {};
+      for (var i = 0; i < xs.length; ++i) {
+        res[xs[i][0]] = xs[i][1];
+      }
+      return res;
+    }();
+  };
   var map = _STR_ns_STR_.map = _map;
   var filter = _STR_ns_STR_.filter = _fil;
   var reduce = _STR_ns_STR_.reduce = _red;
   var count = _STR_ns_STR_.count = function count(x) {
     return nil_QMK_(x) ? 0 : _MIN_else ? U.size(x) : null;
   };
+  var conj = _STR_ns_STR_.conj = function conj(xs) {
+    var ys = Array.prototype.slice.call(arguments, 1);
+    return nil_QMK_(xs) ? ys : array_QMK_(xs) ? xs.concat(ys) : object_QMK_(xs) ? apply(merge, xs, _map(function(__lambda__25__) {
+      return array_QMK_(__lambda__25__) ? obj_MIN_from_MIN_pairs([ __lambda__25__ ]) : __lambda__25__;
+    }, ys)) : _MIN_else ? function() {
+      throw new Error("conj: not nil, array, or object");
+    }() : null;
+  };
   var _cjoin = _STR_ns_STR_._cjoin = function _cjoin(sep, xs) {
-    return xs.length ? " " + _red(function(__lambda__25__, __lambda__26__) {
-      return __lambda__25__ + sep + __lambda__26__;
+    return xs.length ? " " + _red(function(__lambda__26__, __lambda__27__) {
+      return __lambda__26__ + sep + __lambda__27__;
     }, xs) : "";
   };
   var _brckt = _STR_ns_STR_._brckt = function _brckt(x) {
@@ -339,8 +360,8 @@
   };
   var _pr_value = _STR_ns_STR_._pr_value = function _pr_value(x, pr_QMK_, seen) {
     return function() {
-      var f = function(__lambda__27__) {
-        return _pr_value(__lambda__27__, true, seen.concat([ x ]));
+      var f = function(__lambda__28__) {
+        return _pr_value(__lambda__28__, true, seen.concat([ x ]));
       };
       return undefined_QMK_(x) ? _pr_undefined(pr_QMK_) : nil_QMK_(x) ? _pr_nil(pr_QMK_) : boolean_QMK_(x) ? _pr_boolean(x) : number_QMK_(x) ? _pr_number(x) : string_QMK_(x) ? _pr_string(x, pr_QMK_) : regexp_QMK_(x) ? _pr_regexp(x) : date_QMK_(x) ? _pr_date(x, pr_QMK_) : error_QMK_(x) ? _pr_error(x, pr_QMK_) : function_QMK_(x) ? _pr_function(x) : array_QMK_(x) || U.isArguments(x) ? _pr_array(x, f) : _GTS__EQS_(seen.indexOf(x), 0) ? "<circular>" : pr_QMK_ && function_QMK_(x.inspect) ? x.inspect() : function_QMK_(x.toString) && not_EQS_(x.toString, Object.prototype.toString) ? pr_QMK_ ? _brckt(obj_MIN_to_MIN_string(x) + " " + _pr_string(x.toString(), true)) : x.toString() : _MIN_else ? _pr_object(x, f) : null;
     }();
@@ -353,14 +374,14 @@
   };
   var pr_MIN_str = _STR_ns_STR_.pr_MIN_str = function pr_MIN_str() {
     var xs = Array.prototype.slice.call(arguments, 0);
-    return xs.length ? _red(function(__lambda__28__, __lambda__29__) {
-      return __lambda__28__ + " " + __lambda__29__;
+    return xs.length ? _red(function(__lambda__29__, __lambda__30__) {
+      return __lambda__29__ + " " + __lambda__30__;
     }, _map(_pr_MIN_str, xs)) : "";
   };
   var str = _STR_ns_STR_.str = function str() {
     var xs = Array.prototype.slice.call(arguments, 0);
-    return _red(function(__lambda__30__, __lambda__31__) {
-      return __lambda__30__ + __lambda__31__;
+    return _red(function(__lambda__31__, __lambda__32__) {
+      return __lambda__31__ + __lambda__32__;
     }, "", _map(_str, xs));
   };
 }).call(this);

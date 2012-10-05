@@ -156,6 +156,20 @@
 ; ...
                                                                 ; }}}1
 
+; === Objects ===                                                 {{{1
+
+(defn merge [& maps] (apply U.extend (jobj) maps))
+
+(defn obj-from-pairs [xs]                                       ; {{{2
+  (let [ res (jobj) ]
+    (js  "for (var i = 0; i < xs.length; ++i) {
+            res[xs[i][0]] = xs[i][1];
+          }" ) res ))
+                                                                ; }}}2
+
+; ...
+                                                                ; }}}1
+
 ; === Collections ===                                             {{{1
 
 (def map    _map)
@@ -163,6 +177,13 @@
 (def reduce _red)
 
 (defn count [x] (cond (nil? x) 0, -else (U.size x)))
+
+(defn conj [xs & ys]                                            ; {{{2
+  (cond (nil? xs) ys, (array? xs) (.!concat xs ys)
+        (object? xs) (apply merge xs
+          (_map #(if (array? %) (obj-from-pairs (jary %)) %) ys) )
+        -else (throw (new Error "conj: not nil, array, or object")) ))
+                                                                ; }}}2
 
 ; ...
                                                                 ; }}}1
