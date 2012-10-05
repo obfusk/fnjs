@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/misc.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-27
+; Date        : 2012-10-05
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -14,22 +14,24 @@
 ;
 ; --                                                            ; }}}1
 
-(ns fnjs.misc)
+(ns fnjs.misc
+  (:require fnjs.ParseError)
+  (:import  fnjs.ParseError) )
 
 ; --
 
 (def _sym_counter_ (atom 0))
 (defn mk-sym [x] (symbol (str x "_GEN_" (swap! _sym_counter_ inc))))
 
-; --
+(defn chk [x msg] (when-not x (throw (ParseError. msg))))
 
-; MOVE {
+(defn safe-read [x]
+  (try (binding [ *read-eval* false ] (read-string x))
+  (catch RuntimeException e
+    (throw (ParseError. (str "read failed: " (.getMessage e)) e)) )))
 
-(defn safe-read [x] (binding [ *read-eval* false ] (read-string x)))
 (defn read-many [x] (safe-read (str "(" x "\n)")))
 (defn read-file [f] (read-many (slurp f)))
-
-; } MOVE
 
 ; --
 

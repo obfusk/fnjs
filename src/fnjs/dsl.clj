@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/dsl.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-28
+; Date        : 2012-10-05
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -51,7 +51,8 @@
 
 (defn tr_ns [x & refs]
   [ (_e/nspace (tr x))                                          ; TODO
-    (for [[u & r] refs] (do (assert (= u :use)) (apply tr_use r))) ])
+    (for [[u & r] refs] (do (_m/chk (= u :use) "tr_ns: expected :use")
+                            (apply tr_use r) )) ])
 
 (defn tr_js   [& xs] (for [x xs] (if (string? x) x (tr x))))
 (defn tr_juop [o x] (_e/unop o (tr x)))
@@ -69,11 +70,11 @@
   (let [ p #(and (seq? %) (#{ 'catch 'finally } (first %)))
          [body clauses] (split-with (complement p) args)
          [cs fs] (split-with #(= 'catch (first %)) clauses) ]
-    (assert (every? #(<= (count %) 1) [cs fs])
+    (_m/chk (every? #(<= (count %) 1) [cs fs])
       "tr_try: more than one catch/finally" )
     (let [ [[_ cnm & cbody]] cs, [[_ & fbody]] fs
            [b c f] (map #(-> % mtr seq) [body cbody fbody]) ]
-      (assert (or c f) "tr_try: neither of catch/finally")
+      (_m/chk (or c f) "tr_try: neither of catch/finally")
       (_e/try_ (when b (_e/do_ b)) (when cnm (tr cnm))
         (when c (_e/do_ c)) (when f (_e/do_ f)) ))))
                                                                 ; }}}1
@@ -116,7 +117,7 @@
   (case x
     :ary (destr-vec (vec            b') e true)
     :obj (destr-map (apply hash-map b') e true)
-    (assert nil (str "destr-js: expected :ary or :obj,"
+    (_m/chk nil (str "destr-js: expected :ary or :obj,"
                      " not --> " (pr-str x) " <--" ))))         ; TODO
                                                                 ; }}}1
 
@@ -126,7 +127,7 @@
     (vector? b) (destr-vec b e false)
     (map?    b) (destr-map b e false)
     (list?   b) (destr-js  b e)
-    :else (assert nil (str "destr: unknown type " (pr-str (type b))
+    :else (_m/chk nil (str "destr: unknown type " (pr-str (type b))
                            " for --> " (pr-str b) " <--" ))))   ; TODO
                                                                 ; }}}1
 
@@ -247,7 +248,7 @@
 (defn tr [x]                                                    ; {{{1
 ; (.println *err* (str  "-[1]-> " (pr-str x)
 ;                       " isa " (pr-str (type x)) ))          ;  DEBUG
-  (assert (-> x meta :translated not)
+  (_m/chk (-> x meta :translated not)
     (str "tr: already translated --> " (pr-str x) " <--" ) )
   (let [ x' (cond (seq?               x) (tr-list x)
                   (symbol?            x) (tr-sym  x)
@@ -255,7 +256,7 @@
                   (instance? Boolean  x) (tr-bool x)
                   (number?            x) (tr-num  x)
                   (nil?               x) _e/null
-                  :else (assert nil
+                  :else (_m/chk nil
                     (str "tr: unknown type " (pr-str (type x))
                          " for --> " (pr-str x) " <--" ))) ]    ; TODO
     (if (coll? x') (with-meta x' { :translated true }) x') ))
@@ -280,7 +281,7 @@
 
 (defn tr-list [xs]                                              ; {{{1
 ; (.println *err* (str "-[2]-> " (pr-str xs)))                ;  DEBUG
-  (assert (seq xs) "empty list")                                ; TODO
+  (_m/chk (seq xs) "tr-list: empty list")                       ; TODO
   (let [  x     (first xs), xt (rest xs)
           call  #(_e/call (tr x) (mtr xt)) ]
     (if (symbol? x) (tr-special x xt (str x) call) (call)) ))
