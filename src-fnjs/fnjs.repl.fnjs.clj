@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs.repl.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-10-04
+; Date        : 2012-10-05
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -83,7 +83,7 @@
     (.!write process.stdout (F.str
       "fnjs v" VERSION "\nF is fnjs.core.\n" ))
     (let [ repl (R.start (jobj prompt "fnjs> ", terminal false
-                               eval eval-1 )) ]
+                               writer F.pr-str, eval eval-1 )) ]
       (.!on repl "exit" (fn []
         ; (.!write process.stderr "bye.\n")
         (.!exit process) ))))

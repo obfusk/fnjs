@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs.core.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-10-04
+; Date        : 2012-10-05
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -37,6 +37,8 @@
 
 (def _map (fn map [f & xss]
   (U.map (.!apply _zip nil xss) #(.!apply f nil %)) ))
+
+(def _fil (fn filter [f xs] (U.filter xs #(f %))))
 
 (def _red (fn reduce ([f   xs] (U.reduce xs #(f %1 %2)  ))
                      ([f z xs] (U.reduce xs #(f %1 %2) z)) ))
@@ -162,11 +164,13 @@
 
 ; === Strings ===                                                 {{{1
 
-(defn _cjoin [xs] (if xs.length (_red #(jbop + %1 ", " %2) xs) ""))
+(defn _cjoin [sep xs]
+  (if xs.length (jbop + " " (_red #(jbop + %1 sep %2) xs)) "") )
+
 (defn _brckt [x] (jbop + "<" x ">"))
 
 (defn _pr_undefined [pr?] (if pr? "undefined" ""))
-(defn _pr_nil       [pr?] (if pr? "null" ""))
+(defn _pr_nil       [pr?] (if pr? "nil" ""))
 (defn _pr_boolean   [x] (jbop + "" x))
 (defn _pr_number    [x] (jbop + "" x))
 (defn _pr_string    [x pr?] (if pr? (JSON.stringify x) x))
@@ -181,18 +185,16 @@
   (jbop + "<fn" (if x.name (jbop + " " x.name) "") ">") )
 
 (defn _pr_pairs [ps f]
-  (_map (fn [(:ary k v)] (jbop + (f k) ": " (f v))) ps) )
+  (_map (fn [(:ary k v)] (jbop + (f k) " " (f v))) ps) )
 
 (defn _pr_array [x f]
-  (jbop + "[" (_cjoin (.!concat (_map f x)
-    (_pr_pairs (U.filter (U.pairs x)
-      (fn [(:ary k v)] (not (.!test (rx "^\\d+$") k))) ) f ))) "]" ))
+  (jbop + "(jary" (_cjoin " " (_map f x)) ")") )
 
 (defn _pr_object [x f]
-  (jbop + "{" (_cjoin (_pr_pairs (U.pairs x) f)) "}") )
+  (jbop + "(jobj" (_cjoin ", " (_pr_pairs (U.pairs x) f)) ")") )
 
 (defn _pr_value [x pr? seen]                                    ; {{{2
-  ; TODO: window, ...
+  ; TODO: window, array/date/... w/ properties, ...
 
   (let [ f #(_pr_value % true (.!concat seen (jary x))) ]
     (cond (undefined? x) (_pr_undefined pr?), (nil? x) (_pr_nil pr?)
@@ -202,7 +204,7 @@
       (function? x) (_pr_function x)
       (or (array? x) (U.isArguments x)) (_pr_array x f)
       (>= (.!indexOf seen x) 0) "<circular>"
-      (and pr? (function? (.inspect x))) (.!inspect x)
+      (and pr? (function? (.inspect x))) (.!inspect x)          ; TODO
       (and (function? (.toString x))
           (not= (.toString x) Object.prototype.toString) )
         (if pr? (_brckt (jbop + (obj-to-string x) " "
