@@ -51,9 +51,9 @@
       return f.apply(null, __lambda__3__);
     });
   };
-  var _fil = _STR_ns_STR_._fil = function filter(f, xs) {
+  var _fil = _STR_ns_STR_._fil = function filter(p, xs) {
     return U.filter(xs, function(__lambda__4__) {
-      return f(__lambda__4__);
+      return p(__lambda__4__);
     });
   };
   var _red = _STR_ns_STR_._red = function reduce(__overloads___GEN_2, __variadic___GEN_3) {
@@ -70,9 +70,9 @@
       }
     };
   }([ function reduce(f, xs) {
-    return U.reduce(xs, function(__lambda__5__, __lambda__6__) {
+    return xs.length ? U.reduce(xs, function(__lambda__5__, __lambda__6__) {
       return f(__lambda__5__, __lambda__6__);
-    });
+    }) : f();
   }, function reduce(f, z, xs) {
     return U.reduce(xs, function(__lambda__7__, __lambda__8__) {
       return f(__lambda__7__, __lambda__8__);
@@ -282,6 +282,9 @@
       throw new Error("int: not number or string");
     }() : null;
   };
+  var map = _STR_ns_STR_.map = _map;
+  var filter = _STR_ns_STR_.filter = _fil;
+  var reduce = _STR_ns_STR_.reduce = _red;
   var count = _STR_ns_STR_.count = function count(x) {
     return nil_QMK_(x) ? 0 : _MIN_else ? U.size(x) : null;
   };
