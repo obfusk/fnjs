@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/elem.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-10-04
+; Date        : 2012-10-05
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -108,13 +108,13 @@
      })(" x ", [" (list_ (map pr-str (split (str n) #"\."))) "]);" ])
                                                                 ; }}}1
 
-(defn init []
+(def init
   [  "var" _ex "= typeof exports === 'undefined' ? null : exports;
       var" _rt "=" _ex "=== null ? window : global;
       var" _ns "= {}; undefined;" ])
 
 (defn wrap [body]
-  [ "(function () {" (init) (do-body body false) "}).call (this);" ] )
+  [ "(function () {" init (do-body body false) "}).call (this);" ] )
 
 (defn nspace [x]                                                ; {{{1
   [  "if (" _ex "=== null) {"

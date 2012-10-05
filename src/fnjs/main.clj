@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/main.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-09-25
+; Date        : 2012-10-05
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -16,27 +16,24 @@
 
 (ns fnjs.main
   (:gen-class)
-  (:require [ fnjs.core :as _c ]
-;           [ fnjs.elem :as _e ]
-            [ fnjs.repl :as _r ]
+  (:require [ fnjs.core :as _c ] [ fnjs.repl :as _r ]
             [ fnjs.misc :as _m ] ))
 
 ; --
 
-(defn compile-files [xs]                                        ; {{{1
-  (let [ ys (if (seq xs) xs [ "/dev/stdin" ]) ]
-    (doseq [y ys]
-    ; (println (_e/comm-lines (str "file: " y)))                ; ????
-      (-> y _m/read-file _c/fnjs println) )))
-                                                                ; }}}1
+(defn compile-files [xs]
+  (doseq [ x (if (seq xs) xs [ "/dev/stdin" ]) ]
+    (println "//" x)
+    (-> x _m/read-file _c/fnjs println) ))
 
 (defn -main [& args]                                            ; {{{1
-  (try
-    (if (= args [":repl"]) (_r/repl) (compile-files args))
-  (catch Exception e
-    (do (.printStackTrace e)                                  ;  DEBUG
-        (.println *err* (str "fnjs: " (.getMessage e))))
-        (System/exit 1) )))
+  (let [ debug (= "yes" (System/getenv "FNJS_DEBUG")) ]
+    (try (if (= args [":repl"]) (_r/repl) (compile-files args))
+    (catch Exception e
+      (do (.println *err* (str "fnjs: [" (type e) "] "
+                               (.getMessage e) ))
+          (when debug (.printStackTrace e))
+          (System/exit 1) )))))
                                                                 ; }}}1
 
 ; --

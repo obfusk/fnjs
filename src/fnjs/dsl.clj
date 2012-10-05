@@ -20,8 +20,7 @@
 
 (ns fnjs.dsl
   (:use     [ clojure.string :only [ join ] :as _s ])
-  (:require [ fnjs.elem                     :as _e ]
-            [ fnjs.misc                     :as _m ] ))
+  (:require [ fnjs.elem :as _e ] [ fnjs.misc :as _m ]) )
 
 ; --
 
@@ -44,6 +43,8 @@
 (defn mk-var  [k v]  (mk-def- k (tr v)))
 
 ; --
+
+(defn tr_init [] _e/init)
 
 (defn tr_use [& refs]
   (_e/use_ (for [ [k l & { :keys [obj module] }] refs ]
@@ -205,26 +206,27 @@
 
 ; defnjm {                                                      ; {{{1
 
-(defnjm def     tr_def    )
-(defnjm def-    tr_def-   )
-(defnjm do      tr_do     )
-(defnjm fn      tr_fn     )
-(defnjm fn*     tr_fn     )
-(defnjm if      tr_if     )
-(defnjm jary    tr_jary   )
-(defnjm jbop    tr_jbop   )
-(defnjm jfor    tr_jfor   )
-(defnjm jget    tr_jget   )
-(defnjm jobj    tr_jobj   )
-(defnjm js      tr_js     )
-(defnjm juop    tr_juop   )
-(defnjm let     tr_let    )
-(defnjm loop    tr_loop   )
-(defnjm new     tr_new    )
-(defnjm ns      tr_ns     )
-(defnjm throw   tr_throw  )
-(defnjm try     tr_try    )
-(defnjm use     tr_use    )
+(defnjm def           tr_def    )
+(defnjm def-          tr_def-   )
+(defnjm do            tr_do     )
+(defnjm fn            tr_fn     )
+(defnjm fn*           tr_fn     )
+(defnjm if            tr_if     )
+(defnjm jary          tr_jary   )
+(defnjm jbop          tr_jbop   )
+(defnjm jfor          tr_jfor   )
+(defnjm jget          tr_jget   )
+(defnjm jobj          tr_jobj   )
+(defnjm js            tr_js     )
+(defnjm juop          tr_juop   )
+(defnjm let           tr_let    )
+(defnjm loop          tr_loop   )
+(defnjm new           tr_new    )
+(defnjm ns            tr_ns     )
+(defnjm throw         tr_throw  )
+(defnjm try           tr_try    )
+(defnjm use           tr_use    )
+(defnjm __FNJS_INIT__ tr_init   )
 
 ; } defnjm                                                      ; }}}1
 

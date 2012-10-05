@@ -20,7 +20,7 @@
 
 ; --
 
-(def _sym_counter_ (atom 0))
+(def _sym_counter_ (atom 0))  ; gensym too unpredictable for tests
 (defn mk-sym [x] (symbol (str x "_GEN_" (swap! _sym_counter_ inc))))
 
 (defn chk [x msg] (when-not x (throw (ParseError. msg))))
