@@ -38,10 +38,11 @@
 (def _map (fn map [f & xss]
   (U.map (.!apply _zip nil xss) #(.!apply f nil %)) ))
 
-(def _fil (fn filter [f xs] (U.filter xs #(f %))))
+(def _fil (fn filter [p xs] (U.filter xs #(p %))))
 
-(def _red (fn reduce ([f   xs] (U.reduce xs #(f %1 %2)  ))
-                     ([f z xs] (U.reduce xs #(f %1 %2) z)) ))
+(def _red (fn reduce
+  ([f xs] (if xs.length (U.reduce xs #(f %1 %2)) (f)))
+  ([f z xs] (U.reduce xs #(f %1 %2) z)) ))
 
 ; ...
                                                                 ; }}}1
@@ -156,6 +157,10 @@
                                                                 ; }}}1
 
 ; === Collections ===                                             {{{1
+
+(def map    _map)
+(def filter _fil)
+(def reduce _red)
 
 (defn count [x] (cond (nil? x) 0, -else (U.size x)))
 
