@@ -30,7 +30,7 @@
   (let [ debug (= "yes" (System/getenv "FNJS_DEBUG")) ]
     (try (if (= args [":repl"]) (_r/repl debug) (compile-files args))
     (catch Exception e
-      (do (.println *err* (str "fnjs: [" (type e) "] "
+      (do (.println *err* (str "fnjs: [" (-> e type pr-str) "] "
                                (.getMessage e) ))
           (when debug (.printStackTrace e))
           (System/exit 1) )))))
