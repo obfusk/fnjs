@@ -140,8 +140,8 @@
 (defn overload [nm fs v]                                        ; {{{1
   (let [                 [  i     over          vari      ]
          (map _m/mk-sym '[__i__ __overloads__ __variadic__]) ]
-    [ "(function" nm "(" over "," vari ") {
-          return (function () {
+    [ "(function (" over "," vari ") {
+          return (function" nm "() {
             for (var" i "in" over ") {
               if (" over "[" i "].length == arguments.length) {
                 return" over "[" i "].apply (null, arguments);
