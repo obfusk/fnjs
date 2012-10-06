@@ -32,8 +32,4 @@ echo 'src-fnjs/fnjs.core.fnjs ...'
 $sed -i\~ 's!(^\(def +VERSION +")(.*)(".*)$!\1'"$vsn"'\3!' \
   src-fnjs/fnjs.core.fnjs.clj
 
-echo 'src-fnjs/fnjs.repl.fnjs ...'
-$sed -i\~ 's!(^\(def +VERSION +")(.*)(".*)$!\1'"$vsn"'\3!' \
-  src-fnjs/fnjs.repl.fnjs.clj
-
 # --

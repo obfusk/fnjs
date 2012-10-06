@@ -22,8 +22,6 @@
 (ns fnjs.repl
   (:use [C child_process] [R repl] [V vm] [F fnjs.core]) )
 
-(def VERSION "0.2.0-dev")
-
 ; --
 
 (def _data_ (jobj
@@ -81,7 +79,7 @@
 (defn start []                                                  ; {{{1
   (when (F.= _data_.count 0)
     (.!write process.stdout (F.str
-      "fnjs v" VERSION "\nF is fnjs.core.\n" ))
+      "fnjs v" F.VERSION "\nF is fnjs.core.\n" ))
     (let [ repl (R.start (jobj prompt "fnjs> ", terminal false
                                writer F.pr-str, eval eval-1 )) ]
       (.!on repl "exit" (fn []

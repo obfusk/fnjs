@@ -21,17 +21,20 @@
 
 ; --
 
-(defn repl []                                                   ; {{{1
+(defn repl-err [debug e]                                        ; {{{1
+  (let [ m  (pr-str (.getMessage e)), c (-> e type pr-str pr-str)
+         s1 (map #(-> % str pr-str) (.getStackTrace e))
+         s2 (apply str (interpose ", " s1))
+         s3 (when debug (str ", cls: " c ", stack: [" s2 "]")) ]
+    (str "({ msg: " m s3 " })") ))
+                                                                ; }}}1
+
+(defn repl [debug]                                              ; {{{1
   (let [ ok #(println "OK" %), err #(println "ERROR" %) ]
     (doseq [ l (line-seq (java.io.BufferedReader. *in*)) ]
       (try
         (-> l _m/read-many (_c/fnjs false) (_s/replace #"\n" " ") ok)
-      (catch ParseError e
-        (err (str "{ msg: " (pr-str (.getMessage e)) ", "
-                    "class: " (-> e type pr-str pr-str) ", "
-                    "stack: [" (apply str (interpose ", "
-                       (map #(-> % str pr-str) (.getStackTrace e)) ))
-                    "] }" )))))))
+      (catch ParseError e (err (repl-err debug e))) ))))
                                                                 ; }}}1
 
 ; --

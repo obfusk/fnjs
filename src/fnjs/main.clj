@@ -28,7 +28,7 @@
 
 (defn -main [& args]                                            ; {{{1
   (let [ debug (= "yes" (System/getenv "FNJS_DEBUG")) ]
-    (try (if (= args [":repl"]) (_r/repl) (compile-files args))
+    (try (if (= args [":repl"]) (_r/repl debug) (compile-files args))
     (catch Exception e
       (do (.println *err* (str "fnjs: [" (type e) "] "
                                (.getMessage e) ))
