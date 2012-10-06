@@ -57,8 +57,8 @@
       return p(__lambda__4__);
     });
   };
-  var _red = _STR_ns_STR_._red = function reduce(__overloads___GEN_2, __variadic___GEN_3) {
-    return function() {
+  var _red = _STR_ns_STR_._red = function(__overloads___GEN_2, __variadic___GEN_3) {
+    return function reduce() {
       for (var __i___GEN_1 in __overloads___GEN_2) {
         if (__overloads___GEN_2[__i___GEN_1].length == arguments.length) {
           return __overloads___GEN_2[__i___GEN_1].apply(null, arguments);
@@ -122,8 +122,8 @@
       return __lambda__11__ * __lambda__12__;
     }, 1, xs);
   };
-  var _MIN_ = _STR_ns_STR_._MIN_ = function _MIN_(__overloads___GEN_5, __variadic___GEN_6) {
-    return function() {
+  var _MIN_ = _STR_ns_STR_._MIN_ = function(__overloads___GEN_5, __variadic___GEN_6) {
+    return function _MIN_() {
       for (var __i___GEN_4 in __overloads___GEN_5) {
         if (__overloads___GEN_5[__i___GEN_4].length == arguments.length) {
           return __overloads___GEN_5[__i___GEN_4].apply(null, arguments);
@@ -143,8 +143,8 @@
       return __lambda__13__ - __lambda__14__;
     }, x, xs);
   });
-  var div = _STR_ns_STR_.div = function div(__overloads___GEN_8, __variadic___GEN_9) {
-    return function() {
+  var div = _STR_ns_STR_.div = function(__overloads___GEN_8, __variadic___GEN_9) {
+    return function div() {
       for (var __i___GEN_7 in __overloads___GEN_8) {
         if (__overloads___GEN_8[__i___GEN_7].length == arguments.length) {
           return __overloads___GEN_8[__i___GEN_7].apply(null, arguments);

@@ -61,8 +61,8 @@
     return __lambda__4__ + __lambda__3__;
   };
   console.log(f(3, g(11, 2)));
-  var multi = _STR_ns_STR_.multi = function multi(__overloads___GEN_3, __variadic___GEN_4) {
-    return function() {
+  var multi = _STR_ns_STR_.multi = function(__overloads___GEN_3, __variadic___GEN_4) {
+    return function multi() {
       for (var __i___GEN_2 in __overloads___GEN_3) {
         if (__overloads___GEN_3[__i___GEN_2].length == arguments.length) {
           return __overloads___GEN_3[__i___GEN_2].apply(null, arguments);
