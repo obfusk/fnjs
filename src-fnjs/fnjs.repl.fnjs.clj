@@ -14,11 +14,6 @@
 ;
 ; --                                                            ; }}}1
 
-; TODO:
-;   * review !!!
-;   * improve w/ new features !!!
-;   * make more functional (w/ atom) !?
-
 (ns fnjs.repl
   (:use [R repl] [F fnjs.core] [E fnjs.eval.node]) )
 
@@ -34,20 +29,18 @@
 (defn fnjs-exit [c s] (E.show-exit c s) (.!exit process))
 (defn repl-exit [] (.!exit process))
 
+; NB: DEPENDS ON IMPLEMENTATION -- "(" + code + ")" in repl       !!!!
 (defn patch [code] (.!slice code 1 -1))
-(defn patch? [code cb] ; !!! DEPENDS ON IMPLEMENTATION !!!        !!!!
-  (and (F.not= cb.name "finish") (.!test (F.rx "^\\(") code)
-                                 (.!test (F.rx "\\)$") code) ))
 
 (defn fnjs-eval [fnjs code f] (fnjs code (jobj file "repl", cb f)))
 
-(defn repl-eval [fnjs] (fn [code context _ cb]                  ; {{{1
-  (fnjs-eval fnjs (if (patch? code cb) (patch code) code)
+(defn repl-eval [fnjs] (fn [code _ _ cb]                        ; {{{1
+  (fnjs-eval fnjs (.!replace (patch code) (F.rx "\\n$") "")     ; !!!!
     (fn [c fe ee x]
-      (when context.DEBUG (console.log (F.str "[ --> "
-        (.!replace (F.str c) (F.rx "\\n" "g") " ") " <-- ]" )))
+      (when global.DEBUG (console.log (F.str "[ --> "
+        (.!replace (F.str c) (F.rx "\\n" "g") " ") "<-- ]" )))
       (if (or fe ee)
-        (do (show-err (if fe fe.msg ee))
+        (do (show-err (if fe (F.str "[fnjs error] " fe.msg) ee))
             (cb nil undefined))
         (cb nil x) )))))
                                                                 ; }}}1
@@ -57,17 +50,17 @@
     (F.str "fnjs init error: " (if fe fe.msg ee)) )))
   (let [ repl (R.start (jobj prompt "fnjs> ", terminal false
                 writer F.pr-str, eval (repl-eval fnjs) )) ]
-  (jbop = repl.context.exports module.exports)                  ; TODO
-  (jbop = repl.context.DEBUG   DEBUG)                           ; TODO
-  (jbop = repl.context.F       F)                               ; TODO
-  (.!on repl "exit" repl-exit) )))
+    (.!on repl "exit" repl-exit) )))
                                                                 ; }}}1
 
 (defn start-fnjs []                                             ; {{{1
   (.!write process.stdout (F.str "fnjs v" F.VERSION
     "\nfnjs.core is available as F.\n" ))
   (let [ fnjs (E.start (jobj exit fnjs-exit)) ]
-    (fnjs-eval fnjs "(__FNJS_INIT__)" start-repl) ))
+    (jbop = global.exports module.exports)                      ; TODO
+    (jbop = global.DEBUG   DEBUG)                               ; TODO
+    (jbop = global.F       F)                                   ; TODO
+    (fnjs-eval fnjs "(__FNJS_INIT__)" (start-repl fnjs)) ))
                                                                 ; }}}1
 
 ; --
@@ -77,4 +70,3 @@
 ; --
 
 ; vim: set tw=70 sw=2 sts=2 et fdm=marker :
-

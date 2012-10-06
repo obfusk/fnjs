@@ -19,9 +19,21 @@
 
 ; --
 
+; TODO: document !!!
+
 ; NB: callback (code?, fnjs_err?, eval_err?, result?)
 
 ; --
+
+(defn create-context []                                         ; {{{1
+  (let [ c (.!createContext V) ]
+    (js "for (var i in global) { c[i] = global[i]; }")          ; TODO
+    (jbop = c.global        c)                                  ; TODO
+    (jbop = c.global.global c)                                  ; TODO
+    (jbop = c.module        module)                             ; TODO
+    (jbop = c.require       require)                            ; TODO
+    c ))
+                                                                ; }}}1
 
 (defn show-stderr [data] (.!write process.stderr data))
 
@@ -50,7 +62,7 @@
   (let [ (:obj :strs [ context file cb ])
            (or opts (jobj)) ]
     (when (F.>= (.!indexOf code "\n") 0)
-      (throw (new Error "fnjs eval: code contains newline")) )
+      (throw (new Error "fnjs eval: code contains newline(s)")) )
     (.!unshift stack (jobj context context, file file, cb cb))
     (.!write fnjs.stdin (F.str code "\n")) )))
                                                                 ; }}}1
