@@ -2,7 +2,7 @@
 
 mkdir -p js tree/lib/fnjs/js
 
-for x in src-fnjs/*.fnjs; do
+for x in "$@"; do
   b="$( basename "$x" .fnjs )"
 
   echo "processing $x ..."

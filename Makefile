@@ -17,13 +17,13 @@ all: jar libs
 
 jar: tree/lib/fnjs/jar/fnjs-$(vsn)-standalone.jar
 
-libs: $(libs)
+libs: jar $(libs)
 
 tree/lib/fnjs/jar/fnjs-$(vsn)-standalone.jar: src/fnjs/*.clj
 	./_scripts/build
 
-$(libs): $(fnjs)
-	./_scripts/build-libs
+tree/lib/fnjs/js/%.js: src-fnjs/%.fnjs.clj
+	./_scripts/build-libs $(?:.clj=)
 
 test: all
 	./_scripts/test-js -q && ./_scripts/test-out -q
