@@ -19,35 +19,40 @@
 
 ; --
 
+; NB: callback (code?, fnjs_err?, eval_err?, result?)
+
+; --
+
 (defn show-stderr [data] (.!write process.stderr data))
 
 (defn show-exit [code signal]
   (.!write process.stderr (F.str "[fnjs exited w/ code " code
     ", signal " (or signal "NONE") "]\n" )))
 
-(defn on-stdout [stack]                                         ; {{{1
-  (fn on-stdout' [data]
-    (let [ top (.!pop stack), c (.context top), f (.file top) ]
-      (cond
-        (.!test (F.rx "^OK ") data)
-          (let [ code (.!slice data 3) ]
-            (.!success top (if c (.!runInContext     V code c f)
-                                 (.!runInThisContext V code   f) )))
-        (.!test (F.rx "^ERROR ") data)
-          (.!failure top (.!runInNewContext V (.!slice data 6)))
-        F.-else
-          (throw (new Error "fnjs stdout: not OK or ERROR")) ))))
+(defn run [code c f]
+  (try (jary nil (if c (.!runInContext     V code c f)
+                       (.!runInThisContext V code   f) ))
+  (catch e (jary e nil)) ))
+
+(defn on-stdout [stack] (fn on-stdout' [data]                   ; {{{1
+  (let [ top (.!pop stack), c (.context top), f (.file top) ]
+    (cond (.!test (F.rx "^OK ") data)
+            (let [ code (.!slice data 3) ]
+              (F.apply (.cb top) code nil (run code c f)) )
+          (.!test (F.rx "^ERROR ") data)
+            (let [ code (.!slice data 6) ]
+              (.!cb top nil (.!runInNewContext V code) nil nil) )
+          F.-else
+            (throw (new Error "fnjs stdout: not OK or ERROR")) ))))
                                                                 ; }}}1
 
-(defn on-eval [fnjs stack]                                      ; {{{1
-  (fn eval [code opts]
-    (let [ (:obj :strs [ context file success failure ])
-             (or opts (jobj)) ]
-      (when (F.>= (.!indexOf code "\n") 0)
-        (throw (new Error "fnjs eval: code contains newline")) )
-      (.!unshift stack (jobj context context, file file
-                             success success, failure failure ))
-      (.!write fnjs.stdin (F.str code "\n")) )))
+(defn on-eval [fnjs stack] (fn eval [code opts]                 ; {{{1
+  (let [ (:obj :strs [ context file cb ])
+           (or opts (jobj)) ]
+    (when (F.>= (.!indexOf code "\n") 0)
+      (throw (new Error "fnjs eval: code contains newline")) )
+    (.!unshift stack (jobj context context, file file, cb cb))
+    (.!write fnjs.stdin (F.str code "\n")) )))
                                                                 ; }}}1
 
 (defn start [opts]                                              ; {{{1
