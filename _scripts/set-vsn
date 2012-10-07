@@ -15,6 +15,12 @@ fi
 
 vsn="$1"
 
+if [[ "$vsn" == *-NOW ]]; then
+  vsn="${vsn%-NOW}-$(date +'%Y%m%d')-$(git rev-parse --short HEAD)"
+fi
+
+# --
+
 echo '_vsn ...'
 echo "$vsn" > _vsn
 
