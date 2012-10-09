@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs.core.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-10-05
+; Date        : 2012-10-09
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -28,7 +28,7 @@
 ; === Helpers ===                                               ; {{{1
 
 (def _zip (fn zip [& xss]                                       ; {{{2
-  (when (juop ! xss.length) (throw (new Error "_zip: no arguments")))
+  (when (not xss.length) (throw (new Error "_zip: no arguments")))
   (let [ l (U.min (U.map xss #(.length %))), res (new Array l) ]
     (js  "for (var i = 0; i < l; ++i) {
             res[i] =" (U.map xss #(jget % i))
@@ -93,14 +93,14 @@
 
 ; === Truth/Compare ===                                           {{{1
 
-(defn not [x] (or (jbop === x false) (jbop === x nil)
-                  (jbop === x undefined) ))
-(defn ? [x] (juop ! (not x)))
+(defn ?not [x] (or (jbop === x false) (jbop === x nil)
+                   (jbop === x undefined) ))
+(defn ? [x] (not (?not x)))
 
 ; ...
 
 (defn = [& xs] (all-pairs? U.isEqual xs))
-(defn not= [& xs] (juop ! (apply = xs)))
+(defn not= [& xs] (not (apply = xs)))
 
 ; NB: JS and Clojure comparison semantics differ.
 

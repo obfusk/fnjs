@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/more.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-10-04
+; Date        : 2012-10-09
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -19,6 +19,8 @@
   (:require [ fnjs.elem :as _e ] [ fnjs.misc :as _m ]) )
 
 ; --
+
+(defn tr_not [x] (tr `(~'jbop ~'! ~x)))
 
 (defn tr_defn  [k & spec] (tr `(~'def  ~k (~'fn ~k ~@spec))))
 (defn tr_defn- [k & spec] (tr `(~'def- ~k (~'fn ~k ~@spec))))
@@ -66,6 +68,7 @@
 (defnjm defn    tr_defn   )
 (defnjm defn-   tr_defn-  )
 (defnjm if-let  tr_if-let )
+(defnjm not     tr_not    )
 (defnjm or      tr_or     )
 (defnjm when    tr_when   )
 
