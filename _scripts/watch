@@ -1,0 +1,13 @@
+#!/bin/bash
+
+n="${1:-2}"
+
+while true; do
+  clear
+  echo "==> make ($( date +'%F %T' ), $n second interval)"
+  echo
+  make
+  sleep "$n"
+done
+
+# --
