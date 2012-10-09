@@ -47,7 +47,7 @@
 ; ...
                                                                 ; }}}1
 
-; === Utils ===                                                   {{{1
+; === Utils ===                                                 ; {{{1
 
 (defn reload [x]
   (delete (jget require.cache (require.resolve x)))
@@ -75,7 +75,7 @@
 ; ...
                                                                 ; }}}1
 
-; === Arithmetic ===                                              {{{1
+; === Arithmetic ===                                            ; {{{1
 
 (defn +                       [  & xs] (_red #(jbop + %1 %2) 0 xs))
 (defn *                       [  & xs] (_red #(jbop * %1 %2) 1 xs))
@@ -91,7 +91,7 @@
 (defn min [& xs] (U.min xs))
                                                                 ; }}}1
 
-; === Truth/Compare ===                                           {{{1
+; === Truth/Compare ===                                         ; {{{1
 
 (defn ?not [x] (or (jbop === x false) (jbop === x nil)
                    (jbop === x undefined) ))
@@ -114,7 +114,7 @@
         -else (throw (new Error "compare: not <, >, or =")) ))
                                                                 ; }}}1
 
-; === Test ===                                                    {{{1
+; === Test ===                                                  ; {{{1
 
 ; NB: JS and Clojure object identity comparison semantics differ.
 
@@ -156,7 +156,7 @@
 ; ...
                                                                 ; }}}1
 
-; === Objects ===                                                 {{{1
+; === Objects ===                                               ; {{{1
 
 (defn merge [& maps] (apply U.extend (jobj) maps))
 
@@ -170,7 +170,7 @@
 ; ...
                                                                 ; }}}1
 
-; === Collections ===                                             {{{1
+; === Collections ===                                           ; {{{1
 
 (def map    _map)
 (def filter _fil)
@@ -188,7 +188,7 @@
 ; ...
                                                                 ; }}}1
 
-; === Strings ===                                                 {{{1
+; === Strings ===                                               ; {{{1
 
 (defn _cjoin [sep xs]
   (if xs.length (jbop + " " (_red #(jbop + %1 sep %2) xs)) "") )
