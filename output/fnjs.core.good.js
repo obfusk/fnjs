@@ -178,11 +178,11 @@
     var xs = Array.prototype.slice.call(arguments, 0);
     return U.min(xs);
   };
-  var not = _STR_ns_STR_.not = function not(x) {
+  var _QMK_not = _STR_ns_STR_._QMK_not = function _QMK_not(x) {
     return x === false || x === null || x === undefined;
   };
   var _QMK_ = _STR_ns_STR_._QMK_ = function _QMK_(x) {
-    return !not(x);
+    return !_QMK_not(x);
   };
   var _EQS_ = _STR_ns_STR_._EQS_ = function _EQS_() {
     var xs = Array.prototype.slice.call(arguments, 0);
@@ -276,7 +276,7 @@
     return zero_QMK_(x & 1);
   };
   var odd_QMK_ = _STR_ns_STR_.odd_QMK_ = function odd_QMK_(x) {
-    return not(even_QMK_(x));
+    return !even_QMK_(x);
   };
   var int = _STR_ns_STR_.int = function int(x) {
     return number_QMK_(x) ? neg_QMK_(x) ? Math.ceil(x) : Math.floor(x) : string_QMK_(x) ? x.charCodeAt(0) : _MIN_else ? function() {
