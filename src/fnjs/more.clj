@@ -20,7 +20,7 @@
 
 ; --
 
-(defn tr_not [x] (tr `(~'jbop ~'! ~x)))
+(defn tr_not [x] (tr `(~'juop ~'! ~x)))
 
 (defn tr_defn  [k & spec] (tr `(~'def  ~k (~'fn ~k ~@spec))))
 (defn tr_defn- [k & spec] (tr `(~'def- ~k (~'fn ~k ~@spec))))
