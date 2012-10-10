@@ -10,7 +10,7 @@ sub r {
 }
 
 while (<>) {
-  s!(\bp\d+__\d+_HSH_\b)!r($1)!ge;
+  s!(\b(p\d+|rest)__\d+_HSH_\b)!r($1)!ge;
   print;
 }
 
