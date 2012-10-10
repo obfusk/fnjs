@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs.core.fnjs
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-10-09
+; Date        : 2012-10-10
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -170,11 +170,55 @@
 ; ...
                                                                 ; }}}1
 
-; === Collections ===                                           ; {{{1
+; === Sequences ===                                             ; {{{1
 
-(def map    _map)
+; TODO: nil -> []
+
+(def _exit (jobj))
+
+(defn doeach [f & xss]
+  (let [ ys (.!apply _zip nil xss) ]
+    (js  "for (var i = 0; i < ys.length; ++i) {
+            if (f.apply (null, ys[i]) === _exit) { return; }
+          }" ) nil ))
+
+(defn map [f & xss]                                             ; {{{2
+  (let [ rs (jary)
+         g  (fn [& args]
+              (let [ x (.!apply f nil args) ]
+                (if (jbop !== x _exit) (.!push rs x))
+                x )) ]
+    (apply doeach g xss)
+    rs ))
+                                                                ; }}}2
+
 (def filter _fil)
 (def reduce _red)
+
+(defn concat [& xss] (Array.prototype.concat.apply (jary) xss))
+(defn mapcat [f & xss] (apply concat (apply map f xss)))
+
+; ...
+                                                                ; }}}1
+
+; === Monads ===                                                ; {{{1
+
+(def sequence-m (jobj
+  result  (fn result [x] (jary x))
+  bind    (fn bind [xs f] (mapcat f xs))
+  zero    (fn zero [] (jary))
+  exit    (fn exit [] _exit) ))
+
+(def doseq-m (jobj
+  result  (fn result [_] nil)
+  bind    (fn bind [xs f] (doeach f xs))
+  zero    (fn zero [] nil)
+  exit    (fn exit [] _exit) ))
+
+; ...
+                                                                ; }}}1
+
+; === Collections ===                                           ; {{{1
 
 (defn count [x] (cond (nil? x) 0, -else (U.size x)))
 

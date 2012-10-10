@@ -1,6 +1,9 @@
 ; File        : examples/misc.fnjs
-; Date        : 2012-10-09
+; Date        : 2012-10-10
 ; Description : Testing ground.
+
+(ns test-misc
+  (:use [F fnjs.core]) )
 
 (def PI+ 3.14159265)
 
@@ -60,9 +63,8 @@
 
 ; --
 
-(def *root* (jobj *fnjs* (jobj core (jobj
-  nth (fn [x i] (jget x i))
-  get (fn [x i] (jget x i)) ))))
+(jbop = *root*.*fnjs*.core.nth (fn [x i] (jget x i)))
+(jbop = *root*.*fnjs*.core.get (fn [x i] (jget x i)))
 
 (def obj (jary "MR. X" 666 (jobj "ab" (jary "A" "B"), "c" "C")))
 
@@ -116,6 +118,13 @@
 
 (doseq [ x (jary 1 2 3), y (jary "foo" "bar") ]
   (console.log (jary x y)) )
+
+(console.log
+  (for [ x (jary 1 2 3 4)     , :when  (jbop != x 3)
+         y (jary 1 2 3 4)     , :while (jbop >= x y)
+         :let [s (jbop + x y)], z (jary "x" "y")
+         :let [a (jary x y z s)] ]
+    a ))
 
 (doseq [ x (jary 1 2 3 4)     , :when  (jbop != x 3)
          y (jary 1 2 3 4)     , :while (jbop >= x y)

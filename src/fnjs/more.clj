@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/more.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-10-09
+; Date        : 2012-10-10
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -15,10 +15,14 @@
 ; --                                                            ; }}}1
 
 (ns fnjs.more
-  (:use     [ fnjs.dsl :only [ defnjm tr esc ] ])
+  (:use     [ fnjs.dsl :only [ defnjm tr ] ])
   (:require [ fnjs.elem :as _e ] [ fnjs.misc :as _m ]) )
 
-; === Utils ===                                                 ; {{{1
+; === Helpers ===                                               ; {{{1
+
+(def _?       '*root*.*fnjs*.core.?)
+(def _seq-m   '*root*.*fnjs*.core.sequence-m)
+(def _doseq-m '*root*.*fnjs*.core.doseq-m)
 
 ; ...
                                                                 ; }}}1
@@ -50,8 +54,6 @@
 (defn tr_and [& args] (tr (when args `(~'jbop ~'&& ~@args))))
 (defn tr_or  [& args] (tr (when args `(~'jbop ~'|| ~@args))))
 
-(def _? '*root*.*fnjs*.core.?)
-
 (defn tr_?and' [[x & more :as exprs]]
   (if exprs
     (let [ t (_m/mk-sym '__?and__) ]
@@ -67,51 +69,28 @@
 (defn tr_?or  [& exprs] (tr (tr_?or'  exprs)))
                                                                 ; }}}1
 
-; === for/doseq ===                                             ; {{{1
+; === Comprehensions ===                                        ; {{{1
 
-(defn for-loop [break k e body]                                 ; {{{2
-  (let [ [i res xs] (map _m/mk-sym '[__i__ __result__ __xs__])
-                  [break' k' e' body' i' res' xs']
-         (map esc [break  k  e  body  i  res  xs ]) ]
-    `(~'js "(function () {
-               var" ~xs' "=" ~e' ";
-               for (var" ~i' "in" ~xs' ") {
-                 var" ~k'   "=" ~xs' "[" ~i' "];
-                 var" ~res' "=" ~body' ";
-                 if (" ~res' "===" ~break' ") { break; }
-               }
-            })()" )))
-                                                                ; }}}2
-
-(defn for-accum [xs body]
-  (let [ [xs' body'] (map esc [xs body]) ]
-    `(~'js "(function () {
-               var" ~xs' "= [];" ~body' "; return" ~xs' ";
-            })()" )))
-
-(defn for-break [break body] `(~'let [ ~break (~'jobj) ] ~body nil))
-
-(defn tr_for' [break exprs body]                                ; {{{2
-  (let [ f #(tr_for' break (rest exprs) body) ]
+(defn compr [m exprs body]                                      ; {{{2
+  (let [ f #(compr m (rest exprs) body) ]
     (if-let [ [k v] (first exprs) ]
       (cond
         (= k :let  )  `(~'let ~v ~(f))
-        (= k :when )  `(~'if  ~v ~(f))
-        (= k :while)  `(~'if  ~v ~(f) ~break)
+        (= k :when )  `(~'if  ~v ~(f) (~'.!zero ~m))
+        (= k :while)  `(~'if  ~v ~(f) (~'.!exit ~m))
         (keyword? k)  (_m/chk nil "tr_for: invalid keyword")
-        :else         (for-loop break k v (f)) )
-      body )))
+        :else         `(~'.!bind ~m ~v (~'fn [~k] ~(f))) )
+      `(~'.!result ~m ~body) )))
                                                                 ; }}}2
 
+(defn tr_comprehension [m exprs body]
+  (tr (compr m (partition 2 exprs) body)) )
+
 (defn tr_for [exprs body]
-  (let [ [xs break] (map _m/mk-sym '[__xs__ __break__])
-         body' `(~'.!push ~xs ~body) ]
-    (tr (for-accum xs (for-break break
-      (tr_for' break (partition 2 exprs) body') )))))
+  (tr `(~'comprehension ~_seq-m ~exprs ~body)) )
 
 (defn tr_doseq [exprs & body]
-  (let [ break (_m/mk-sym '__break__), b `(~'do ~@body) ]
-    (tr (for-break break (tr_for' break (partition 2 exprs) b))) ))
+  (tr `(~'do (~'comprehension ~_doseq-m ~exprs (~'do ~@body)) nil)) )
                                                                 ; }}}1
 
 ; === Destructuring ===                                         ; {{{1
@@ -127,28 +106,24 @@
     (tr `(~'let [~t ~e] (~'when ~t (~'let [~k ~t] ~@body)))) ))
                                                                 ; }}}1
 
-; === ... ===                                                   ; {{{1
-
-; ...
-                                                                ; }}}1
-
 ; defnjm {                                                      ; {{{1
 
-(defnjm ?and      tr_?and     )
-(defnjm ?or       tr_?or      )
-(defnjm and       tr_and      )
-(defnjm cond      tr_cond     )
-(defnjm defn      tr_defn     )
-(defnjm defn-     tr_defn-    )
-(defnjm doseq     tr_doseq    )
-(defnjm for       tr_for      )
-(defnjm if-let    tr_if-let   )
-(defnjm if-not    tr_if-not   )
-(defnjm not       tr_not      )
-(defnjm or        tr_or       )
-(defnjm when      tr_when     )
-(defnjm when-let  tr_when-let )
-(defnjm when-not  tr_when-not )
+(defnjm ?and            tr_?and         )
+(defnjm ?or             tr_?or          )
+(defnjm and             tr_and          )
+(defnjm comprehension   tr_comprehension)
+(defnjm cond            tr_cond         )
+(defnjm defn            tr_defn         )
+(defnjm defn-           tr_defn-        )
+(defnjm doseq           tr_doseq        )
+(defnjm for             tr_for          )
+(defnjm if-let          tr_if-let       )
+(defnjm if-not          tr_if-not       )
+(defnjm not             tr_not          )
+(defnjm or              tr_or           )
+(defnjm when            tr_when         )
+(defnjm when-let        tr_when-let     )
+(defnjm when-not        tr_when-not     )
 
 ; } defnjm                                                      ; }}}1
 

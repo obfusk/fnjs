@@ -296,9 +296,73 @@
       return res;
     }();
   };
-  var map = _STR_ns_STR_.map = _map;
+  var _exit = _STR_ns_STR_._exit = {};
+  var doeach = _STR_ns_STR_.doeach = function doeach(f) {
+    var xss = Array.prototype.slice.call(arguments, 1);
+    return function() {
+      var ys = _zip.apply(null, xss);
+      for (var i = 0; i < ys.length; ++i) {
+        if (f.apply(null, ys[i]) === _exit) {
+          return;
+        }
+      }
+      return null;
+    }();
+  };
+  var map = _STR_ns_STR_.map = function map(f) {
+    var xss = Array.prototype.slice.call(arguments, 1);
+    return function() {
+      var rs = [];
+      var g = function() {
+        var args = Array.prototype.slice.call(arguments, 0);
+        return function() {
+          var x = f.apply(null, args);
+          x !== _exit ? rs.push(x) : null;
+          return x;
+        }();
+      };
+      apply(doeach, g, xss);
+      return rs;
+    }();
+  };
   var filter = _STR_ns_STR_.filter = _fil;
   var reduce = _STR_ns_STR_.reduce = _red;
+  var concat = _STR_ns_STR_.concat = function concat() {
+    var xss = Array.prototype.slice.call(arguments, 0);
+    return Array.prototype.concat.apply([], xss);
+  };
+  var mapcat = _STR_ns_STR_.mapcat = function mapcat(f) {
+    var xss = Array.prototype.slice.call(arguments, 1);
+    return apply(concat, apply(map, f, xss));
+  };
+  var sequence_MIN_m = _STR_ns_STR_.sequence_MIN_m = {
+    result: function result(x) {
+      return [ x ];
+    },
+    bind: function bind(xs, f) {
+      return mapcat(f, xs);
+    },
+    zero: function zero() {
+      return [];
+    },
+    exit: function exit() {
+      return _exit;
+    }
+  };
+  var doseq_MIN_m = _STR_ns_STR_.doseq_MIN_m = {
+    result: function result(_) {
+      return null;
+    },
+    bind: function bind(xs, f) {
+      return doeach(f, xs);
+    },
+    zero: function zero() {
+      return null;
+    },
+    exit: function exit() {
+      return _exit;
+    }
+  };
   var count = _STR_ns_STR_.count = function count(x) {
     return nil_QMK_(x) ? 0 : _MIN_else ? U.size(x) : null;
   };
