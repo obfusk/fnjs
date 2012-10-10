@@ -109,9 +109,9 @@
     (tr (for-break break (for-accum xs
       (tr_for' break (partition 2 exprs) body') )))))
 
-(defn tr_doseq [exprs body]
-  (let [ break (_m/mk-sym '__break__) ]
-    (tr (for-break break (tr_for' break (partition 2 exprs) body))) ))
+(defn tr_doseq [exprs & body]
+  (let [ break (_m/mk-sym '__break__), b `(~'do ~@body nil) ]
+    (tr (for-break break (tr_for' break (partition 2 exprs) b))) ))
                                                                 ; }}}1
 
 ; === Destructuring ===                                         ; {{{1
