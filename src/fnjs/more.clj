@@ -89,7 +89,7 @@
                var" ~xs' "= [];" ~body' "; return" ~xs' ";
             })()" )))
 
-(defn for-break [break body] `(~'let [ ~break (~'jobj) ] ~body))
+(defn for-break [break body] `(~'let [ ~break (~'jobj) ] ~body nil))
 
 (defn tr_for' [break exprs body]                                ; {{{2
   (let [ f #(tr_for' break (rest exprs) body) ]
@@ -106,11 +106,11 @@
 (defn tr_for [exprs body]
   (let [ [xs break] (map _m/mk-sym '[__xs__ __break__])
          body' `(~'.!push ~xs ~body) ]
-    (tr (for-break break (for-accum xs
+    (tr (for-accum xs (for-break break
       (tr_for' break (partition 2 exprs) body') )))))
 
 (defn tr_doseq [exprs & body]
-  (let [ break (_m/mk-sym '__break__), b `(~'do ~@body nil) ]
+  (let [ break (_m/mk-sym '__break__), b `(~'do ~@body) ]
     (tr (for-break break (tr_for' break (partition 2 exprs) b))) ))
                                                                 ; }}}1
 

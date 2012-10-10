@@ -39,11 +39,6 @@
   };
   show(my_MIN_obj_MIN_2.x.a, my_MIN_obj_MIN_2.x.c, my_MIN_obj_MIN_2.y.f(99), my_MIN_obj_MIN_2.y.f(512));
   show(my_MIN_obj_MIN_2.x["b"][1]);
-  [ 1, 2, 3 ].map(function(x) {
-    return [ "foo", "bar" ].map(function(y) {
-      return show("x=", x, "y=", y);
-    });
-  });
   (function() {
     var PI = 42;
     var x = 37;

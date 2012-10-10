@@ -5,12 +5,6 @@ Hello, World
 { x: 1, y: 2, z: 3 }
 1 4 100 513
 3
-x= 1 y= foo
-x= 1 y= bar
-x= 2 y= foo
-x= 2 y= bar
-x= 3 y= foo
-x= 3 y= bar
 42 37
 eq
 JS!
