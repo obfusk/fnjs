@@ -6,7 +6,7 @@ for x in examples/*.fnjs; do
   [[ "$b" == *NORUN* ]] && continue
 
   echo "running $x ..."
-  ./bin/fnjs "$x" | node > output/"$b".good.out
+  ./bin/fnjs "$x" | ./_scripts/run-js > output/"$b".good.out
 done
 
 # --

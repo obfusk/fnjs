@@ -9,7 +9,7 @@ for x in examples/*.fnjs; do
   [[ "$b" == *NORUN* ]] && continue
 
   echo "running $x ..." >&2
-  ./bin/fnjs "$x" | node > output/"$b.$e"
+  ./bin/fnjs "$x" | ./_scripts/run-js > output/"$b.$e"
 
   for x in "${PIPESTATUS[@]}"; do
     if [ "$x" -ne 0 ]; then

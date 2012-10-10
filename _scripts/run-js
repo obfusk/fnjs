@@ -1,0 +1,9 @@
+#!/bin/bash
+
+jsp='./tree/lib/fnjs/js'
+
+if [ -z "$NODE_PATH" ]; then np="$jsp"; else np="$jsp:$NODE_PATH"; fi
+
+NODE_PATH="$np" node "$@"
+
+# --
