@@ -96,9 +96,9 @@
 
 (show (jget my-obj-2.x "b" 1))        ; indexing
 
-(jfor [ x (jary 1 2 3)                ; for/map
-        y (jary "foo" "bar") ]
-  (show "x=" x "y=" y))
+; (jfor [ x (jary 1 2 3)                ; for/map
+;         y (jary "foo" "bar") ]
+;   (show "x=" x "y=" y))
 
 (let [ PI 42, x 37 ]                  ; let; lexical scope
   (show PI x) )

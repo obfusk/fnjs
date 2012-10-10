@@ -2,7 +2,7 @@
 ;
 ; File        : fnjs/dsl.clj
 ; Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-; Date        : 2012-10-05
+; Date        : 2012-10-09
 ;
 ; Copyright   : Copyright (C) 2012  Felix C. Stegerman
 ; Licence     : GPLv2 or EPLv1
@@ -55,7 +55,16 @@
     (for [[u & r] refs] (do (_m/chk (= u :use) "tr_ns: expected :use")
                             (apply tr_use r) )) ])
 
-(defn tr_js   [& xs] (for [x xs] (if (string? x) x (tr x))))
+; --
+
+(defn esc [& xs] (with-meta xs { :escaped true }))
+
+(defn tr_js [& xs]
+  (for [x xs] (cond (-> x meta :escaped) (mtr x)
+                    (string? x) x, :else (tr x) )))
+
+; --
+
 (defn tr_juop [o x] (_e/unop o (tr x)))
 (defn tr_jbop [o & args] (_e/binop o (mtr args)))
 (defn tr_def  [k v] (mk-def k (tr v)))                          ; TODO
@@ -193,15 +202,6 @@
 (defn dot       [x & ys] (interpose "." (cons x ys)))
 (defn dot-bang  [x y & ys] (_e/call (_e/group (dot x y)) ys))
 
-(defn for-ary [vs body]                                         ; {{{1
-  (if (seq vs)                                                  ; TODO
-    (let [ [v e] (first vs), b (for-ary (rest vs) body) ]
-      (dot-bang (tr e) 'map (_e/function nil [(tr v)] nil b)) )
-    (mtr body) ))
-                                                                ; }}}1
-
-(defn tr_jfor [vars & body] (for-ary (partition 2 vars) body))
-
 ; --
 
 ; defnjm {                                                      ; {{{1
@@ -214,7 +214,6 @@
 (defnjm if            tr_if     )
 (defnjm jary          tr_jary   )
 (defnjm jbop          tr_jbop   )
-(defnjm jfor          tr_jfor   )
 (defnjm jget          tr_jget   )
 (defnjm jobj          tr_jobj   )
 (defnjm js            tr_js     )
